@@ -1,5 +1,5 @@
 import '../src/css/App.css';
-import './output.css';
+import '../src/output.css';
 import { Routes, Route } from "react-router-dom";
 import Asistencias from "./pages/Asistencias";
 import Visitas from "./pages/Visitas";
@@ -14,7 +14,7 @@ function App() {
   return (
     <div className='App'>
       <div className='header'>
-
+        <h1>este es el Header</h1>
       </div>
       <div className='sidebar'>
         <Side />

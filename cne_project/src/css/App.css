@@ -20,3 +20,6 @@ body {
   grid-area: body;
   background-color: lightgray;
 }
+.logo {
+  height: 45px;
+}

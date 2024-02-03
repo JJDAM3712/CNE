@@ -1,12 +1,15 @@
-
 import { Sidebar } from 'flowbite-react';
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
+import logoSide from './temas-pers';
 
 function Side() {
 	return (
 		<Sidebar aria-label="Default sidebar example">
+			<Sidebar.Logo href="#" img="favicon.ico" imgAlt="CNE Logo" theme={logoSide}>
+        CNE App
+      </Sidebar.Logo>
 			<Sidebar.Items>
 				<Sidebar.ItemGroup>
 					<Sidebar.Item icon={HiChartPie}> <Link to="/">Pagina Principal</Link>
@@ -14,7 +17,7 @@ function Side() {
 					<Sidebar.Item icon={HiInbox}>
 						<Link to="/personal">Personal</Link>
 					</Sidebar.Item>
-					<Sidebar.Item icon={HiUser} label="3">
+					<Sidebar.Item icon={HiUser}>
 						<Link to="/asistencias">Asistencias</Link>
 					</Sidebar.Item>
 					<Sidebar.Item icon={HiShoppingBag}>
