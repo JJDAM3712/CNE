@@ -1,0 +1,22 @@
+.App {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 5rem 1fr;
+    grid-template-columns: 16rem 1fr;
+    grid-template-areas: "header header" "sidebar body";
+  };
+body {
+    margin: 0%;
+}
+.header {
+  grid-area: header;
+  background-color: lightblue;
+}
+.sidebar {
+  grid-area: sidebar;
+}
+.body {
+  grid-area: body;
+  background-color: lightgray;
+}
