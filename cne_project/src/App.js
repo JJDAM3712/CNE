@@ -8,7 +8,9 @@ import Usuario from "./pages/Usuario";
 import Personal from "./pages/Personal";
 import Cargos from "./pages/Cargos";
 import Home from "./pages/Home";
+import Inventario from "./pages/Inventario";
 import Side from "./components/Sidebar2";
+
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
           <Route path="personal" element={<Personal />} />
           <Route path="asistencias" element={<Asistencias />} />
           <Route path="visitas" element={<Visitas />} />
+          <Route path="Inventario" element={<Inventario />} />
           <Route path="departamentos" element={<Departamentos />} />
           <Route path="cargos" element={<Cargos />} />
           <Route path="usuario" element={<Usuario />} />

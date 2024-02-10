@@ -24,6 +24,9 @@ function Side() {
 						<Link to="/visitas">Visitas</Link>
 					</Sidebar.Item>
 					<Sidebar.Item icon={HiArrowSmRight}>
+						<Link to="/Inventario">Inventario</Link>
+					</Sidebar.Item>
+					<Sidebar.Item icon={HiArrowSmRight}>
 						<Link to="/departamentos">Departamento</Link>
 					</Sidebar.Item>
 					<Sidebar.Item icon={HiTable}>
