@@ -1,13 +1,21 @@
-import{ CustomFlowbiteTheme } from 'flowbite-react';
+import { CustomFlowbiteTheme } from 'flowbite-react';
 
- 
+
+
 const logoSide: CustomFlowbiteTheme['logo'] = {
-	base: "mb-3 flex items-center pl-2.5",
-    collapsed: {
-      on: "hidden",
-      off: "self-center whitespace-nowrap text-xl font-semibold dark:text-white"
+  base: "mb-4 flex items-center pl-0",
+  collapsed: {
+    on: "hidden",
+    off: "self-center whitespace-nowrap text-xl font-semibold dark:text-white"
+  },
+  img: "mr-2 h-11"
+};
+const SideBg: CustomFlowbiteTheme = {
+  Sidebar: {
+    color: {
+      primary: 'bg-red-500 hover:bg-red-600',
     },
-		img: "mr-2 h-11 w-16"
+  },
 };
 
-export default logoSide;
+export { logoSide, SideBg };

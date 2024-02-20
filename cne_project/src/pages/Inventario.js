@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/inventario.css'; // Estilos CSS
 
-const Inventario = ({}) => {
+const Inventario = ({ }) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const handleEdit = (row) => {

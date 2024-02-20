@@ -15,11 +15,12 @@ body {
 }
 .sidebar {
   grid-area: sidebar;
+  background-color: #282c34;
 }
 .body {
   grid-area: body;
   background-color: lightgray;
 }
 .logo {
-  height: 45px;
+  height: 50px;
 }

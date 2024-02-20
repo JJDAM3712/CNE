@@ -1,5 +1,6 @@
 import '../src/css/App.css';
 import '../src/output.css';
+import '../src/css/sidebar.css'
 import { Routes, Route } from "react-router-dom";
 import Asistencias from "./pages/Asistencias";
 import Visitas from "./pages/Visitas";
