@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import '../css/inventario.css'; // Estilos CSS
+import styled from "styled-components";
+
+export function Inventario() {
+  
+const Container = styled.div;
 
 const Inventario = ({ }) => {
   const [editingRow, setEditingRow] = useState(null);
@@ -14,6 +19,8 @@ const Inventario = ({ }) => {
   };
 
   return (
+    <Container>
+           
     <table className="inventory-table">
       <thead>
         <tr>
@@ -44,7 +51,7 @@ const Inventario = ({ }) => {
         ))}
       </tbody>
     </table>
-  );
+    </Container>
+  )
 };
-
-export default Inventario;
+}
