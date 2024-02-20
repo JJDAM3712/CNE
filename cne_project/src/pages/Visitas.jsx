@@ -1,9 +1,4 @@
-import styled from "styled-components";
-export function Visitas() {
-    return (
-        <Container>
-            <h1>Visitas</h1>
-        </Container>
-    )    
+const Visitas = () => {
+    return <h1>Visitas</h1>
 }
-const Container = styled.div;
+export default Visitas;

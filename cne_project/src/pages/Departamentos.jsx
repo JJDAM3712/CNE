@@ -1,9 +1,4 @@
-import styled from "styled-components";
-export function Departamentos() {
-    return (
-        <Container>
-            <h1>Departamentos</h1>
-        </Container>
-    )    
+const Departamentos = () => {
+    return <h1>Departamentos</h1>
 }
-const Container = styled.div;
+export default Departamentos;

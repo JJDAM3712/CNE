@@ -1,32 +1,32 @@
-import '../src/css/App.css';
 import '../src/output.css';
 import '../src/css/sidebar.css'
-import { Routes, Route } from "react-router-dom";
-import {Asistencias} from "./pages/Asistencias";
-import {Visitas} from "./pages/Visitas";
-import {Departamentos} from "./pages/Departamentos";
-import {Usuario} from "./pages/Usuario";
-import {Personal} from "./pages/Personal";
-import {Cargos} from "./pages/Cargos";
-import Home from "./pages/Home";
-import {Inventario} from "./pages/Inventario";
-
+import { Light, Dark } from "./css/Themes";
+import { MyRoutes } from "./routers/routes"
+import { Sidebar } from "./components/sidebar";
+import styled from 'styled-components';
+import React from 'react';
+import { useState } from "react";
+import { ThemeProvider } from "styled-components";
+export const ThemeContext = React.createContext(null);
 
 function App() {
+  const [theme, setTheme] = useState("light");
+  const themeStyle = theme === "light" ? Light : Dark;
   return (
     <div className='App'>
-      <div className='header'>
-        <h1>este es el Header</h1>
-      </div>
-      <div className='sidebar'>
-      </div>
-      <div className='body'>
-        <Routes>
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </div>
+      <ThemeContext.Provider value={{ setTheme, theme }}>
+        <ThemeProvider theme={themeStyle}>
+          <Container>
+            <Sidebar />
+            <MyRoutes />
+          </Container>
+        </ThemeProvider>
+      </ThemeContext.Provider>
     </div>
   );
 }
+const Container = styled.div`
+background-color:${({ theme }) => theme.body}
+`;
 
 export default App;
