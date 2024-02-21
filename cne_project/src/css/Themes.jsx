@@ -1,6 +1,5 @@
 export const Light = {
     body: "#fff",
-    text: "#202020",
     bodyRgba: "255, 255, 255",
     textRgba: "32,32,32",
     carouselColor: "#EEEDDE",
@@ -51,7 +50,6 @@ export const Light = {
 export const Dark = {
     bgtgderecha: "#21252B",
     body: "#202020",
-    text: "#fff",
     bodyRgba: "32,32,32",
     textRgba: "255, 255, 255",
     carouselColor: "#EEEDDE",

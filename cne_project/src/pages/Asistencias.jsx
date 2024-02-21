@@ -1,4 +1,9 @@
-const Asistencias = () => {
-    return <h1>Asistencias</h1>
+import styled from "styled-components";
+export function Asistencias() {
+    return (
+        <Container>
+            <h1>Asistencias</h1>
+        </Container>
+    )    
 }
-export default Asistencias;
+const Container = styled.div``;

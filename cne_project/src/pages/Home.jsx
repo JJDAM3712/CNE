@@ -1,6 +1,9 @@
-import { Apple } from 'lucide-react';
-const Home = () => {
-    return <h1><Apple size={28} color="#e90707" />HOME</h1>
-    
+import styled from "styled-components";
+export function Home() {
+    return (
+        <Container>
+            <h1>Home</h1>
+        </Container>
+    )    
 }
-export default Home;
+const Container = styled.div``;

@@ -1,4 +1,9 @@
-const Cargos = () => {
-    return <h1>Cargos</h1>
+import styled from "styled-components";
+export function Cargos() {
+    return (
+        <Container>
+            <h1>Cargos</h1>
+        </Container>
+    )    
 }
-export default Cargos;
+const Container = styled.div``;

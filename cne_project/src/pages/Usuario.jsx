@@ -1,4 +1,9 @@
-const Usuario = () => {
-    return <h1>Usuario</h1>
+import styled from "styled-components";
+export function Usuario() {
+    return (
+        <Container>
+            <h1>Usuario</h1>
+        </Container>
+    )    
 }
-export default Usuario;
+const Container = styled.div``;
