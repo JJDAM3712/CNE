@@ -12,16 +12,13 @@ export const ThemeContext = React.createContext(null);
 function App() {
   const [theme, setTheme] = useState("light");
   const themeStyle = theme === "light" ? Light : Dark;
-  const CambiarTheme = () => {
-    setTheme((theme) => (theme === "light" ? "dark" : "light"));
-  };
   const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <>
       <ThemeContext.Provider value={{ setTheme, theme }}>
         <ThemeProvider theme={themeStyle}>
           <Container>
-            <main className={sidebarOpen ? "sidebarState active" : ""}>
+            <main className={sidebarOpen ? "sidebarState active" : "sidebarState"}>
             <Sidebar
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}

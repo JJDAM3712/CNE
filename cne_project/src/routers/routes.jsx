@@ -15,7 +15,7 @@ export function MyRoutes() {
             <Route path="/personal" element={<Personal />} />
             <Route path="/asistencias" element={<Asistencias />} />
             <Route path="/visitas" element={<Visitas />} />
-            <Route path="/Inventario" element={<Inventario />} />
+            <Route path="/inventario" element={<Inventario />} />
             <Route path="/departamentos" element={<Departamentos />} />
             <Route path="/cargos" element={<Cargos />} />
             <Route path="/usuario" element={<Usuario />} />
