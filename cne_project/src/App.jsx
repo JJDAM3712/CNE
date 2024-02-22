@@ -49,6 +49,7 @@ const Container = styled.div`
     align-items: flex-end;
     flex-direction: row;
     justify-content: flex-start;
+    color:${({ theme }) => theme.text};
   }
   .sidebarState {
     display: grid;
