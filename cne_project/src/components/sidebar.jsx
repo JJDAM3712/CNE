@@ -312,6 +312,6 @@ const Divider = styled.div`
   height: 1px;
   width: 100%;
   background: ${(props) => props.theme.bg3};
-  margin: ${v.lgSpacing} 0;
+  margin: ${v.smSpacing} 0;
 `;
 // #endregion

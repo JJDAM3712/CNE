@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Table, Button } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { useContext } from "react";
 import { ThemeContext } from "../App";
 import { ModalRegis } from "../components/Modal";

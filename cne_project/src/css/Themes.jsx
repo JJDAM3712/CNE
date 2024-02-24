@@ -17,10 +17,11 @@ export const Light = {
     bgAlpha: "rgba(250,250,250,.3)",
     bg2: "rgb(245,245,245)",
     bg3: "rgb(230,230,230)",
+    bgHeader: "rgb(230,230,230)",
     text: "rgb(45,45,45)",
     primary: "rgb(52, 131, 235)",
     bg4: "#9247FC",
-    bgtotal: "#EDF3FB",
+    bgtotal: "#d5d5d5",
     bgtgderecha: "#fff",
     barrascroll: "#a8a7a7",
 
@@ -35,7 +36,7 @@ export const Light = {
     gray200: "#f1f1f1",
     gray100: "#ffffff",
 
-    green500: "#F9516E",
+    red500: "#F9516E",
     olive500: "#e3ffa8",
 
     white: "#ffffff",
@@ -64,6 +65,7 @@ export const Dark = {
     navHeight: "5rem",
     whiteBg: "#7522e6s",
     bg: "rgb(15,15,15)",
+    bgHeader: "#a4a5a7",
     bgAlpha: "rgba(0,0,0,.3)",
     bg2: "rgb(30,30,30)",
     bg3: "rgb(50,50,50)",
@@ -83,7 +85,7 @@ export const Dark = {
     gray200: "#f1f1f1",
     gray100: "#ffffff",
 
-    green500: "#F9516E",
+    red500: "#F9516E",
     olive500: "#e3ffa8",
 
     white: "#ffffff",

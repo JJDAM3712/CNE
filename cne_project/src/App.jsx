@@ -14,7 +14,7 @@ export const ThemeContext = React.createContext(null);
 function App() {
   const [theme, setTheme] = useState("light");
   const themeStyle = theme === "light" ? Light : Dark;
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation(); // Usa useLocation para obtener la ruta actual
 
   return (
@@ -43,7 +43,7 @@ function App() {
 }
 const Container = styled.div`
   .Header {
-    background: ${({ theme }) => theme.bg3};
+    background: ${({ theme }) => theme.bgHeader};
     height: 3rem;
     display: flex;
     align-items: flex-end;
