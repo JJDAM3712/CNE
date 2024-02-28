@@ -63,7 +63,7 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
       ))}
       <Divider />
       <div className="Themecontent">
-        {sidebarOpen && <span className="titletheme">Dark mode</span>}
+        {sidebarOpen && <span className="titletheme">Modo Oscuro</span>}
         <div className="Togglecontent">
           <div className="grid theme-container">
             <div className="content">
@@ -234,6 +234,8 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+    margin-bottom: 1rem;
     .titletheme {
       display: block;
       padding: 10px;

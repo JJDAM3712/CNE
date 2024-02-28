@@ -53,7 +53,6 @@ const Container = styled.div`
   }
   .sidebarState {
     display: grid;
-    HEIGHT: 100vh;
     grid-template-columns: 90px auto;
     background: ${({ theme }) => theme.bgtotal};
     transition:all 0.3s ;
