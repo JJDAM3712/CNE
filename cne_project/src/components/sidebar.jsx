@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logo from "../assets/img/react.svg";
+import { ReactComponent as LogoCNE } from "../assets/img/CNE_logo.svg";
 import { v } from "../css/Variables";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
@@ -30,15 +30,14 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
   };
   return (
     <Container isOpen={sidebarOpen} themeUse={theme}>
+      <div className="Logocontent">
+        <div className="imgcontent">
+          <LogoCNE />
+        </div>
+      </div>
       <button className="Sidebarbutton" onClick={ModSidebaropen}>
         <AiOutlineMenuFold />
       </button>
-      <div className="Logocontent">
-        <div className="imgcontent">
-          <img src={logo} alt="Logo CNE" />
-        </div>
-        <h2>CNE APP</h2>
-      </div>
       {linksArray.map(({ icon, label, to }) => (
         <div className="LinkContainer" key={label}>
           <NavLink
@@ -152,7 +151,7 @@ const Container = styled.div`
   padding-top: 20px;
   .Sidebarbutton {
     position: absolute;
-    top: ${v.xxlSpacing};
+    top: 0px;
     right: -18px;
     width: 32px;
     height: 32px;
@@ -174,22 +173,28 @@ const Container = styled.div`
     padding: 0;
     font-family: inherit;
     outline: none;
+    svg {
+      color: ${(props) => props.theme.text};
+    }
   }
   .Logocontent {
     display: flex;
     justify-content: center;
+    width: ${({ isOpen }) => (isOpen ? `100%;` : `80%;`)};
     align-items: center;
-
     padding-bottom: ${v.lgSpacing};
     .imgcontent {
       display: flex;
-      img {
+      svg {
         max-width: 100%;
         height: auto;
+        .letraLogo{
+          fill: ${(props) => props.theme.text};
+        }
       }
       cursor: pointer;
       transition: all 0.3s;
-      transform: ${({ isOpen }) => (isOpen ? `scale(0.7)` : `scale(1.5)`)};
+      transform: ${({ isOpen }) => (isOpen ? `scale(0.7)` : `scale(1.3)`)};
     }
     h2 {
       display: ${({ isOpen }) => (isOpen ? `block` : `none`)};
@@ -281,7 +286,8 @@ const Container = styled.div`
               left: 0;
               right: 0;
               bottom: 0;
-              background: ${({ themeUse }) => themeUse === "light" ? v.lightcheckbox : v.darkcheckbox};
+              background: ${({ themeUse }) =>
+                themeUse === "light" ? v.lightcheckbox : v.darkcheckbox};
 
               transition: 0.4s;
               &::before {

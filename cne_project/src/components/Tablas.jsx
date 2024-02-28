@@ -100,7 +100,7 @@ export function TablaAsistencias() {
 export function TablaVisitas() {
   return (
     <Container>
-      <div className="ContenedorTabla">
+      <div className="ContenedorTabla ">
         <h1>Visitas:</h1>
         <Table>
           <Table.Head className="border-b-2">
@@ -135,7 +135,6 @@ export function TablaVisitas() {
 const Container = styled.div`
     .ContenedorTabla{
     margin-top: 1rem;
-    overflow-x-auto;
     border-radius: 10px;
     background: ${(props) => props.theme.bg2};
     border: 1px solid  ${(props) => props.theme.gray600};

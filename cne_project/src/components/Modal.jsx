@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logo from "../assets/img/react.svg";
+import logo from "../assets/img/CNE_logo.svg";
 import {
   Button,
   Modal,

@@ -28,7 +28,7 @@ export function Personal() {
   );
 }
 const Container = styled.div`
-    margin: 1rem;
+    margin: 1.1rem;
     .ContenedorTabla{
       overflow-x-auto;
       border-radius: 10px;

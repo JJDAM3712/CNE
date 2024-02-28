@@ -12,5 +12,5 @@ export function Asistencias() {
   );
 }
 const Container = styled.div`
-  margin: 1rem;
+  margin: 1.1rem;
 `;

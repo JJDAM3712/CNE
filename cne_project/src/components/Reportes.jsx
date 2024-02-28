@@ -62,4 +62,9 @@ const Container = styled.div`
     border-top: 3px solid ${(props) => props.theme.red500};
     padding: 0.3rem;
   }
+  @media (max-width: 1199px) {
+    .ContRep {
+      width: 100%;
+    }
+  }
 `;
