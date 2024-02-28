@@ -192,7 +192,6 @@ const Container = styled.div`
           fill: ${(props) => props.theme.text};
         }
       }
-      cursor: pointer;
       transition: all 0.3s;
       transform: ${({ isOpen }) => (isOpen ? `scale(0.7)` : `scale(1.3)`)};
     }
