@@ -7,7 +7,7 @@ export function Migas({ activePath }) {
   const activeRoutes = routes.filter(route => activePath.includes(route.path));
 
   return (
-    <Breadcrumb aria-label="Default breadcrumb example">
+    <Breadcrumb aria-label="Default breadcrumb example" disabled>
       {activeRoutes.map(({ path, name }, index) => (
         <Breadcrumb.Item key={index} href={path} icon={index === 0 ? HiHome : null}>
           {name}

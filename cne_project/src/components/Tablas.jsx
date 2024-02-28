@@ -6,7 +6,6 @@ import {
   EliminaAsist,
   EliminaVisita,
 } from "./Modal";
-import { FaEraser, FaEdit } from "react-icons/fa";
 
 export function TablaPersonal() {
   return (

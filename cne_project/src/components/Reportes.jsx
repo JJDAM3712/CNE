@@ -1,16 +1,11 @@
 import styled from "styled-components";
 import { Datepicker, Button } from "flowbite-react";
-import { useContext } from "react";
 import { RegisAsist, RegisVisita } from "./Modal";
-import { ThemeContext } from "../App";
 import { HiOutlineArrowRight } from "react-icons/hi";
 
 
 export function ReportAsis() {
-  const { setTheme, theme } = useContext(ThemeContext);
-  const CambiarTheme = () => {
-    setTheme((theme) => (theme === "light" ? "dark" : "light"));
-  };
+  
   return (
     <Container>
       <div className="ContRep">
@@ -31,10 +26,6 @@ export function ReportAsis() {
 }
 
 export function ReportVisita() {
-  const { setTheme, theme } = useContext(ThemeContext);
-  const CambiarTheme = () => {
-    setTheme((theme) => (theme === "light" ? "dark" : "light"));
-  };
   return (
     <Container>
       <div className="ContRep">
