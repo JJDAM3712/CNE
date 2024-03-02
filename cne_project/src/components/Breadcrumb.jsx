@@ -1,6 +1,6 @@
 import { Breadcrumb } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
-import { routes } from '../routers/routes'; // Asegúrate de que la ruta de importación sea correcta
+import { routes } from '../routers/routes';
 
 export function Migas({ activePath }) {
   // Filtra las rutas para obtener solo las que están activas

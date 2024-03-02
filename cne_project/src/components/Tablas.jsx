@@ -5,7 +5,9 @@ import {
   EliminarPersona,
   EliminaAsist,
   EliminaVisita,
-} from "./Modal";
+} from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
+
+// LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
 
 export function TablaPersonal() {
   return (

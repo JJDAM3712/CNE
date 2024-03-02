@@ -332,7 +332,6 @@ export function RegisAsist() {
     </>
   );
 }
-
 export function RegisVisita() {
   const [openModal, setOpenModal] = useState(false);
 
