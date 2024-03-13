@@ -474,6 +474,126 @@ export function ModalDep() {
     </Container>
   );
 }
+export function EliminarDep() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
+        <FaEraser />
+      </Button>
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-icon text-red-500" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
+              Estas seguro de querer eliminar este Registro?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={() => setOpenModal(false)}>
+                {"Eliminar"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
+export function ModalCargo() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <Container>
+      <>
+        <Button onClick={() => setOpenModal(true)}>Registrar Cargo</Button>
+        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+          <Modal.Header>Registrar un Nuevo Cargo</Modal.Header>
+          <Modal.Body>
+            <form className="flex flex-col gap-4 max-w-full">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="cargo" value="Cargo:" />
+                </div>
+                <TextInput
+                  id="cargo"
+                  type="text"
+                  placeholder="Nombre del Cargo"
+                  required
+                  shadow
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="cantidad" value="Cantidad de Puestos:" />
+                </div>
+                <TextInput
+                  id="cantidad"
+                  type="number"
+                  min="0"
+                  max="99"
+                  placeholder="Ingrese una cantidad"
+                  required
+                  shadow
+                />
+              </div>
+              <Button type="submit">Registrar</Button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="dark" onClick={() => setOpenModal(false)}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    </Container>
+  );
+}
+export function EliminarCargo() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
+        <FaEraser />
+      </Button>
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-icon text-red-500" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
+              Estas seguro de querer eliminar este Registro?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={() => setOpenModal(false)}>
+                {"Eliminar"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
 const Container = styled.div`
 .Logocontent {
   display: flex;

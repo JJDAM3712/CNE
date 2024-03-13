@@ -5,6 +5,8 @@ import {
   EliminarPersona,
   EliminaAsist,
   EliminaVisita,
+  EliminarDep,
+  EliminarCargo,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
 
 // LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
@@ -149,7 +151,32 @@ export function TablaDepartamento() {
                 FINANZAS Y SOCIEDADES AFINES
               </Table.Cell>
               <Table.Cell>
-                <EliminaVisita className="left-4" />
+                <EliminarDep className="left-4" />
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </div>
+    </Container>
+  );
+}
+export function TablaCargos() {
+  return (
+    <Container>
+      <div className="ContenedorTabla ">
+        <h1>Cargos:</h1>
+        <Table>
+          <Table.Head className="border-b-2">
+            <Table.HeadCell>Cargo</Table.HeadCell>
+            <Table.HeadCell>Cantidad de Puestos</Table.HeadCell>
+            <Table.HeadCell>Opciones</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            <Table.Row className="bg-white">
+              <Table.Cell className="whitespace-nowrap">Sub-Gerente</Table.Cell>
+              <Table.Cell className="whitespace-nowrap">3</Table.Cell>
+              <Table.Cell>
+                <EliminarCargo className="left-4" />
               </Table.Cell>
             </Table.Row>
           </Table.Body>
