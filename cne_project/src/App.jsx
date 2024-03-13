@@ -25,19 +25,19 @@ function App() {
         <ThemeProvider theme={themeStyle}>
           <Container>
             <header className="Header">
-            <Migas activePath={location.pathname} />{" "}
-            {/* Pasa la ruta activa como prop a Migas */}
+              <Migas activePath={location.pathname} />{" "}
+              {/* Pasa la ruta activa como prop a Migas */}
             </header>
             {/* CONTENEDOR PRINCIPAL DEL BODY */}
             <main
               className={sidebarOpen ? "sidebarState active" : "sidebarState"}
-            > 
-            {/* SIDEBAR */}
+            >
+              {/* SIDEBAR */}
               <Sidebar
                 sidebarOpen={sidebarOpen}
                 setSidebarOpen={setSidebarOpen}
               />
-            {/* SIDEBAR */}
+              {/* SIDEBAR */}
               <MyRoutes />
             </main>
           </Container>
@@ -48,6 +48,7 @@ function App() {
 }
 // #region ESTILOS DEL CONTENEDOR GENERAL
 const Container = styled.div`
+
   .Header {
     background: ${({ theme }) => theme.bgHeader};
     height: 3rem;
