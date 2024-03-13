@@ -133,11 +133,38 @@ export function TablaVisitas() {
     </Container>
   );
 }
+export function TablaDepartamento() {
+  return (
+    <Container>
+      <div className="ContenedorTabla ">
+        <h1>Departamentos:</h1>
+        <Table>
+          <Table.Head className="border-b-2">
+            <Table.HeadCell>Departamento</Table.HeadCell>
+            <Table.HeadCell>Opciones</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            <Table.Row className="bg-white">
+              <Table.Cell className="whitespace-nowrap">
+                FINANZAS Y SOCIEDADES AFINES
+              </Table.Cell>
+              <Table.Cell>
+                <EliminaVisita className="left-4" />
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </div>
+    </Container>
+  );
+}
+
 const Container = styled.div`
-    .ContenedorTabla{
+  .ContenedorTabla {
     margin-top: 1rem;
     border-radius: 10px;
     background: ${(props) => props.theme.bg2};
-    border: 1px solid  ${(props) => props.theme.gray600};
+    border: 1px solid ${(props) => props.theme.gray600};
     padding: 0.3rem;
-  }`;
+  }
+`;

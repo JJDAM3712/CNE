@@ -1,17 +1,9 @@
 import styled from "styled-components";
 import logo from "../assets/img/CNE_logo.svg";
-import {
-  Button,
-  Modal,
-  Checkbox,
-  Radio,
-  Label,
-  TextInput,
-  Select,
-} from "flowbite-react";
+import { Button, Modal, Radio, Label, TextInput, Select } from "flowbite-react";
 import { FaEraser, FaEdit } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 export function ModalRegis() {
   const [openModal, setOpenModal] = useState(false);
@@ -442,6 +434,44 @@ export function EliminaVisita() {
         </Modal.Body>
       </Modal>
     </>
+  );
+}
+export function ModalDep() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <Container>
+      <>
+        <Button onClick={() => setOpenModal(true)}>
+          Registrar Departameto
+        </Button>
+        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+          <Modal.Header>Registrar un Nuevo Departamento</Modal.Header>
+          <Modal.Body>
+            <form className="flex flex-col gap-4 max-w-full">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="nombres" value="Departamento:" />
+                </div>
+                <TextInput
+                  id="nombres"
+                  type="text"
+                  placeholder="Nombre del Departamento"
+                  required
+                  shadow
+                />
+              </div>
+              <Button type="submit">Registrar</Button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="dark" onClick={() => setOpenModal(false)}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    </Container>
   );
 }
 const Container = styled.div`

@@ -5,7 +5,7 @@ import { Sidebar } from "./components/sidebar"; //Sidebar
 import { Migas } from "./components/Breadcrumb"; // Asegúrate de que la ruta de importación sea correcta
 import styled from "styled-components"; //Componente para Estilos directo al JSX
 import React from "react";
-import { BrowserRouter, useLocation } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { useState } from "react";
 import { ThemeProvider } from "styled-components";
 export const ThemeContext = React.createContext(null);
