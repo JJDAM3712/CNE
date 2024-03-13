@@ -594,6 +594,247 @@ export function EliminarCargo() {
     </>
   );
 }
+export function RegisInv() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpenModal(true)}>Registrar Producto</Button>
+      <Modal
+        show={openModal}
+        size="md"
+        popup
+        onClose={() => setOpenModal(false)}
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <form className="flex flex-col gap-4 max-w-full">
+            <h3 className="text-xl font-medium text-gray-900 text-center ">
+              REGISTRAR PRODUCTO
+            </h3>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="nombre" value="Nombre:" />
+              </div>
+              <TextInput
+                id="nombre"
+                type="text"
+                placeholder="Nombre Producto"
+                required
+                shadow
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Marca" value="Marca:" />
+              </div>
+              <TextInput
+                id="Marca"
+                type="text"
+                placeholder="Marca Producto"
+                required
+                shadow
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Codigo" value="Codigo:" />
+              </div>
+              <TextInput
+                id="Codigo"
+                type="text"
+                placeholder="Codigo del Producto"
+                required
+                shadow
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Departamento" value="Departamento:" />
+              </div>
+              <TextInput
+                id="Departamento"
+                type="text"
+                placeholder="Departamento"
+                required
+                shadow
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Estado" value="Estado del Producto" />
+              </div>
+              <Select id="Estado" required>
+                <option value="" key="Selec" disabled selected>
+                  Selecciona:
+                </option>
+                <option>Nuevo</option>
+                <option>Usado</option>
+              </Select>
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Departamento" value="Departamento:" />
+              </div>
+              <TextInput
+                id="Departamento"
+                type="text"
+                placeholder="Departamento"
+                required
+                shadow
+              />
+            </div>
+            <Button type="submit">Registrar</Button>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button color="dark" onClick={() => setOpenModal(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
+export function EditInv() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+        <FaEdit />
+      </Button>
+      <Modal
+        show={openModal}
+        size="md"
+        popup
+        onClose={() => setOpenModal(false)}
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <form className="flex flex-col gap-4 max-w-full">
+            <h3 className="text-xl font-medium text-gray-900 text-center ">
+              REGISTRAR PRODUCTO
+            </h3>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="nombre" value="Nombre:" />
+              </div>
+              <TextInput
+                id="nombre"
+                type="text"
+                placeholder="Nombre Producto"
+                required
+                shadow
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Marca" value="Marca:" />
+              </div>
+              <TextInput
+                id="Marca"
+                type="text"
+                placeholder="Marca Producto"
+                required
+                shadow
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Codigo" value="Codigo:" />
+              </div>
+              <TextInput
+                id="Codigo"
+                type="text"
+                placeholder="Codigo del Producto"
+                required
+                shadow
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Departamento" value="Departamento:" />
+              </div>
+              <TextInput
+                id="Departamento"
+                type="text"
+                placeholder="Departamento"
+                required
+                shadow
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Estado" value="Estado del Producto" />
+              </div>
+              <Select id="Estado" required>
+                <option value="" key="Selec" disabled selected>
+                  Selecciona:
+                </option>
+                <option>Nuevo</option>
+                <option>Usado</option>
+              </Select>
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="Departamento" value="Departamento:" />
+              </div>
+              <TextInput
+                id="Departamento"
+                type="text"
+                placeholder="Departamento"
+                required
+                shadow
+              />
+            </div>
+            <Button type="submit">Registrar</Button>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button color="dark" onClick={() => setOpenModal(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
+export function EliminarInv() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
+        <FaEraser />
+      </Button>
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-icon text-red-500" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
+              Estas seguro de querer eliminar este Registro?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={() => setOpenModal(false)}>
+                {"Eliminar"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
 const Container = styled.div`
 .Logocontent {
   display: flex;

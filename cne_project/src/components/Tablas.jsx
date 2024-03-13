@@ -7,6 +7,8 @@ import {
   EliminaVisita,
   EliminarDep,
   EliminarCargo,
+  EliminarInv,
+  EditInv,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
 
 // LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
@@ -55,7 +57,7 @@ export function TablaPersonal() {
               <Table.Cell>
                 <Button.Group>
                   <EditarPersona />
-                  <EliminarPersona />
+                  <EliminarInv />
                 </Button.Group>
               </Table.Cell>
             </Table.Row>
@@ -177,6 +179,42 @@ export function TablaCargos() {
               <Table.Cell className="whitespace-nowrap">3</Table.Cell>
               <Table.Cell>
                 <EliminarCargo className="left-4" />
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </div>
+    </Container>
+  );
+}
+export function TablaInv() {
+  return (
+    <Container>
+      <div className="ContenedorTabla">
+        <h1>Inventario:</h1>
+        <Table>
+          <Table.Head className="border-b-2">
+            <Table.HeadCell>Nombre</Table.HeadCell>
+            <Table.HeadCell>Marca</Table.HeadCell>
+            <Table.HeadCell>Código</Table.HeadCell>
+            <Table.HeadCell>Departamento</Table.HeadCell>
+            <Table.HeadCell>Estado</Table.HeadCell>
+            <Table.HeadCell>Cantidad</Table.HeadCell>
+            <Table.HeadCell>Opciones</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            <Table.Row className="bg-white">
+              <Table.Cell className="whitespace-nowrap">Lapiz</Table.Cell>
+              <Table.Cell>Mongol</Table.Cell>
+              <Table.Cell>00-01a</Table.Cell>
+              <Table.Cell>FINANZAS Y SOCIEDADES AFINES</Table.Cell>
+              <Table.Cell>NUEVOS</Table.Cell>
+              <Table.Cell>12</Table.Cell>
+              <Table.Cell>
+                <Button.Group>
+                  <EditInv />
+                  <EliminarPersona />
+                </Button.Group>
               </Table.Cell>
             </Table.Row>
           </Table.Body>
