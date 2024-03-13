@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { ReactComponent as LogoCNE } from "../assets/img/CNE_logo.svg";
 import { v } from "../css/Variables";
+import Logo from "../assets/img/CNE_logo.svg";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { ThemeContext } from "../App";
@@ -23,7 +23,6 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const ModSidebaropen = () => {
     setSidebarOpen(!sidebarOpen);
   };
-  // FUNCION PARA CAMBIAR DE COLOR
   const { setTheme, theme } = useContext(ThemeContext);
   const CambiarTheme = () => {
     setTheme((theme) => (theme === "light" ? "dark" : "light"));
@@ -32,7 +31,7 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
     <Container isOpen={sidebarOpen} themeUse={theme}>
       <div className="Logocontent">
         <div className="imgcontent">
-          <LogoCNE />
+          <img src={Logo} />
         </div>
       </div>
       <button className="Sidebarbutton" onClick={ModSidebaropen}>
@@ -141,9 +140,7 @@ const secondarylinksArray = [
     to: "/null",
   },
 ];
-// #endregion
-
-// #region ESTILOS DEL CONTENEDOR GENERAL
+//#region STYLED COMPONENTS
 const Container = styled.div`
   background: ${(props) => props.theme.bg};
   color: ${(props) => props.theme.text};
@@ -185,10 +182,10 @@ const Container = styled.div`
     padding-bottom: ${v.lgSpacing};
     .imgcontent {
       display: flex;
-      svg {
+      img {
         max-width: 100%;
         height: auto;
-        .letraLogo{
+        .letraLogo {
           fill: ${(props) => props.theme.text};
         }
       }
