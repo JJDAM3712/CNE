@@ -2,7 +2,6 @@ import "../src/output.css";
 import { Light, Dark } from "./css/Themes"; //RUTA a los Temas de color
 import { MyRoutes } from "./routers/routes"; //Componente de Rutas
 import { Sidebar } from "./components/sidebar"; //Sidebar
-import { Migas } from "./components/Breadcrumb"; // Asegúrate de que la ruta de importación sea correcta
 import styled from "styled-components"; //Componente para Estilos directo al JSX
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
@@ -20,10 +19,7 @@ function App() {
         <ThemeProvider theme={themeStyle}>
           <BrowserRouter>
             <Container>
-              <header className="Header">
-                <Migas activePath={location.pathname} />{" "}
-                {/* Pasa la ruta activa como prop a Migas */}
-              </header>
+              <header className="Header"></header>
               {/* CONTENEDOR PRINCIPAL DEL BODY */}
               <main
                 className={sidebarOpen ? "sidebarState active" : "sidebarState"}

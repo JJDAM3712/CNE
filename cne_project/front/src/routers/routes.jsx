@@ -1,4 +1,3 @@
-// routes.jsx
 import { Routes, Route } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { Personal } from "../pages/Personal";
@@ -8,6 +7,7 @@ import { Inventario } from "../pages/Inventario";
 import { Usuario } from "../pages/Usuario";
 import { Cargos } from "../pages/Cargos";
 import { Visitas } from "../pages/Visitas";
+import { Categoria } from "../pages/Categoria";
 
 export const routes = [
   { name: "Home", path: "/", component: Home },
@@ -18,6 +18,7 @@ export const routes = [
   { name: "Departamentos", path: "/departamentos", component: Departamentos },
   { name: "Cargos", path: "/cargos", component: Cargos },
   { name: "Usuario", path: "/usuario", component: Usuario },
+  { name: "Categoria", path: "/categoria", component: Categoria },
 ];
 
 export function MyRoutes() {

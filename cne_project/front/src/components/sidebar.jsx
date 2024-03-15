@@ -16,7 +16,12 @@ import {
   PiCalendarFill,
   PiUsersFill,
 } from "react-icons/pi";
-import { MdSupervisedUserCircle, MdInventory, MdLogout } from "react-icons/md";
+import {
+  MdSupervisedUserCircle,
+  MdInventory,
+  MdLogout,
+  MdCategory,
+} from "react-icons/md";
 import { RiOrganizationChart } from "react-icons/ri";
 
 // #region Sidebar
@@ -145,6 +150,11 @@ const linksArray = [
     label: "Cargos",
     icon: <RiOrganizationChart />,
     to: "/cargos",
+  },
+  {
+    label: "Categorias",
+    icon: <MdCategory />,
+    to: "/categoria",
   },
   {
     label: "Usuarios",
