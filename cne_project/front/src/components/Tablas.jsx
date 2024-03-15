@@ -8,7 +8,9 @@ import {
   EliminarDep,
   EliminarCargo,
   EliminarInv,
+  EliminarUsr,
   EditInv,
+  EditarUsr,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
 
 // LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
@@ -214,6 +216,36 @@ export function TablaInv() {
                 <Button.Group>
                   <EditInv />
                   <EliminarPersona />
+                </Button.Group>
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </div>
+    </Container>
+  );
+}
+export function TablaUsuario() {
+  return (
+    <Container>
+      <div className="ContenedorTabla ">
+        <h1>Usuarios:</h1>
+        <Table>
+          <Table.Head className="border-b-2">
+            <Table.HeadCell>Nombre de Usuario</Table.HeadCell>
+            <Table.HeadCell>Correo Electronico</Table.HeadCell>
+            <Table.HeadCell>Opciones</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            <Table.Row className="bg-white">
+              <Table.Cell className="whitespace-nowrap">Sub-Gerente</Table.Cell>
+              <Table.Cell className="whitespace-nowrap">
+                ejemplo@ejemplo.com
+              </Table.Cell>
+              <Table.Cell>
+                <Button.Group>
+                  <EliminarUsr className="left-4" />
+                  <EditarUsr />
                 </Button.Group>
               </Table.Cell>
             </Table.Row>

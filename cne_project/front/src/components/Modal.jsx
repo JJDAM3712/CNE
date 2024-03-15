@@ -2,7 +2,13 @@ import styled from "styled-components";
 import logo from "../assets/img/CNE_logo.svg";
 import { Button, Modal, Radio, Label, TextInput, Select } from "flowbite-react";
 import { FaEraser, FaEdit } from "react-icons/fa";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
+import {
+  HiOutlineExclamationCircle,
+  HiMail,
+  HiUser,
+  HiKey,
+  HiPencil,
+} from "react-icons/hi";
 import { useState } from "react";
 
 export function ModalRegis() {
@@ -12,7 +18,11 @@ export function ModalRegis() {
     <Container>
       <>
         <Button onClick={() => setOpenModal(true)}>Registrar Persona</Button>
-        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+        <Modal
+          show={openModal}
+          onClose={() => setOpenModal(false)}
+          position="top-center"
+        >
           <Modal.Header>Registrar Persona</Modal.Header>
           <Modal.Body>
             <form className="flex flex-col gap-4 max-w-full">
@@ -107,7 +117,11 @@ export function EditarPersona() {
         <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
           <FaEdit />
         </Button>
-        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+        <Modal
+          show={openModal}
+          onClose={() => setOpenModal(false)}
+          position="top-center"
+        >
           <Modal.Header>Editar Datos</Modal.Header>
           <Modal.Body>
             <form className="flex flex-col gap-4 max-w-full">
@@ -833,6 +847,251 @@ export function EliminarInv() {
         </Modal.Body>
       </Modal>
     </>
+  );
+}
+export function ModalUsr() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <Container>
+      <>
+        <Button onClick={() => setOpenModal(true)} className="m-auto">
+          Registrar Usuario
+        </Button>
+        <Modal
+          show={openModal}
+          onClose={() => setOpenModal(false)}
+          position="top-center"
+        >
+          <Modal.Header>Registrar un Nuevo Usuario</Modal.Header>
+          <Modal.Body>
+            <form className="flex flex-col gap-4 max-w-full">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="usuario" value="Usuario:" />
+                </div>
+                <TextInput
+                  id="usuario"
+                  type="text"
+                  rightIcon={HiUser}
+                  placeholder="Nombre Usuario"
+                  required
+                  shadow
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="email" value="Correo Electrónico:" />
+                </div>
+                <TextInput
+                  id="email"
+                  type="email"
+                  rightIcon={HiMail}
+                  placeholder="ejemplo@ejemplo.com"
+                  required
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="password" value="Contraseña: " />
+                </div>
+                <TextInput
+                  id="password"
+                  type="password"
+                  required
+                  shadow
+                  rightIcon={HiKey}
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="password2" value="Repita su Contraseña: " />
+                </div>
+                <TextInput
+                  id="password2"
+                  type="password"
+                  required
+                  shadow
+                  rightIcon={HiKey}
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="pregunta" value="Pregunta de Seguridad:" />
+                </div>
+                <Select id="pregunta" required>
+                  <option disabled>Seleccione: </option>
+                  <option>Color Favorito</option>
+                  <option>Nombre de mi Perro</option>
+                  <option>Nombre de mi Madre</option>
+                  <option>Lugar de Nacimiento</option>
+                </Select>
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="respuesta" value="Respuesta:" />
+                </div>
+                <TextInput
+                  id="respuesta"
+                  type="text"
+                  rightIcon={HiPencil}
+                  placeholder="Ingrese su Respuesta"
+                  required
+                  shadow
+                />
+              </div>
+              <div></div>
+              <Button type="submit">Registrar</Button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="dark" onClick={() => setOpenModal(false)}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    </Container>
+  );
+}
+export function EliminarUsr() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
+        <FaEraser />
+      </Button>
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-icon text-red-500" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
+              Estas seguro de querer eliminar este Registro?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={() => setOpenModal(false)}>
+                {"Eliminar"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
+export function EditarUsr() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <Container>
+      <>
+        <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+          <FaEdit />
+        </Button>
+        <Modal
+          show={openModal}
+          onClose={() => setOpenModal(false)}
+          position="top-center"
+        >
+          <Modal.Header>Editar datos de Usuario</Modal.Header>
+          <Modal.Body>
+            <form className="flex flex-col gap-4 max-w-full">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="usuario" value="Usuario:" />
+                </div>
+                <TextInput
+                  id="usuario"
+                  type="text"
+                  rightIcon={HiUser}
+                  placeholder="Nombre Usuario"
+                  required
+                  shadow
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="email" value="Correo Electrónico:" />
+                </div>
+                <TextInput
+                  id="email"
+                  type="email"
+                  rightIcon={HiMail}
+                  placeholder="ejemplo@ejemplo.com"
+                  required
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="password" value="Contraseña: " />
+                </div>
+                <TextInput
+                  id="password"
+                  type="password"
+                  required
+                  shadow
+                  rightIcon={HiKey}
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="password2" value="Repita su Contraseña: " />
+                </div>
+                <TextInput
+                  id="password2"
+                  type="password"
+                  required
+                  shadow
+                  rightIcon={HiKey}
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="pregunta" value="Pregunta de Seguridad:" />
+                </div>
+                <Select id="pregunta" required>
+                  <option disabled>Seleccione: </option>
+                  <option>Color Favorito</option>
+                  <option>Nombre de mi Perro</option>
+                  <option>Nombre de mi Madre</option>
+                  <option>Lugar de Nacimiento</option>
+                </Select>
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="respuesta" value="Respuesta:" />
+                </div>
+                <TextInput
+                  id="respuesta"
+                  type="text"
+                  rightIcon={HiPencil}
+                  placeholder="Ingrese su Respuesta"
+                  required
+                  shadow
+                />
+              </div>
+              <div></div>
+              <Button type="submit">Registrar</Button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="dark" onClick={() => setOpenModal(false)}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    </Container>
   );
 }
 const Container = styled.div`
