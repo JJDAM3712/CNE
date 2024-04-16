@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { Table, Button } from "flowbite-react";
+import { useEffect, useState } from "react";
+import axios from 'axios';
 import {
   EditarPersona,
   EliminarPersona,
@@ -137,7 +139,21 @@ export function TablaVisitas() {
     </Container>
   );
 }
+
+// tabla de departamento
 export function TablaDepartamento() {
+  const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    ShowDepart()
+  }, []);
+
+  const ShowDepart = async () => {
+     const res = await axios.get('http://localhost:4000/task')
+     setDatos(res.data)
+  } 
+
+
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -148,14 +164,17 @@ export function TablaDepartamento() {
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap">
-                FINANZAS Y SOCIEDADES AFINES
-              </Table.Cell>
-              <Table.Cell>
-                <EliminarDep className="left-4" />
-              </Table.Cell>
-            </Table.Row>
+            {/* mostrar datos de bd en tabla */}
+            {datos.map((departamentos) => (
+              <Table.Row className="bg-white" key={departamentos.id_departamento}>
+                <Table.Cell className="whitespace-nowrap">
+                  {departamentos.departamento}
+                </Table.Cell>
+                <Table.Cell>
+                    <EliminarDep className="left-4" id={departamentos.id_departamento}/>
+                </Table.Cell>
+              </Table.Row>
+          ))}
           </Table.Body>
         </Table>
       </div>

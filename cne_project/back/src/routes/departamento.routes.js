@@ -18,5 +18,4 @@ router.put('/task/:id', updateDepart);
 router.delete('/task/:id', deleteDepart);
 
 
-
 export default router;

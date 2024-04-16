@@ -4,6 +4,8 @@ import { Button, Modal, Radio, Label, TextInput, Select } from "flowbite-react";
 import { FaEraser, FaEdit } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useState } from "react";
+import swal from 'sweetalert';
+import axios from "axios";
 
 export function ModalRegis() {
   const [openModal, setOpenModal] = useState(false);
@@ -193,8 +195,10 @@ export function EditarPersona() {
     </Container>
   );
 }
-export function EliminarPersona() {
+export function EliminarPersona({ id }) {
   const [openModal, setOpenModal] = useState(false);
+
+
 
   return (
     <>
@@ -436,8 +440,67 @@ export function EliminaVisita() {
     </>
   );
 }
+//  ---------------------------------------
+// modal departamentos
 export function ModalDep() {
   const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({
+    departamento: ''
+  });
+
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let value = e.target.value;
+    setData({...data, [names]: value});
+  }
+  // enviar datos al servidor
+  const handleSend = (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if(data.departamento.trim() === ""){
+      swal({
+        title: 'Campo vacio',
+        text: 'Debes agregar un departamento',
+        icon: 'warning',
+        timer: '1500'
+      })
+    }else{
+      try {
+        fetch('http://localhost:4000/task', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            setData({ departamento: '' });
+            setOpenModal(false)
+            swal({
+              title: "Departamento",
+              text: "Registro exitoso!",
+              icon: "success",
+              timer: "1500"
+            })
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            swal({
+              title: "Oops...",
+              text: "Ha ocurrido un error al registrar!",
+              icon: "error",
+              timer: "1500"
+            })
+        });
+      } catch (error) {
+        return console.log(error)
+      }
+    }
+    
+  }
+
 
   return (
     <Container>
@@ -448,16 +511,18 @@ export function ModalDep() {
         <Modal show={openModal} onClose={() => setOpenModal(false)}>
           <Modal.Header>Registrar un Nuevo Departamento</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full">
+            <form className="flex flex-col gap-4 max-w-full" onSubmit={handleSend}>
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="nombres" value="Departamento:" />
+                  <Label htmlFor="departamento" value="Departamento:" />
                 </div>
                 <TextInput
-                  id="nombres"
+                  id="departamento"
                   type="text"
                   placeholder="Nombre del Departamento"
-                  required
+                  onChange={handleChange}
+                  name="departamento"
+                  value={data.departamento}
                   shadow
                 />
               </div>
@@ -474,9 +539,33 @@ export function ModalDep() {
     </Container>
   );
 }
-export function EliminarDep() {
-  const [openModal, setOpenModal] = useState(false);
 
+// modal eliminar departamentos
+export function EliminarDep({id}) {
+  const [openModal, setOpenModal] = useState(false);
+  
+  const deleteDepa = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:4000/task/${id}`)
+      swal({
+        title: "Departamento",
+        text: "Eliminado exitosamente!",
+        icon: "success",
+        timer: "1000"
+      })
+      setOpenModal(false)
+    } catch (error) {
+      console.error('error', error);
+      swal({
+        title: "Departamento",
+        text: "Error en la eliminación!",
+        icon: "error",
+        timer: "1000"
+      })
+      setOpenModal(false)
+    }
+    
+  }
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -496,7 +585,7 @@ export function EliminarDep() {
               Estas seguro de querer eliminar este Registro?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setOpenModal(false)}>
+              <Button color="failure" onClick={deleteDepa}>
                 {"Eliminar"}
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>
@@ -509,6 +598,7 @@ export function EliminarDep() {
     </>
   );
 }
+// modal cargos
 export function ModalCargo() {
   const [openModal, setOpenModal] = useState(false);
 
@@ -559,6 +649,9 @@ export function ModalCargo() {
     </Container>
   );
 }
+
+// ----------------------------------------
+
 export function EliminarCargo() {
   const [openModal, setOpenModal] = useState(false);
 
