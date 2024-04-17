@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Table, Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import {
   EditarPersona,
   EliminarPersona,
@@ -10,7 +10,9 @@ import {
   EliminarDep,
   EliminarCargo,
   EliminarInv,
+  EliminarUsr,
   EditInv,
+  EditarUsr,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
 
 // LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
@@ -145,13 +147,13 @@ export function TablaDepartamento() {
   const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    ShowDepart()
+    ShowDepart();
   }, []);
 
   const ShowDepart = async () => {
-     const res = await axios.get('http://localhost:4000/task')
-     setDatos(res.data)
-  } 
+    const res = await axios.get("http://localhost:4000/task");
+    setDatos(res.data);
+  };
 
   return (
     <Container>
@@ -165,15 +167,21 @@ export function TablaDepartamento() {
           <Table.Body className="divide-y">
             {/* mostrar datos de bd en tabla */}
             {datos.map((departamentos) => (
-              <Table.Row className="bg-white" key={departamentos.id_departamento}>
+              <Table.Row
+                className="bg-white"
+                key={departamentos.id_departamento}
+              >
                 <Table.Cell className="whitespace-nowrap">
                   {departamentos.departamento}
                 </Table.Cell>
                 <Table.Cell>
-                    <EliminarDep className="left-4" id={departamentos.id_departamento}/>
+                  <EliminarDep
+                    className="left-4"
+                    id={departamentos.id_departamento}
+                  />
                 </Table.Cell>
               </Table.Row>
-          ))}
+            ))}
           </Table.Body>
         </Table>
       </div>
@@ -184,13 +192,13 @@ export function TablaCargos() {
   const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    ShowDepart()
+    ShowDepart();
   }, []);
 
   const ShowDepart = async () => {
-     const res = await axios.get('http://localhost:4000/cargos')
-     setDatos(res.data)
-  }
+    const res = await axios.get("http://localhost:4000/cargos");
+    setDatos(res.data);
+  };
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -211,7 +219,7 @@ export function TablaCargos() {
                   {cargos.cantidad}
                 </Table.Cell>
                 <Table.Cell>
-                  <EliminarCargo className="left-4" id={cargos.id_cargo}/>
+                  <EliminarCargo className="left-4" id={cargos.id_cargo} />
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -225,13 +233,13 @@ export function TablaInv() {
   const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    ShowDepart()
+    ShowDepart();
   }, []);
 
   const ShowDepart = async () => {
-     const res = await axios.get('http://localhost:4000/inventary')
-     setDatos(res.data)
-  } 
+    const res = await axios.get("http://localhost:4000/inventary");
+    setDatos(res.data);
+  };
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -250,7 +258,9 @@ export function TablaInv() {
           <Table.Body className="divide-y">
             {datos.map((inventary) => (
               <Table.Row className="bg-white">
-                <Table.Cell className="whitespace-nowrap">{inventary.nombre}</Table.Cell>
+                <Table.Cell className="whitespace-nowrap">
+                  {inventary.nombre}
+                </Table.Cell>
                 <Table.Cell>{inventary.marca}</Table.Cell>
                 <Table.Cell>{inventary.codigo}</Table.Cell>
                 <Table.Cell>{inventary.departamento}</Table.Cell>
@@ -259,12 +269,42 @@ export function TablaInv() {
                 <Table.Cell>{inventary.categoria}</Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EditInv id={inventary.id_inventario}/>
-                    <EliminarPersona  id={inventary.id_inventario}/>
+                    <EditInv id={inventary.id_inventario} />
+                    <EliminarPersona id={inventary.id_inventario} />
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>
             ))}
+          </Table.Body>
+        </Table>
+      </div>
+    </Container>
+  );
+}
+export function TablaUsuario() {
+  return (
+    <Container>
+      <div className="ContenedorTabla ">
+        <h1>Usuarios:</h1>
+        <Table>
+          <Table.Head className="border-b-2">
+            <Table.HeadCell>Nombre de Usuario</Table.HeadCell>
+            <Table.HeadCell>Correo Electronico</Table.HeadCell>
+            <Table.HeadCell>Opciones</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            <Table.Row className="bg-white">
+              <Table.Cell className="whitespace-nowrap">Sub-Gerente</Table.Cell>
+              <Table.Cell className="whitespace-nowrap">
+                ejemplo@ejemplo.co
+              </Table.Cell>
+              <Table.Cell>
+                <Button.Group>
+                  <EliminarUsr className="left-4" />
+                  <EditarUsr />
+                </Button.Group>
+              </Table.Cell>
+            </Table.Row>
           </Table.Body>
         </Table>
       </div>
