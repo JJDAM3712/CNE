@@ -13,6 +13,7 @@ import {
   EliminarUsr,
   EditInv,
   EditarUsr,
+  EditarDep,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
 
 // LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
@@ -175,10 +176,16 @@ export function TablaDepartamento() {
                   {departamentos.departamento}
                 </Table.Cell>
                 <Table.Cell>
-                  <EliminarDep
-                    className="left-4"
-                    id={departamentos.id_departamento}
-                  />
+                  <Button.Group>
+                    <EliminarDep
+                      className="left-4"
+                      id={departamentos.id_departamento}
+                    />
+                    <EditarDep
+                      className="left-4"
+                      id={departamentos.id_departamento}
+                    />
+                  </Button.Group>
                 </Table.Cell>
               </Table.Row>
             ))}

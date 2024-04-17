@@ -10,7 +10,7 @@ import {
   HiPencil,
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 import axios from "axios";
 
 export function ModalRegis() {
@@ -211,8 +211,6 @@ export function EditarPersona() {
 }
 export function EliminarPersona({ id }) {
   const [openModal, setOpenModal] = useState(false);
-
-
 
   return (
     <>
@@ -460,52 +458,51 @@ export function EliminaVisita() {
 export function ModalDep() {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
-    departamento: ''
+    departamento: "",
   });
 
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
-    setData({...data, [names]: value});
-  }
+    setData({ ...data, [names]: value });
+  };
   // enviar datos al servidor
   const handleSend = async (e) => {
     e.preventDefault();
     // validar que los campos no esten vacios
-    if(data.departamento.trim() === ""){
+    if (data.departamento.trim() === "") {
       swal({
-        title: 'Campo vacio',
-        text: 'Debes agregar un departamento',
-        icon: 'warning',
-        timer: '1500'
-      })
-    }else{
+        title: "Campo vacio",
+        text: "Debes agregar un departamento",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
       try {
-        await axios.post('http://localhost:4000/task', data, {
+        await axios.post("http://localhost:4000/task", data, {
           headers: {
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         });
-        setData({ departamento: '' });
-        setOpenModal(false)
+        setData({ departamento: "" });
+        setOpenModal(false);
         swal({
           title: "Departamento",
           text: "Registro exitoso!",
           icon: "success",
-          timer: "1500"
-        })
+          timer: "1500",
+        });
       } catch (error) {
         swal({
           title: "Oops...",
           text: "Ha ocurrido un error al registrar!",
           icon: "error",
-          timer: "1500"
-        })
-        return console.log(error)
+          timer: "1500",
+        });
+        return console.log(error);
       }
     }
-  }
-
+  };
 
   return (
     <Container>
@@ -516,7 +513,10 @@ export function ModalDep() {
         <Modal show={openModal} onClose={() => setOpenModal(false)}>
           <Modal.Header>Registrar un Nuevo Departamento</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full" onSubmit={handleSend}>
+            <form
+              className="flex flex-col gap-4 max-w-full"
+              onSubmit={handleSend}
+            >
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="departamento" value="Departamento:" />
@@ -545,31 +545,30 @@ export function ModalDep() {
   );
 }
 // modal eliminar departamentos
-export function EliminarDep({id}) {
+export function EliminarDep({ id }) {
   const [openModal, setOpenModal] = useState(false);
-  
+
   const deleteDepa = async () => {
     try {
-      const res = await axios.delete(`http://localhost:4000/task/${id}`)
+      const res = await axios.delete(`http://localhost:4000/task/${id}`);
       swal({
         title: "Departamento",
         text: "Eliminado exitosamente!",
         icon: "success",
-        timer: "1000"
-      })
-      setOpenModal(false)
+        timer: "1000",
+      });
+      setOpenModal(false);
     } catch (error) {
-      console.error('error', error);
+      console.error("error", error);
       swal({
         title: "Departamento",
         text: "Error en la eliminación!",
         icon: "error",
-        timer: "1000"
-      })
-      setOpenModal(false)
+        timer: "1000",
+      });
+      setOpenModal(false);
     }
-    
-  }
+  };
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -602,58 +601,147 @@ export function EliminarDep({id}) {
     </>
   );
 }
-// ----------------------------------------
-
-// modal cargos
-export function ModalCargo({id}) {
+export function EditarDep() {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
-    cargo: '',
-    cantidad: ''
+    departamento: "",
   });
 
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
-    setData({...data, [names]: value});
-  }
+    setData({ ...data, [names]: value });
+  };
   // enviar datos al servidor
   const handleSend = async (e) => {
     e.preventDefault();
     // validar que los campos no esten vacios
-    if(data.cargo.trim() === "" || data.cantidad.trim() === ''){
+    if (data.departamento.trim() === "") {
       swal({
-        title: 'Campo vacio',
-        text: 'Debes llenar todos los campos',
-        icon: 'warning',
-        timer: '1500'
-      })
-    }else{
+        title: "Campo vacio",
+        text: "Debes agregar un departamento",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
       try {
-        await axios.post('http://localhost:4000/cargos', data, {
+        await axios.post("http://localhost:4000/task", data, {
           headers: {
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         });
-        setData({ cargo: '', cantidad: '' });
-        setOpenModal(false)
+        setData({ departamento: "" });
+        setOpenModal(false);
         swal({
-          title: "Cargo",
+          title: "Departamento",
           text: "Registro exitoso!",
           icon: "success",
-          timer: "1500"
-        })
+          timer: "1500",
+        });
       } catch (error) {
         swal({
           title: "Oops...",
           text: "Ha ocurrido un error al registrar!",
           icon: "error",
-          timer: "1500"
-        })
-        return console.log(error)
+          timer: "1500",
+        });
+        return console.log(error);
       }
     }
-  }
+  };
+
+  return (
+    <Container>
+      <>
+        <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+          <FaEdit />
+        </Button>
+        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+          <Modal.Header>Editar Departamento</Modal.Header>
+          <Modal.Body>
+            <form
+              className="flex flex-col gap-4 max-w-full"
+              onSubmit={handleSend}
+            >
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="departamento" value="Departamento:" />
+                </div>
+                <TextInput
+                  id="departamento"
+                  type="text"
+                  placeholder="Nombre del Departamento"
+                  onChange={handleChange}
+                  name="departamento"
+                  value={data.departamento}
+                  shadow
+                />
+              </div>
+              <Button type="submit">Registrar</Button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="dark" onClick={() => setOpenModal(false)}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    </Container>
+  );
+}
+// ----------------------------------------
+
+// modal cargos
+export function ModalCargo({ id }) {
+  const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({
+    cargo: "",
+    cantidad: "",
+  });
+
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let value = e.target.value;
+    setData({ ...data, [names]: value });
+  };
+  // enviar datos al servidor
+  const handleSend = async (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if (data.cargo.trim() === "" || data.cantidad.trim() === "") {
+      swal({
+        title: "Campo vacio",
+        text: "Debes llenar todos los campos",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
+      try {
+        await axios.post("http://localhost:4000/cargos", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setData({ cargo: "", cantidad: "" });
+        setOpenModal(false);
+        swal({
+          title: "Cargo",
+          text: "Registro exitoso!",
+          icon: "success",
+          timer: "1500",
+        });
+      } catch (error) {
+        swal({
+          title: "Oops...",
+          text: "Ha ocurrido un error al registrar!",
+          icon: "error",
+          timer: "1500",
+        });
+        return console.log(error);
+      }
+    }
+  };
   return (
     <Container>
       <>
@@ -661,7 +749,10 @@ export function ModalCargo({id}) {
         <Modal show={openModal} onClose={() => setOpenModal(false)}>
           <Modal.Header>Registrar un Nuevo Cargo</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full" onSubmit={handleSend}>
+            <form
+              className="flex flex-col gap-4 max-w-full"
+              onSubmit={handleSend}
+            >
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="cargo" value="Cargo:" />
@@ -706,30 +797,29 @@ export function ModalCargo({id}) {
   );
 }
 // eliminar cargos
-export function EliminarCargo({id}) {
+export function EliminarCargo({ id }) {
   const [openModal, setOpenModal] = useState(false);
   const deleteDepa = async () => {
     try {
-      const res = await axios.delete(`http://localhost:4000/cargos/${id}`)
+      const res = await axios.delete(`http://localhost:4000/cargos/${id}`);
       swal({
         title: "Cargo",
         text: "Eliminado exitosamente!",
         icon: "success",
-        timer: "1000"
-      })
-      setOpenModal(false)
+        timer: "1000",
+      });
+      setOpenModal(false);
     } catch (error) {
-      console.error('error', error);
+      console.error("error", error);
       swal({
         title: "Cargo",
         text: "Error en la eliminación!",
         icon: "error",
-        timer: "1000"
-      })
-      setOpenModal(false)
+        timer: "1000",
+      });
+      setOpenModal(false);
     }
-    
-  }
+  };
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -771,96 +861,97 @@ export function RegisInv() {
   // mostrar apartamentos en select
   const [datosDep, setDatosDep] = useState([]);
   useEffect(() => {
-    ShowDepart()
+    ShowDepart();
   }, []);
   const ShowDepart = async () => {
-    await axios.get('http://localhost:4000/task')
-    .then((res) => {
-      console.log(res)
-      setDatosDep(res.data)
-    })
-    .catch((err) => {
-      console.error(err)
-    })
-  }
+    await axios
+      .get("http://localhost:4000/task")
+      .then((res) => {
+        console.log(res);
+        setDatosDep(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   //--------------------------------
   // mostrar categorias en select
   const [datosCat, setDatosCat] = useState([]);
   useEffect(() => {
-    ShowCat()
+    ShowCat();
   }, []);
   const ShowCat = async () => {
-    await axios.get('http://localhost:4000/categoria')
-    .then((res) => {
-      console.log(res)
-      setDatosCat(res.data)
-    })
-    .catch((err) => {
-      console.error(err)
-    })
-  }
+    await axios
+      .get("http://localhost:4000/categoria")
+      .then((res) => {
+        console.log(res);
+        setDatosCat(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   //---------------------------------
   // regsitrar datos
   const [datos, setDatos] = useState({
-    nombre: '',
-    marca: '',
-    codigo: '',
-    cantidad: '',
-    status: '',
-    departamento: '',
-    categoria: ''
+    nombre: "",
+    marca: "",
+    codigo: "",
+    cantidad: "",
+    status: "",
+    departamento: "",
+    categoria: "",
   });
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
-    setDatos({...datos, [names]: value});
-  }
+    setDatos({ ...datos, [names]: value });
+  };
   // enviar datos al servidor
   const handleSend = async (e) => {
     e.preventDefault();
     // validar que los campos no esten vacios
-    if(Object.values(datos).some(field => field.trim() === "")){
+    if (Object.values(datos).some((field) => field.trim() === "")) {
       swal({
-        title: 'Campo vacio',
-        text: 'Debes ingresar todos los datos',
-        icon: 'warning',
-        timer: '1500'
-      })
-    }else{
+        title: "Campo vacio",
+        text: "Debes ingresar todos los datos",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
       try {
-        await axios.post('http://localhost:4000/inventary', datos, {
+        await axios.post("http://localhost:4000/inventary", datos, {
           headers: {
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         });
-        setDatos({ 
-          nombre: '',
-          marca: '',
-          codigo: '',
-          cantidad: '',
-          status: '',
-          departamento: '',
-          categoria: '' 
+        setDatos({
+          nombre: "",
+          marca: "",
+          codigo: "",
+          cantidad: "",
+          status: "",
+          departamento: "",
+          categoria: "",
         });
-        setOpenModal(false)
+        setOpenModal(false);
         swal({
           title: "Articulo",
           text: "Registrado exitosamente!",
           icon: "success",
-          timer: "1500"
-        })
+          timer: "1500",
+        });
       } catch (error) {
         swal({
           title: "Oops...",
           text: "Ha ocurrido un error en el registro!",
           icon: "error",
-          timer: "1500"
-        })
-        return console.log(error)
+          timer: "1500",
+        });
+        return console.log(error);
       }
     }
-  }
-
+  };
 
   return (
     <>
@@ -873,7 +964,10 @@ export function RegisInv() {
       >
         <Modal.Header />
         <Modal.Body>
-          <form className="flex flex-col gap-4 max-w-full" onSubmit={handleSend}>
+          <form
+            className="flex flex-col gap-4 max-w-full"
+            onSubmit={handleSend}
+          >
             <h3 className="text-xl font-medium text-gray-900 text-center ">
               REGISTRAR PRODUCTO
             </h3>
@@ -938,11 +1032,12 @@ export function RegisInv() {
               <div className="mb-2 block">
                 <Label htmlFor="Estado" value="Estado del Producto" />
               </div>
-              <Select 
-                id="status" 
+              <Select
+                id="status"
                 name="status"
                 onChange={handleChange}
-                value={datos.status}>
+                value={datos.status}
+              >
                 <option value="" key="Selec" hidden selected>
                   Selecciona:
                 </option>
@@ -955,16 +1050,18 @@ export function RegisInv() {
               <div className="mb-2 block">
                 <Label htmlFor="Departamento" value="Departamento:" />
               </div>
-              <Select 
-                id="departamento" 
+              <Select
+                id="departamento"
                 name="departamento"
                 onChange={handleChange}
-                value={datos.departamento}>
+                value={datos.departamento}
+              >
                 {datosDep.map((departamentos) => (
-                  <option 
-                    value={departamentos.id_departamento} 
-                    key={departamentos.id_departamento}>
-                      {departamentos.departamento}
+                  <option
+                    value={departamentos.id_departamento}
+                    key={departamentos.id_departamento}
+                  >
+                    {departamentos.departamento}
                   </option>
                 ))}
                 <option value="" key="Selec" hidden selected>
@@ -976,16 +1073,18 @@ export function RegisInv() {
               <div className="mb-2 block">
                 <Label htmlFor="categoria" value="Categoria:" />
               </div>
-              <Select 
+              <Select
                 id="categoria"
                 name="categoria"
                 onChange={handleChange}
-                value={datos.cantegoria}>
+                value={datos.cantegoria}
+              >
                 {datosCat.map((categoria) => (
-                  <option 
-                    value={categoria.id_categoria} 
-                    key={categoria.id_categoria}>
-                      {categoria.categoria}
+                  <option
+                    value={categoria.id_categoria}
+                    key={categoria.id_categoria}
+                  >
+                    {categoria.categoria}
                   </option>
                 ))}
                 <option value="" key="Selec" hidden selected>
