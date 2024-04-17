@@ -4,7 +4,7 @@ import { pool } from "../db.js";
 export const showInventarys= async (req, res) => {
     try{
         const [result] = await pool.query(
-            `SELECT codigo, marca, modelo, estatus, departamento, categoria 
+            `SELECT * 
             FROM inventario 
             join categoria on categoria.id_categoria = inventario.id_categoria 
             join departamento on departamento.id_departamento = inventario.id_departamento`,
@@ -19,7 +19,7 @@ export const showInventarys= async (req, res) => {
 export const showInventary = async (req, res) => {
     try{
         const [result] = await pool.query(
-            `SELECT codigo, marca, modelo, estatus, departamento, categoria 
+            `SELECT * 
             FROM inventario 
             join categoria on categoria.id_categoria = inventario.id_categoria 
             join departamento on departamento.id_departamento = inventario.id_departamento
@@ -38,20 +38,22 @@ export const showInventary = async (req, res) => {
 // Crear inventario
 export const createInventary = async (req, res) => {
     try{
-        const {codigo, marca, modelo, estatus, id_departamento, id_categoria} = req.body;
+        const {nombre, codigo, marca, modelo, estatus, id_departamento, id_categoria} = req.body;
         const [result] = await pool.query(
             `INSERT INTO inventario
-            (codigo, marca, modelo, estatus, id_departamento, id_categoria) 
+            (nombre, marca, codigo, modelo, estatus, cantidad, id_departamento, id_categoria) 
             VALUES (?, ?, ?, ?, ?, ?)`,
-            [codigo, marca, modelo, estatus, id_departamento, id_categoria]
+            [nombre, marca, codigo, modelo, estatus, cantidad, id_departamento, id_categoria]
         );
         console.log(result);
         res.json({
             id_inventario: result.insertId,
-            codigo, 
+            nombre, 
             marca, 
+            codigo,
             modelo, 
-            estatus, 
+            estatus,
+            cantidad,
             id_departamento, 
             id_categoria
         });
@@ -62,7 +64,7 @@ export const createInventary = async (req, res) => {
 // Actualizar inventario
 export const updateInventary = async (req, res) => {
     try{
-        const {codigo, marca, modelo, estatus, id_categoria, id_departamento} = req.body;
+        const {nombre, marca, codigo, modelo, estatus, cantidad, id_categoria, id_departamento} = req.body;
         const [result] = await pool.query(
             "UPDATE inventario SET ? WHERE id_inventario = ?",
             [
