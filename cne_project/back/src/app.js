@@ -17,9 +17,9 @@ import {
 const app = express();
 
 // middlewares
-// validar que solo se conecte al puerto 3000
+// validar que solo se conecte al puerto correcto
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: 'http://localhost:5173'
 }));
 
 // procesar los datos del cliente

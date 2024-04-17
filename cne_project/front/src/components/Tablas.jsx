@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { Table, Button } from "flowbite-react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   EditarPersona,
   EliminarPersona,
@@ -139,7 +141,20 @@ export function TablaVisitas() {
     </Container>
   );
 }
+
+// tabla de departamento
 export function TablaDepartamento() {
+  const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    ShowDepart();
+  }, []);
+
+  const ShowDepart = async () => {
+    const res = await axios.get("http://localhost:4000/task");
+    setDatos(res.data);
+  };
+
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -150,14 +165,23 @@ export function TablaDepartamento() {
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap">
-                FINANZAS Y SOCIEDADES AFINES
-              </Table.Cell>
-              <Table.Cell>
-                <EliminarDep className="left-4" />
-              </Table.Cell>
-            </Table.Row>
+            {/* mostrar datos de bd en tabla */}
+            {datos.map((departamentos) => (
+              <Table.Row
+                className="bg-white"
+                key={departamentos.id_departamento}
+              >
+                <Table.Cell className="whitespace-nowrap">
+                  {departamentos.departamento}
+                </Table.Cell>
+                <Table.Cell>
+                  <EliminarDep
+                    className="left-4"
+                    id={departamentos.id_departamento}
+                  />
+                </Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </div>
@@ -165,6 +189,16 @@ export function TablaDepartamento() {
   );
 }
 export function TablaCargos() {
+  const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    ShowDepart();
+  }, []);
+
+  const ShowDepart = async () => {
+    const res = await axios.get("http://localhost:4000/cargos");
+    setDatos(res.data);
+  };
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -176,13 +210,19 @@ export function TablaCargos() {
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap">Sub-Gerente</Table.Cell>
-              <Table.Cell className="whitespace-nowrap">3</Table.Cell>
-              <Table.Cell>
-                <EliminarCargo className="left-4" />
-              </Table.Cell>
-            </Table.Row>
+            {datos.map((cargos) => (
+              <Table.Row className="bg-white" key={cargos.id_cargo}>
+                <Table.Cell className="whitespace-nowrap">
+                  {cargos.cargo}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap">
+                  {cargos.cantidad}
+                </Table.Cell>
+                <Table.Cell>
+                  <EliminarCargo className="left-4" id={cargos.id_cargo} />
+                </Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </div>
@@ -190,6 +230,16 @@ export function TablaCargos() {
   );
 }
 export function TablaInv() {
+  const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    ShowDepart();
+  }, []);
+
+  const ShowDepart = async () => {
+    const res = await axios.get("http://localhost:4000/inventary");
+    setDatos(res.data);
+  };
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -202,23 +252,29 @@ export function TablaInv() {
             <Table.HeadCell>Departamento</Table.HeadCell>
             <Table.HeadCell>Estado</Table.HeadCell>
             <Table.HeadCell>Cantidad</Table.HeadCell>
+            <Table.HeadCell>Cantegoria</Table.HeadCell>
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap">Lapiz</Table.Cell>
-              <Table.Cell>Mongol</Table.Cell>
-              <Table.Cell>00-01a</Table.Cell>
-              <Table.Cell>FINANZAS Y SOCIEDADES AFINES</Table.Cell>
-              <Table.Cell>NUEVOS</Table.Cell>
-              <Table.Cell>12</Table.Cell>
-              <Table.Cell>
-                <Button.Group>
-                  <EditInv />
-                  <EliminarPersona />
-                </Button.Group>
-              </Table.Cell>
-            </Table.Row>
+            {datos.map((inventary) => (
+              <Table.Row className="bg-white">
+                <Table.Cell className="whitespace-nowrap">
+                  {inventary.nombre}
+                </Table.Cell>
+                <Table.Cell>{inventary.marca}</Table.Cell>
+                <Table.Cell>{inventary.codigo}</Table.Cell>
+                <Table.Cell>{inventary.departamento}</Table.Cell>
+                <Table.Cell>{inventary.estatus}</Table.Cell>
+                <Table.Cell>{inventary.cantidad}</Table.Cell>
+                <Table.Cell>{inventary.categoria}</Table.Cell>
+                <Table.Cell>
+                  <Button.Group>
+                    <EditInv id={inventary.id_inventario} />
+                    <EliminarPersona id={inventary.id_inventario} />
+                  </Button.Group>
+                </Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </div>
@@ -240,7 +296,7 @@ export function TablaUsuario() {
             <Table.Row className="bg-white">
               <Table.Cell className="whitespace-nowrap">Sub-Gerente</Table.Cell>
               <Table.Cell className="whitespace-nowrap">
-                ejemplo@ejemplo.com
+                ejemplo@ejemplo.co
               </Table.Cell>
               <Table.Cell>
                 <Button.Group>
