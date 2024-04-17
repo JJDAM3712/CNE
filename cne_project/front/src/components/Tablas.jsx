@@ -14,6 +14,8 @@ import {
   EditInv,
   EditarUsr,
   EditarDep,
+  EliminarCatg,
+  EditarCatg,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
 
 // LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
@@ -309,6 +311,32 @@ export function TablaUsuario() {
                 <Button.Group>
                   <EliminarUsr className="left-4" />
                   <EditarUsr />
+                </Button.Group>
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </div>
+    </Container>
+  );
+}
+export function TablaCategoria() {
+  return (
+    <Container>
+      <div className="ContenedorTabla ">
+        <h1>Categorias:</h1>
+        <Table>
+          <Table.Head className="border-b-2">
+            <Table.HeadCell>Nombre de Categoria</Table.HeadCell>
+            <Table.HeadCell>Opciones</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            <Table.Row className="bg-white">
+              <Table.Cell className="whitespace-nowrap">PruebaGoria</Table.Cell>
+              <Table.Cell>
+                <Button.Group>
+                  <EliminarCatg className="left-4" />
+                  <EditarCatg />
                 </Button.Group>
               </Table.Cell>
             </Table.Row>

@@ -1488,6 +1488,125 @@ export function EditarUsr() {
     </Container>
   );
 }
+export function ModalCatg() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <Container>
+      <>
+        <Button onClick={() => setOpenModal(true)}>Registrar Categoria</Button>
+        <Modal
+          show={openModal}
+          onClose={() => setOpenModal(false)}
+          position="top-center"
+        >
+          <Modal.Header>Registrar Categoria</Modal.Header>
+          <Modal.Body>
+            <form className="flex flex-col gap-4 max-w-full">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="categoria" value="Categoria:" />
+                </div>
+                <TextInput
+                  id="categoria"
+                  type="text"
+                  rightIcon={HiPencil}
+                  placeholder="Nombre categoria"
+                  required
+                  shadow
+                />
+              </div>
+              <Button type="submit">Registrar</Button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="dark" onClick={() => setOpenModal(false)}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    </Container>
+  );
+}
+export function EliminarCatg() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
+        <FaEraser />
+      </Button>
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-icon text-red-500" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
+              Estas seguro de querer eliminar este Registro?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={() => setOpenModal(false)}>
+                {"Eliminar"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
+export function EditarCatg() {
+  const [openModal, setOpenModal] = useState(false);
+
+  return (
+    <Container>
+      <>
+        <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+          <FaEdit />
+        </Button>
+        <Modal
+          show={openModal}
+          onClose={() => setOpenModal(false)}
+          position="top-center"
+        >
+          <Modal.Header>Registrar Categoria</Modal.Header>
+          <Modal.Body>
+            <form className="flex flex-col gap-4 max-w-full">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="categoria" value="Categoria:" />
+                </div>
+                <TextInput
+                  id="categoria"
+                  type="text"
+                  rightIcon={HiPencil}
+                  placeholder="Nombre categoria"
+                  required
+                  shadow
+                />
+              </div>
+              <Button type="submit">Registrar</Button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="dark" onClick={() => setOpenModal(false)}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    </Container>
+  );
+}
 const Container = styled.div`
 .Logocontent {
   display: flex;
