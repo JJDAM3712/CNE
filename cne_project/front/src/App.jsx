@@ -4,7 +4,6 @@ import { MyRoutes } from "./routers/routes"; //Componente de Rutas
 import { Sidebar } from "./components/sidebar"; //Sidebar
 import styled from "styled-components"; //Componente para Estilos directo al JSX
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
 import { useState } from "react";
 import { ThemeProvider } from "styled-components";
 export const ThemeContext = React.createContext(null);
@@ -17,23 +16,21 @@ function App() {
     <>
       <ThemeContext.Provider value={{ setTheme, theme }}>
         <ThemeProvider theme={themeStyle}>
-          <BrowserRouter>
-            <Container>
-              <header className="Header"></header>
-              {/* CONTENEDOR PRINCIPAL DEL BODY */}
-              <main
-                className={sidebarOpen ? "sidebarState active" : "sidebarState"}
-              >
-                {/* SIDEBAR */}
-                <Sidebar
-                  sidebarOpen={sidebarOpen}
-                  setSidebarOpen={setSidebarOpen}
-                />
-                {/* SIDEBAR */}
-                <MyRoutes />
-              </main>
-            </Container>
-          </BrowserRouter>
+          <Container>
+            <header className="Header"></header>
+            {/* CONTENEDOR PRINCIPAL DEL BODY */}
+            <main
+              className={sidebarOpen ? "sidebarState active" : "sidebarState"}
+            >
+              {/* SIDEBAR */}
+              <Sidebar
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+              />
+              {/* SIDEBAR */}
+              <MyRoutes />
+            </main>
+          </Container>
         </ThemeProvider>
       </ThemeContext.Provider>
     </>

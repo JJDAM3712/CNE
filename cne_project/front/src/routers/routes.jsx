@@ -9,6 +9,7 @@ import { Cargos } from "../pages/Cargos";
 import { Visitas } from "../pages/Visitas";
 import { Categoria } from "../pages/Categoria";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const routes = [
   { name: "Home", path: "/", component: Home },
   { name: "Personal", path: "/personal", component: Personal },
@@ -20,6 +21,18 @@ export const routes = [
   { name: "Usuario", path: "/usuario", component: Usuario },
   { name: "Categoria", path: "/categoria", component: Categoria },
 ];
+// DESCOMENTAR AL COLOCAR LOGIN COMO PAGINA INDEX
+// export const routes = [
+//   { name: "Home", path: "/app", component: Home },
+//   { name: "Personal", path: "/app/personal", component: Personal },
+//   { name: "Asistencias", path: "/app/asistencias", component: Asistencias },
+//   { name: "Visitas", path: "/app/visitas", component: Visitas },
+//   { name: "Inventario", path: "/app/inventario", component: Inventario },
+//   { name: "Departamentos", path: "/app/departamentos", component: Departamentos },
+//   { name: "Cargos", path: "/app/cargos", component: Cargos },
+//   { name: "Usuario", path: "/app/usuario", component: Usuario },
+//   { name: "Categoria", path: "/app/categoria", component: Categoria },
+// ];
 
 export function MyRoutes() {
   return (
