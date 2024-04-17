@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import "../css/App.css";
 
-import { AiOutlineHome } from "react-icons/ai";
 import {
   PiUsersFourFill,
   PiBankBold,
@@ -41,12 +40,6 @@ export function Home() {
   );
 }
 const CardsArray = [
-  {
-    label: "Usuarios",
-    icon: <AiOutlineHome className="h-20 w-20" />,
-    to: "/",
-    cantidad: "2",
-  },
   {
     label: "Personal",
     icon: <PiUsersFourFill className="h-20 w-20" />,
