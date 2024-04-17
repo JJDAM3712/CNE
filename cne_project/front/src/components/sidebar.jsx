@@ -164,9 +164,9 @@ const linksArray = [
 ];
 const secondarylinksArray = [
   {
-    label: "Configuraciónes",
+    label: "Respaldo",
     icon: <AiOutlineSetting />,
-    to: "/null",
+    to: "/respaldo",
   },
   {
     label: "Salir",
