@@ -39,7 +39,7 @@ export const CreateLogin = async (req, res) => {
             try {
                 const sql = 'INSERT INTO user (usuario, password, quest, resp) VALUES (?, ?, ?, ?)';
                 // ejecuta la consulta sql
-                const [ result ] = await pool.query(sql, [usuario, email, password, quest, resp]);
+                const [ result ] = await pool.query(sql, [usuario, password, quest, resp]);
                 res.json({
                     id: result.insertId,
                     usuario,

@@ -42,8 +42,6 @@ function Login() {
         if (res.status === 200) {
           setIsAuthenticated(true);
           navigate("/app/*");
-          // cambiar el estado de la funcion a
-          // true aqui   ---    ------
         }
       }
     } catch (error) {

@@ -1562,18 +1562,15 @@ export function EliminarInv({id}) {
 export function ModalUsr() {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
-    usuario: "", quest: "Selecciona:", resp: ""
+    usuario: "", pass:"", quest: "Selecciona:", resp: ""
   });
-  const [pass, setPass] = useState("");
   const [secondPass, setSecondPass] = useState("")
 
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
-  
-    if (names === "pass") {
-      setPass(value);
-    } else if (names === "secondPass") {
+
+    if (names === "secondPass") {
       setSecondPass(value);
     } else {
       setData({ ...data, [names]: value });
