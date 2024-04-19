@@ -6,23 +6,27 @@ import { HiLockClosed, HiUser } from "react-icons/hi";
 import { useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./auth/AuthProvided";
 
 function Login() {
   const [datos, setDatos] = useState({
-    usuario: '', password: ''
-  })
-  const navigate = useNavigate()
+    usuario: "",
+    password: "",
+  });
+  const navigate = useNavigate();
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
     setDatos({ ...datos, [names]: value });
   };
+  const { setIsAuthenticated } = useAuth();
+
   const handleSend = async (e) => {
     e.preventDefault();
 
     try {
-      if (datos.usuario.trim() === "" && datos.password.trim() ==="") {
+      if (datos.usuario.trim() === "" && datos.password.trim() === "") {
         swal({
           title: "Campo vacio",
           text: "Debes ingresar todos los datos",
@@ -30,25 +34,26 @@ function Login() {
           timer: "1500",
         });
       } else {
-        const res = await axios.post('http://localhost:4000/login', datos, {
+        const res = await axios.post("http://localhost:4000/login", datos, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if(res.status === 200){
-          navigate('./App.jsx')
+        if (res.status === 200) {
+          setIsAuthenticated(true);
+          navigate("./App.jsx");
           // cambiar el estado de la funcion a
           // true aqui   ---    ------
-        } 
-      }     
+        }
+      }
     } catch (error) {
       if (error.response && error.response.status === 300) {
         swal({
           title: "Oops...",
           text: `Usuario o contraseña incorerctos!`,
           icon: "error",
-          timer: "2000"
-      })
+          timer: "2000",
+        });
       } else {
         swal({
           title: "Oops...",
@@ -58,7 +63,7 @@ function Login() {
       }
       return console.log(error);
     }
-  }
+  };
 
   return (
     <Container>
