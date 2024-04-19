@@ -38,11 +38,11 @@ export const showInventary = async (req, res) => {
 // Crear inventario
 export const createInventary = async (req, res) => {
     try{
-        const {nombre, codigo, marca, modelo, estatus, id_departamento, id_categoria} = req.body;
+        const {nombre, marca, codigo, modelo, estatus, cantidad, id_departamento, id_categoria} = req.body;
         const [result] = await pool.query(
             `INSERT INTO inventario
             (nombre, marca, codigo, modelo, estatus, cantidad, id_departamento, id_categoria) 
-            VALUES (?, ?, ?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [nombre, marca, codigo, modelo, estatus, cantidad, id_departamento, id_categoria]
         );
         console.log(result);

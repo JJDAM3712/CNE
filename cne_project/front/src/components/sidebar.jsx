@@ -171,7 +171,7 @@ const secondarylinksArray = [
   {
     label: "Salir",
     icon: <MdLogout />,
-    to: "/null",
+    to: "../Login",
   },
 ];
 //#region STYLED COMPONENTS
