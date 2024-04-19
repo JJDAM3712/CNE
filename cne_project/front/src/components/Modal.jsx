@@ -1578,6 +1578,7 @@ export function ModalUsr() {
     } else {
       setData({ ...data, [names]: value });
     }
+    console.log(e.target.value)
   };
   // enviar datos al servidor
   const handleSend = async (e) => {
@@ -1694,7 +1695,7 @@ export function ModalUsr() {
                 <div className="mb-2 block">
                   <Label htmlFor="quest" value="Pregunta de Seguridad:" />
                 </div>
-                <Select id="quest" name="quest" value={data.quest}>
+                <Select id="quest" name="quest" value={data.quest} onChange={handleChange}>
                   <option value="Selecciona:" disabled>Seleccione:</option>
                   <option value="1">¿Color Favorito?</option>
                   <option value="2">¿Nombre de mi Perro?</option>
