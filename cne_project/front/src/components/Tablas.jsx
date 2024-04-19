@@ -330,8 +330,8 @@ export function TablaUsuario() {
                 </Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EliminarUsr className="left-4" />
                     <EditarUsr />
+                    <EliminarUsr className="left-4" id={users.id} />
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>
