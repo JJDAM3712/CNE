@@ -10,7 +10,8 @@ import {
     cargos,
     personal,
     categoria,
-    inventary
+    inventary,
+    login
 } from './routes/all.routes.js'
 
 // Inicializaciones
@@ -32,6 +33,7 @@ app.use(cargos);
 app.use(personal);
 app.use(categoria);
 app.use(inventary);
+app.use(login)
 
 // configuraciones 
 app.use(morgan('dev'));

@@ -4,7 +4,7 @@ import { pool } from "../db.js";
 export const showPersonals= async (req, res) => {
     try{
         const [result] = await pool.query(
-            `SELECT nombre, apellido, cedula, direccion, telefono, cargo, departamento 
+            `SELECT * 
             FROM personal 
             join cargos on cargos.id_cargo = personal.id_cargo 
             join departamento on departamento.id_departamento = personal.id_departamento`,
@@ -19,7 +19,7 @@ export const showPersonals= async (req, res) => {
 export const showPersonal = async (req, res) => {
     try{
         const [result] = await pool.query(
-            `SELECT nombre, apellido, cedula, direccion, telefono, cargo, departamento 
+            `SELECT * 
             FROM personal 
             join cargos on cargos.id_cargo = personal.id_cargo 
             join departamento on departamento.id_departamento = personal.id_departamento
@@ -38,12 +38,12 @@ export const showPersonal = async (req, res) => {
 // Crear departamentos
 export const createPersonal = async (req, res) => {
     try{
-        const {nombre, apellido, cedula, direccion, telefono, id_cargo, id_departamento} = req.body;
+        const {nombre, apellido, cedula, telefono, id_cargo, id_departamento} = req.body;
         const [result] = await pool.query(
             `INSERT INTO personal
-            (nombre, apellido, cedula, direccion, telefono, id_cargo, id_departamento) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [nombre, apellido, cedula, direccion, telefono, id_cargo, id_departamento]
+            (nombre, apellido, cedula, telefono, id_cargo, id_departamento) 
+            VALUES (?, ?, ?, ?, ?, ?)`,
+            [nombre, apellido, cedula, telefono, id_cargo, id_departamento]
         );
         console.log(result);
         res.json({
@@ -51,7 +51,6 @@ export const createPersonal = async (req, res) => {
             nombre,
             apellido,
             cedula, 
-            direccion, 
             telefono, 
             id_cargo, 
             id_departamento

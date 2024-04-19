@@ -13,9 +13,97 @@ import { useState, useEffect } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 
+// ----------------------------------------
+// registrar personal
 export function ModalRegis() {
   const [openModal, setOpenModal] = useState(false);
-
+  // mostrar apartamentos en select
+  const [datosDep, setDatosDep] = useState([]);
+  useEffect(() => {
+    ShowDepart();
+  }, []);
+  const ShowDepart = async () => {
+    await axios
+      .get("http://localhost:4000/task")
+      .then((res) => {
+        console.log(res);
+        setDatosDep(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  //--------------------------------
+  // mostrar categorias en select
+  const [datosCat, setDatosCat] = useState([]);
+  useEffect(() => {
+    ShowCat();
+  }, []);
+  const ShowCat = async () => {
+    await axios
+      .get("http://localhost:4000/cargos")
+      .then((res) => {
+        console.log(res);
+        setDatosCat(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  //---------------------------------
+  // regsitrar datos
+  const [datos, setDatos] = useState({
+    nombre: "", apellido: "", cedula: "",
+    telefono: "", id_cargo: "Selecciona:",
+    id_departamento: "Selecciona:"
+  });
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let values = e.target.value;
+    console.log(names)
+    setDatos({ ...datos, [names]: values });
+  };
+  // enviar datos al servidor
+  const handleSend = async (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if (Object.values(datos).some((field) => field.trim() === "")) {
+      swal({
+        title: "Campo vacio",
+        text: "Debes ingresar todos los datos",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
+      try {
+        await axios.post("http://localhost:4000/personal", datos, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        setDatos({
+          nombre: "", apellido: "", cedula: "",
+          telefono: "", id_cargo: "Selecciona:",
+          id_departamento: "Selecciona:"
+        });
+        setOpenModal(false);
+        swal({
+          title: "Personal",
+          text: "Registrado exitosamente!",
+          icon: "success",
+          timer: "1500",
+        });
+      } catch (error) {
+        swal({
+          title: "Oops...",
+          text: "Ha ocurrido un error en el registro!",
+          icon: "error",
+          timer: "1500",
+        });
+        return console.log(error);
+      }
+    }
+  };
   return (
     <Container>
       <>
@@ -27,64 +115,92 @@ export function ModalRegis() {
         >
           <Modal.Header>Registrar Persona</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full">
+            <form className="flex flex-col gap-4 max-w-full" onSubmit={handleSend}>
+              {/*----- nombre ------- */}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="nombres" value="Nombre:" />
                 </div>
                 <TextInput
                   id="nombres"
+                  name="nombre"
+                  value={datos.nombre}
                   type="text"
                   placeholder="Nombre"
+                  onChange={handleChange}
                   required
                   shadow
                 />
               </div>
+              {/*----- apellido ------- */}
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="Apellidos" value="Apellidos:" />
+                  <Label htmlFor="apellido" value="Apellidos:" />
                 </div>
                 <TextInput
-                  id="Apellidos"
+                  id="apellido"
+                  name="apellido"
+                  value={datos.apellido}
                   type="text"
                   placeholder="Apellidos"
+                  onChange={handleChange}
                   required
                   shadow
                 />
               </div>
+              {/*----- cedula ------- */}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="cedula" value="Cedula:" />
                 </div>
                 <TextInput
                   id="cedula"
-                  type="number"
+                  name="cedula"
+                  type="text"
+                  value={datos.cedula}
                   placeholder="1234567890"
+                  onChange={handleChange}
                   required
                   shadow
                 />
               </div>
+              {/*----- telefono ------- */}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="telefono" value="Teléfono:" />
                 </div>
                 <TextInput
                   id="telefono"
-                  type="number"
+                  name="telefono"
+                  value={datos.telefono}
+                  type="text"
                   placeholder="Teléfono"
+                  onChange={handleChange}
                   required
                   shadow
                 />
               </div>
+              {/*----- cargo ------- */}
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="cargo" value="Selecciona un Cargo" />
+                  <Label htmlFor="id_cargo" value="Selecciona un Cargo" />
                 </div>
-                <Select id="cargo" required>
-                  <option>Cantante</option>
+                <Select 
+                  id="id_cargo"
+                  name="id_cargo"
+                  value={datos.id_cargo}
+                  onChange={handleChange}>
+                    <option value="Selecciona:" disabled>Selecciona:</option>
+                    {datosCat.map((cargos) => (
+                      <option key={cargos.id_cargo} value={cargos.id_cargo}>
+                        {cargos.cargo}
+                        </option>
+                    ))}
+                  
                   <option>Conciencia</option>
                 </Select>
               </div>
+              {/*----- departamento ------- */}
               <div>
                 <div className="mb-2 block">
                   <Label
@@ -92,9 +208,20 @@ export function ModalRegis() {
                     value="Selecciona un Departamento"
                   />
                 </div>
-                <Select id="departamento" required>
-                  <option>Musica</option>
-                  <option>Mental</option>
+                <Select 
+                  id="id_departamento"
+                  name="id_departamento"
+                  value={datos.id_departamento}
+                  onChange={handleChange}>
+                  <option value="Selecciona:" disabled>Selecciona</option>
+                  {datosDep.map((depart) => (
+                    <option
+                      value={depart.id_departamento}
+                      key={depart.id_departamento}
+                    >
+                    {depart.departamento}
+                  </option>
+                ))}
                 </Select>
               </div>
               <Button type="submit">Registrar Nuevo Usuario</Button>
@@ -211,7 +338,27 @@ export function EditarPersona() {
 }
 export function EliminarPersona({ id }) {
   const [openModal, setOpenModal] = useState(false);
-
+  const deleteDepa = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:4000/personal/${id}`);
+      swal({
+        title: "Personal",
+        text: "Eliminado exitosamente!",
+        icon: "success",
+        timer: "1000",
+      });
+      setOpenModal(false);
+    } catch (error) {
+      console.error("error", error);
+      swal({
+        title: "Personal",
+        text: "Error en la eliminación!",
+        icon: "error",
+        timer: "1000",
+      });
+      setOpenModal(false);
+    }
+  };
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -231,7 +378,7 @@ export function EliminarPersona({ id }) {
               Estas seguro de querer eliminar este Registro?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setOpenModal(false)}>
+              <Button color="failure" onClick={deleteDepa}>
                 {"Aceptar"}
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>
@@ -244,6 +391,8 @@ export function EliminarPersona({ id }) {
     </>
   );
 }
+
+// -----------------------------------------
 export function EliminaAsist() {
   const [openModal, setOpenModal] = useState(false);
 
@@ -340,6 +489,8 @@ export function RegisAsist() {
     </>
   );
 }
+
+// ------------------------------------------
 export function RegisVisita() {
   const [openModal, setOpenModal] = useState(false);
 
@@ -453,7 +604,7 @@ export function EliminaVisita() {
   );
 }
 
-//  ---------------------------------------
+// ---------------------------------------
 // modal departamentos
 export function ModalDep() {
   const [openModal, setOpenModal] = useState(false);
@@ -466,6 +617,7 @@ export function ModalDep() {
     let value = e.target.value;
     setData({ ...data, [names]: value });
   };
+
   // enviar datos al servidor
   const handleSend = async (e) => {
     e.preventDefault();
@@ -484,6 +636,7 @@ export function ModalDep() {
             "Content-Type": "application/json",
           },
         });
+        ShowDepart()
         setData({ departamento: "" });
         setOpenModal(false);
         swal({
@@ -601,54 +754,24 @@ export function EliminarDep({ id }) {
     </>
   );
 }
-export function EditarDep() {
+export function EditarDep({ id }) {
   const [openModal, setOpenModal] = useState(false);
-  const [data, setData] = useState({
-    departamento: "",
-  });
+  const [departamento, setDepartamento] = useState('');
 
-  const handleChange = (e) => {
-    let names = e.target.name;
-    let value = e.target.value;
-    setData({ ...data, [names]: value });
-  };
-  // enviar datos al servidor
-  const handleSend = async (e) => {
+  // actualizar
+  const actualizar = async (e) => {
     e.preventDefault();
-    // validar que los campos no esten vacios
-    if (data.departamento.trim() === "") {
-      swal({
-        title: "Campo vacio",
-        text: "Debes agregar un departamento",
-        icon: "warning",
-        timer: "1500",
-      });
-    } else {
-      try {
-        await axios.post("http://localhost:4000/task", data, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        setData({ departamento: "" });
-        setOpenModal(false);
-        swal({
-          title: "Departamento",
-          text: "Registro exitoso!",
-          icon: "success",
-          timer: "1500",
-        });
-      } catch (error) {
-        swal({
-          title: "Oops...",
-          text: "Ha ocurrido un error al registrar!",
-          icon: "error",
-          timer: "1500",
-        });
-        return console.log(error);
-      }
-    }
-  };
+    await axios.put(`http://localhost:4000/task/${id}`, {departamento})
+    setOpenModal(false)
+    console.log("funca")
+  }
+  useEffect(() => {
+    getActualizar()
+  }, [])
+  const getActualizar = async () => {
+    const res = await axios.get(`http://localhost:4000/task/${id}`)
+    setDepartamento(res.data.departamento)
+  }
 
   return (
     <Container>
@@ -661,7 +784,7 @@ export function EditarDep() {
           <Modal.Body>
             <form
               className="flex flex-col gap-4 max-w-full"
-              onSubmit={handleSend}
+              onSubmit={actualizar}
             >
               <div>
                 <div className="mb-2 block">
@@ -671,13 +794,13 @@ export function EditarDep() {
                   id="departamento"
                   type="text"
                   placeholder="Nombre del Departamento"
-                  onChange={handleChange}
+                  onChange={(e) => setDepartamento(e.target.value)}
                   name="departamento"
-                  value={data.departamento}
+                  value={departamento}
                   shadow
                 />
               </div>
-              <Button type="submit">Registrar</Button>
+              <Button type="submit">Modificar</Button>
             </form>
           </Modal.Body>
           <Modal.Footer>
@@ -693,7 +816,7 @@ export function EditarDep() {
 // ----------------------------------------
 
 // modal cargos
-export function ModalCargo({ id }) {
+export function ModalCargo() {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
     cargo: "",
@@ -894,18 +1017,15 @@ export function RegisInv() {
   //---------------------------------
   // regsitrar datos
   const [datos, setDatos] = useState({
-    nombre: "",
-    marca: "",
-    codigo: "",
-    cantidad: "",
-    status: "",
-    departamento: "",
-    categoria: "",
+    nombre: "", marca: "", codigo: "",
+    modelo: "", estatus: "Selecciona:", cantidad: "",
+    id_departamento: "Selecciona:", id_categoria: "Selecciona:",
   });
   const handleChange = (e) => {
     let names = e.target.name;
-    let value = e.target.value;
-    setDatos({ ...datos, [names]: value });
+    let values = e.target.value;
+    console.log(names)
+    setDatos({ ...datos, [names]: values });
   };
   // enviar datos al servidor
   const handleSend = async (e) => {
@@ -922,17 +1042,13 @@ export function RegisInv() {
       try {
         await axios.post("http://localhost:4000/inventary", datos, {
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json"
+          }
         });
         setDatos({
-          nombre: "",
-          marca: "",
-          codigo: "",
-          cantidad: "",
-          status: "",
-          departamento: "",
-          categoria: "",
+          nombre: "", marca: "", codigo: "",
+          modelo: "", cantidad: "", estatus: "Selecciona:",
+          id_departamento: "Selecciona:", id_categoria: "Selecciona:",
         });
         setOpenModal(false);
         swal({
@@ -971,6 +1087,7 @@ export function RegisInv() {
             <h3 className="text-xl font-medium text-gray-900 text-center ">
               REGISTRAR PRODUCTO
             </h3>
+            {/* ------ nombre --------- */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="nombre" value="Nombre:" />
@@ -985,6 +1102,7 @@ export function RegisInv() {
                 onChange={handleChange}
               />
             </div>
+            {/* ------ marca --------- */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="marca" value="Marca:" />
@@ -999,9 +1117,10 @@ export function RegisInv() {
                 onChange={handleChange}
               />
             </div>
+            {/* ------ codigo --------- */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="Codigo" value="Codigo:" />
+                <Label htmlFor="codigo" value="Codigo:" />
               </div>
               <TextInput
                 id="codigo"
@@ -1013,6 +1132,22 @@ export function RegisInv() {
                 onChange={handleChange}
               />
             </div>
+            {/* ------ modelo --------- */}
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="modelo" value="Modelo:" />
+              </div>
+              <TextInput
+                id="modelo"
+                type="text"
+                placeholder="Modelo del Producto"
+                shadow
+                name="modelo"
+                value={datos.modelo}
+                onChange={handleChange}
+              />
+            </div>
+            {/* ------ cantidad --------- */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="cantidad" value="Cantidad:" />
@@ -1028,68 +1163,65 @@ export function RegisInv() {
                 shadow
               />
             </div>
+            {/* ------ estatus --------- */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="Estado" value="Estado del Producto" />
+                <Label htmlFor="estatus" value="Estado del Producto" />
               </div>
               <Select
-                id="status"
-                name="status"
+                id="estatus"
+                name="estatus"
                 onChange={handleChange}
-                value={datos.status}
+                value={datos.estatus}
               >
-                <option value="" key="Selec" hidden selected>
-                  Selecciona:
-                </option>
+                <option value="Selecciona:" disabled>Selecciona:</option>
                 <option value="Nuevo">Nuevo</option>
                 <option value="Usado">Usado</option>
                 <option value="Deteriorado">Deteriorado</option>
               </Select>
             </div>
+            {/* ------ departamento --------- */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="Departamento" value="Departamento:" />
               </div>
               <Select
-                id="departamento"
-                name="departamento"
+                id="id_departamento"
+                name="id_departamento"
                 onChange={handleChange}
-                value={datos.departamento}
+                value={datos.id_departamento}
               >
-                {datosDep.map((departamentos) => (
+                <option value="Selecciona:" disabled>Selecciona:</option>
+                {datosDep.map((depart) => (
                   <option
-                    value={departamentos.id_departamento}
-                    key={departamentos.id_departamento}
+                    value={depart.id_departamento}
+                    key={depart.id_departamento}
                   >
-                    {departamentos.departamento}
+                    {depart.departamento}
                   </option>
                 ))}
-                <option value="" key="Selec" hidden selected>
-                  Selecciona:
-                </option>
               </Select>
             </div>
+            {/* ------ categoria --------- */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="categoria" value="Categoria:" />
+                <Label htmlFor="id_categoria" value="Categoria:" />
               </div>
               <Select
-                id="categoria"
-                name="categoria"
+                id="id_categoria"
+                name="id_categoria"
                 onChange={handleChange}
-                value={datos.cantegoria}
+                value={datos.id_categoria}
               >
-                {datosCat.map((categoria) => (
+                <option value="Selecciona:" disabled>Selecciona:</option>
+                {datosCat.map((category) => (
                   <option
-                    value={categoria.id_categoria}
-                    key={categoria.id_categoria}
+                    value={category.id_categoria}
+                    key={category.id_categoria}
                   >
-                    {categoria.categoria}
+                    {category.categoria}
                   </option>
                 ))}
-                <option value="" key="Selec" hidden selected>
-                  Selecciona:
-                </option>
               </Select>
             </div>
             <Button type="submit">Registrar</Button>
@@ -1104,8 +1236,102 @@ export function RegisInv() {
     </>
   );
 }
-export function EditInv() {
+export function EditInv({id}) {
   const [openModal, setOpenModal] = useState(false);
+  // mostrar apartamentos en select
+  const [datosDep, setDatosDep] = useState([]);
+  useEffect(() => {
+    ShowDepart();
+  }, []);
+  const ShowDepart = async () => {
+    await axios
+      .get("http://localhost:4000/task")
+      .then((res) => {
+        console.log(res);
+        setDatosDep(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  //--------------------------------
+  // mostrar categorias en select
+  const [datosCat, setDatosCat] = useState([]);
+  useEffect(() => {
+    ShowCat();
+  }, []);
+  const ShowCat = async () => {
+    await axios
+      .get("http://localhost:4000/categoria")
+      .then((res) => {
+        console.log(res);
+        setDatosCat(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  //---------------------------------
+  // actualizar datos
+  const [datos, setDatos] = useState({
+    nombre: "", marca: "", codigo: "",
+    modelo: "", estatus: "Selecciona:", cantidad: "",
+    id_departamento: "Selecciona:", id_categoria: "Selecciona:",
+  });
+ 
+
+  useEffect(()=>{
+    getInventaryId()
+  }, [])
+
+  const getInventaryId = async () => {
+    const res = await axios.get(`http://localhost:4000/inventary/${id}`)
+    setDatos(res.data)
+    console.log(res.data)
+  }
+
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let values = e.target.value;
+    console.log(names)
+    setDatos({ ...datos, [names]: values });
+  };
+  // enviar datos al servidor
+  const handleSend = async (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if (Object.values(datos).some((field) => field.trim() === "")) {
+      swal({
+        title: "Campo vacio",
+        text: "Debes ingresar todos los datos",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
+      try {
+        await axios.put(`http://localhost:4000/inventary/${id}`, datos, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        setOpenModal(false);
+        swal({
+          title: "Articulo",
+          text: "Registrado exitosamente!",
+          icon: "success",
+          timer: "1500",
+        });
+      } catch (error) {
+        swal({
+          title: "Oops...",
+          text: "Ha ocurrido un error en el registro!",
+          icon: "error",
+          timer: "1500",
+        });
+        return console.log(error);
+      }
+    }
+  };
 
   return (
     <>
@@ -1120,10 +1346,14 @@ export function EditInv() {
       >
         <Modal.Header />
         <Modal.Body>
-          <form className="flex flex-col gap-4 max-w-full">
+        <form
+            className="flex flex-col gap-4 max-w-full"
+            onSubmit={handleSend}
+          >
             <h3 className="text-xl font-medium text-gray-900 text-center ">
-              REGISTRAR PRODUCTO
+              ACTUALIZAR PRODUCTO
             </h3>
+            {/* ------ nombre --------- */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="nombre" value="Nombre:" />
@@ -1132,71 +1362,135 @@ export function EditInv() {
                 id="nombre"
                 type="text"
                 placeholder="Nombre Producto"
-                required
                 shadow
+                name="nombre"
+                value={datos.nombre}
+                onChange={handleChange}
               />
             </div>
+            {/* ------ marca --------- */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="Marca" value="Marca:" />
+                <Label htmlFor="marca" value="Marca:" />
               </div>
               <TextInput
-                id="Marca"
+                id="marca"
                 type="text"
                 placeholder="Marca Producto"
-                required
                 shadow
+                name="marca"
+                value={datos.marca}
+                onChange={handleChange}
               />
             </div>
+            {/* ------ codigo --------- */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="Codigo" value="Codigo:" />
+                <Label htmlFor="codigo" value="Codigo:" />
               </div>
               <TextInput
-                id="Codigo"
+                id="codigo"
                 type="text"
                 placeholder="Codigo del Producto"
-                required
                 shadow
+                name="codigo"
+                value={datos.codigo}
+                onChange={handleChange}
               />
             </div>
+            {/* ------ modelo --------- */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="Departamento" value="Departamento:" />
+                <Label htmlFor="modelo" value="Modelo:" />
               </div>
               <TextInput
-                id="Departamento"
+                id="modelo"
                 type="text"
-                placeholder="Departamento"
-                required
+                placeholder="Modelo del Producto"
+                shadow
+                name="modelo"
+                value={datos.modelo}
+                onChange={handleChange}
+              />
+            </div>
+            {/* ------ cantidad --------- */}
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="cantidad" value="Cantidad:" />
+              </div>
+              <TextInput
+                id="cantidad"
+                type="number"
+                min="0"
+                name="cantidad"
+                placeholder="Cantidad"
+                value={datos.cantidad}
+                onChange={handleChange}
                 shadow
               />
             </div>
+            {/* ------ estatus --------- */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="Estado" value="Estado del Producto" />
+                <Label htmlFor="estatus" value="Estado del Producto" />
               </div>
-              <Select id="Estado" required>
-                <option value="" key="Selec" disabled selected>
-                  Selecciona:
-                </option>
-                <option>Nuevo</option>
-                <option>Usado</option>
+              <Select
+                id="estatus"
+                name="estatus"
+                onChange={handleChange}
+                value={datos.estatus}
+              >
+                <option value="Selecciona:" disabled>Selecciona:</option>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Usado">Usado</option>
+                <option value="Deteriorado">Deteriorado</option>
               </Select>
             </div>
+            {/* ------ departamento --------- */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="Departamento" value="Departamento:" />
               </div>
-              <TextInput
-                id="Departamento"
-                type="text"
-                placeholder="Departamento"
-                required
-                shadow
-              />
+              <Select
+                id="id_departamento"
+                name="id_departamento"
+                onChange={handleChange}
+                value={datos.id_departamento}
+              >
+                <option value="Selecciona:" disabled>Selecciona:</option>
+                {datosDep.map((depart) => (
+                  <option
+                    value={depart.id_departamento}
+                    key={depart.id_departamento}
+                  >
+                    {depart.departamento}
+                  </option>
+                ))}
+              </Select>
             </div>
-            <Button type="submit">Registrar</Button>
+            {/* ------ categoria --------- */}
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="id_categoria" value="Categoria:" />
+              </div>
+              <Select
+                id="id_categoria"
+                name="id_categoria"
+                onChange={handleChange}
+                value={datos.id_categoria}
+              >
+                <option value="Selecciona:" disabled>Selecciona:</option>
+                {datosCat.map((category) => (
+                  <option
+                    value={category.id_categoria}
+                    key={category.id_categoria}
+                  >
+                    {category.categoria}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <Button type="submit">Actualizar</Button>
           </form>
         </Modal.Body>
         <Modal.Footer>
@@ -1208,9 +1502,28 @@ export function EditInv() {
     </>
   );
 }
-export function EliminarInv() {
+export function EliminarInv({id}) {
   const [openModal, setOpenModal] = useState(false);
-
+  const deleteInven = async () => {
+    try {
+      await axios.delete(`http://localhost:4000/inventary/${id}`);
+      swal({
+        title: "Articulo",
+        text: "Eliminado exitosamente!",
+        icon: "success",
+        timer: "1000",
+      });
+      setOpenModal(false);
+    } catch (error) {
+      console.error("error", error);
+      swal({
+        title: "Articulo",
+        text: "Error en la eliminación!",
+        icon: "error",
+        timer: "1000",
+      });
+      setOpenModal(false);
+    }}
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -1230,7 +1543,7 @@ export function EliminarInv() {
               Estas seguro de querer eliminar este Registro?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setOpenModal(false)}>
+              <Button color="failure" onClick={deleteInven}>
                 {"Eliminar"}
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>
@@ -1243,6 +1556,9 @@ export function EliminarInv() {
     </>
   );
 }
+//---------------------------------------------
+
+// registrar usuarios
 export function ModalUsr() {
   const [openModal, setOpenModal] = useState(false);
 
@@ -1488,8 +1804,57 @@ export function EditarUsr() {
     </Container>
   );
 }
+//----------------------------------------------
+// registrar categorias
 export function ModalCatg() {
   const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({
+    categoria: "",
+  });
+  
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let value = e.target.value;
+    setData({ ...data, [names]: value });
+  };
+  // enviar datos al servidor
+  const handleSend = async (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if (data.categoria.trim() === "") {
+      swal({
+        title: "Campo vacio",
+        text: "Debes llenar todos los campos",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
+      try {
+        await axios.post("http://localhost:4000/categoria", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setData({categoria: ""})
+        setOpenModal(false);
+        swal({
+          title: "Categoria",
+          text: "Registro exitoso!",
+          icon: "success",
+          timer: "1500",
+        });
+      } catch (error) {
+        swal({
+          title: "Oops...",
+          text: "Ha ocurrido un error al registrar!",
+          icon: "error",
+          timer: "1500",
+        });
+        return console.log(error);
+      }
+    }
+  };
+
 
   return (
     <Container>
@@ -1502,16 +1867,19 @@ export function ModalCatg() {
         >
           <Modal.Header>Registrar Categoria</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full">
+            <form className="flex flex-col gap-4 max-w-full" onSubmit={handleSend}>
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="categoria" value="Categoria:" />
                 </div>
                 <TextInput
                   id="categoria"
+                  name="categoria"
                   type="text"
                   rightIcon={HiPencil}
                   placeholder="Nombre categoria"
+                  onChange={handleChange}
+                  value={data.categoria}
                   required
                   shadow
                 />
@@ -1529,9 +1897,28 @@ export function ModalCatg() {
     </Container>
   );
 }
-export function EliminarCatg() {
+export function EliminarCatg({id}) {
   const [openModal, setOpenModal] = useState(false);
-
+  const deleteInven = async () => {
+    try {
+      await axios.delete(`http://localhost:4000/categoria/${id}`);
+      swal({
+        title: "Categoria",
+        text: "Eliminado exitosamente!",
+        icon: "success",
+        timer: "1000",
+      });
+      setOpenModal(false);
+    } catch (error) {
+      console.error("error", error);
+      swal({
+        title: "Categoria",
+        text: "Error en la eliminación!",
+        icon: "error",
+        timer: "1000",
+      });
+      setOpenModal(false);
+    }}
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -1551,7 +1938,7 @@ export function EliminarCatg() {
               Estas seguro de querer eliminar este Registro?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setOpenModal(false)}>
+              <Button color="failure" onClick={deleteInven}>
                 {"Eliminar"}
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>

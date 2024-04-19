@@ -20,7 +20,19 @@ import {
 
 // LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
 
+//-------------------------------------------------
+// tabla personal
 export function TablaPersonal() {
+  const [datos, setDatos] = useState([]);
+  useEffect(() => {
+    ShowDepart();
+  }, []);
+
+  const ShowDepart = async () => {
+    const res = await axios.get("http://localhost:4000/personal");
+    setDatos(res.data);
+  };
+
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -36,44 +48,32 @@ export function TablaPersonal() {
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 ">
-                Marco Antonio
-              </Table.Cell>
-              <Table.Cell>Solis</Table.Cell>
-              <Table.Cell>12345678</Table.Cell>
-              <Table.Cell>0412-3456789</Table.Cell>
-              <Table.Cell>Cantante</Table.Cell>
-              <Table.Cell>Musica</Table.Cell>
-              <Table.Cell>
-                <Button.Group>
-                  <EditarPersona />
-                  <EliminarPersona />
-                </Button.Group>
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row className="bg-white ">
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 ">
-                Pepe Grillo
-              </Table.Cell>
-              <Table.Cell>Ozuna</Table.Cell>
-              <Table.Cell>12345678</Table.Cell>
-              <Table.Cell>0412-3456789</Table.Cell>
-              <Table.Cell>Conciencia</Table.Cell>
-              <Table.Cell>Mental</Table.Cell>
-              <Table.Cell>
-                <Button.Group>
-                  <EditarPersona />
-                  <EliminarInv />
-                </Button.Group>
-              </Table.Cell>
-            </Table.Row>
+            {datos.map((personal) => (
+              <Table.Row className="bg-white" key={personal.id_personal}>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 ">
+                  {personal.nombre}
+                </Table.Cell>
+                <Table.Cell>{personal.apellido}</Table.Cell>
+                <Table.Cell>{personal.cedula}</Table.Cell>
+                <Table.Cell>{personal.telefono}</Table.Cell>
+                <Table.Cell>{personal.cargo}</Table.Cell>
+                <Table.Cell>{personal.departamento}</Table.Cell>
+                <Table.Cell>
+                  <Button.Group>
+                    <EditarPersona />
+                    <EliminarPersona id={personal.id_personal}/>
+                  </Button.Group>
+                </Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </div>
     </Container>
   );
 }
+//-------------------------------------------------
+// tabla personal
 export function TablaAsistencias() {
   return (
     <Container>
@@ -109,6 +109,8 @@ export function TablaAsistencias() {
     </Container>
   );
 }
+//-------------------------------------------------
+// tabla personal
 export function TablaVisitas() {
   return (
     <Container>
@@ -144,7 +146,7 @@ export function TablaVisitas() {
     </Container>
   );
 }
-
+//-------------------------------------------------
 // tabla de departamento
 export function TablaDepartamento() {
   const [datos, setDatos] = useState([]);
@@ -197,6 +199,8 @@ export function TablaDepartamento() {
     </Container>
   );
 }
+//-------------------------------------------------
+// tabla de departamento
 export function TablaCargos() {
   const [datos, setDatos] = useState([]);
 
@@ -238,6 +242,8 @@ export function TablaCargos() {
     </Container>
   );
 }
+//-------------------------------------------------
+// tabla de inventario
 export function TablaInv() {
   const [datos, setDatos] = useState([]);
 
@@ -258,6 +264,7 @@ export function TablaInv() {
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Marca</Table.HeadCell>
             <Table.HeadCell>Código</Table.HeadCell>
+            <Table.HeadCell>Modelo</Table.HeadCell>
             <Table.HeadCell>Departamento</Table.HeadCell>
             <Table.HeadCell>Estado</Table.HeadCell>
             <Table.HeadCell>Cantidad</Table.HeadCell>
@@ -272,6 +279,7 @@ export function TablaInv() {
                 </Table.Cell>
                 <Table.Cell>{inventary.marca}</Table.Cell>
                 <Table.Cell>{inventary.codigo}</Table.Cell>
+                <Table.Cell>{inventary.modelo}</Table.Cell>
                 <Table.Cell>{inventary.departamento}</Table.Cell>
                 <Table.Cell>{inventary.estatus}</Table.Cell>
                 <Table.Cell>{inventary.cantidad}</Table.Cell>
@@ -279,7 +287,7 @@ export function TablaInv() {
                 <Table.Cell>
                   <Button.Group>
                     <EditInv id={inventary.id_inventario} />
-                    <EliminarPersona id={inventary.id_inventario} />
+                    <EliminarInv id={inventary.id_inventario} />
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>
@@ -290,7 +298,10 @@ export function TablaInv() {
     </Container>
   );
 }
+//-------------------------------------------------
+// tabla de usuarios
 export function TablaUsuario() {
+  cons 
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -298,15 +309,11 @@ export function TablaUsuario() {
         <Table>
           <Table.Head className="border-b-2">
             <Table.HeadCell>Nombre de Usuario</Table.HeadCell>
-            <Table.HeadCell>Correo Electronico</Table.HeadCell>
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             <Table.Row className="bg-white">
               <Table.Cell className="whitespace-nowrap">Sub-Gerente</Table.Cell>
-              <Table.Cell className="whitespace-nowrap">
-                ejemplo@ejemplo.co
-              </Table.Cell>
               <Table.Cell>
                 <Button.Group>
                   <EliminarUsr className="left-4" />
@@ -320,7 +327,19 @@ export function TablaUsuario() {
     </Container>
   );
 }
+//-------------------------------------------------
+// tabla de categorias
 export function TablaCategoria() {
+  const [data, setData] = useState([]);
+
+  useEffect(()=>{
+    ShowCategoria();
+  }, [])
+  const ShowCategoria = async () => {
+    const res = await axios.get("http://localhost:4000/categoria");
+    setData(res.data)
+  }
+
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -331,15 +350,17 @@ export function TablaCategoria() {
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap">PruebaGoria</Table.Cell>
-              <Table.Cell>
-                <Button.Group>
-                  <EliminarCatg className="left-4" />
-                  <EditarCatg />
-                </Button.Group>
-              </Table.Cell>
-            </Table.Row>
+            {data.map((categorias) => (
+              <Table.Row className="bg-white">
+                <Table.Cell className="whitespace-nowrap">{categorias.categoria}</Table.Cell>
+                <Table.Cell>
+                  <Button.Group>
+                    <EditarCatg />
+                    <EliminarCatg className="left-4" id={categorias.id_categoria}/>
+                  </Button.Group>
+                </Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </div>
