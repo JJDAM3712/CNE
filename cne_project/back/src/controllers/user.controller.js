@@ -23,7 +23,7 @@ export const ShowOneUser = async (req, res) => {
     } catch (error) {
         return res.status(500).json({mensaje: error.message})
     }
-}
+} 
 // registrar usuario
 export const CreateLogin = async (req, res) => {
     try {
