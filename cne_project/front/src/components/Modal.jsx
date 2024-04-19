@@ -1632,17 +1632,16 @@ export function ModalUsr() {
         icon: "warning",
         timer: "1500",
       });
-    } else if (pass !== secondPass) {
-      swal({
+    } else if (data.pass !== secondPass) {
+      return swal({
         title: "Contraseñas no coinciden",
         text: "Las contraseñas ingresadas no son iguales",
         icon: "error",
         timer: "1500",
       });
     } else {
-      const dataWithPass = { ...data, pass };
       try {
-        await axios.post("http://localhost:4000/signup", dataWithPass, {
+        await axios.post("http://localhost:4000/signup", data, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -1712,7 +1711,7 @@ export function ModalUsr() {
                   id="pass"
                   name="pass"
                   onChange={handleChange}
-                  value={pass}
+                  value={data.pass}
                   type="password"
                   required
                   shadow
