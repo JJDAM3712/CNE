@@ -323,6 +323,7 @@ export function TablaUsuario() {
           </Table.Head>
           <Table.Body className="divide-y">
             {datos.map((users) => (
+              // eslint-disable-next-line react/jsx-key
               <Table.Row className="bg-white">
                 <Table.Cell className="whitespace-nowrap">
                   {users.usuario}

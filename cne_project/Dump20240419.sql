@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `cne_bd` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `cne_bd` /*!40100 DEFAULT CHARACTER SET utf8mb4 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `cne_bd`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
@@ -26,10 +26,10 @@ DROP TABLE IF EXISTS `cargos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cargos` (
   `id_cargo` int NOT NULL AUTO_INCREMENT,
-  `cargo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `cargo` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
   `cantidad` int NOT NULL,
   PRIMARY KEY (`id_cargo`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,7 +53,7 @@ CREATE TABLE `categoria` (
   `id_categoria` int NOT NULL AUTO_INCREMENT,
   `categoria` varchar(20) NOT NULL,
   PRIMARY KEY (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,9 +75,9 @@ DROP TABLE IF EXISTS `departamento`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `departamento` (
   `id_departamento` int NOT NULL AUTO_INCREMENT,
-  `departamento` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0',
+  `departamento` varchar(100) CHARACTER SET utf8mb4 DEFAULT '0',
   PRIMARY KEY (`id_departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,8 +99,8 @@ DROP TABLE IF EXISTS `inventario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `inventario` (
   `id_inventario` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `marca` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nombre` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+  `marca` varchar(45) CHARACTER SET utf8mb4 NOT NULL,
   `codigo` varchar(45) NOT NULL,
   `modelo` varchar(45) NOT NULL,
   `estatus` varchar(50) NOT NULL DEFAULT '',
@@ -112,7 +112,7 @@ CREATE TABLE `inventario` (
   KEY `FK_inventario_categoria` (`id_categoria`),
   CONSTRAINT `FK_inventario_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`),
   CONSTRAINT `FK_inventario_departamento` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,7 +144,7 @@ CREATE TABLE `personal` (
   KEY `FK_personal_departamento` (`id_departamento`),
   CONSTRAINT `FK_personal_cargos` FOREIGN KEY (`id_cargo`) REFERENCES `cargos` (`id_cargo`),
   CONSTRAINT `FK_personal_departamento` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,11 +167,11 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
   `usuario` varchar(100) NOT NULL DEFAULT '0',
-  `password` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0',
+  `password` varchar(200) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0',
   `quest` int NOT NULL DEFAULT '0',
   `resp` varchar(100) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +194,7 @@ DROP TABLE IF EXISTS `visita`;
 CREATE TABLE `visita` (
   `id_visita` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL DEFAULT '0',
-  `cedula` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0',
+  `cedula` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0',
   `id_departamento` int NOT NULL,
   `motivo` varchar(50) NOT NULL,
   `fecha` date NOT NULL,
@@ -203,7 +203,7 @@ CREATE TABLE `visita` (
   PRIMARY KEY (`id_visita`),
   KEY `FK_visita_departamento` (`id_departamento`),
   CONSTRAINT `FK_visita_departamento` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
