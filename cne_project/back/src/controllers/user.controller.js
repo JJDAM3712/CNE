@@ -29,11 +29,15 @@ export const CreateLogin = async (req, res) => {
     try {
         // recibe datos del cliente
         const {usuario, pass, quest, resp} = req.body;
-        // hashea la contraseña recibida
-        const password = await bcrypt.hash(pass, 8);
-        // consulta sql. Valida si existe un usuario (sencible a minusculas y mayusculas)
-        const query_us = 'SELECT usuario FROM user WHERE BINARY usuario = ?'
-        const [result] = await pool.query(query_us, [usuario]);
+        try {
+            // hashea la contraseña recibida
+            const password = await bcrypt.hash(pass, 8);
+            // consulta sql. Valida si existe un usuario (sencible a minusculas y mayusculas)
+            const query_us = 'SELECT usuario FROM user WHERE BINARY usuario = ?'
+            const [result] = await pool.query(query_us, [usuario]);
+        } catch (error) {
+            return res.status(500).json({mensaje: error.message});
+        }
         // valida si existe un usuario con el mismo nombre
         if (result.length === 0){
             try {
@@ -50,8 +54,9 @@ export const CreateLogin = async (req, res) => {
             } catch (error) {
                 return res.status(500).json({mensaje: error.message});
             }
+        }else{
+            return res.status(300).json({mensaje: "Ya existe un usuario con ese nombre"})
         }
-        return res.status(300).json({mensaje: "Ya existe un usuario con ese nombre"})
     } catch (error) {
         return res.status(500).json({mensaje: error.message});
     }

@@ -1568,7 +1568,6 @@ export function ModalUsr() {
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
-
     if (names === "secondPass") {
       setSecondPass(value);
     } else {
