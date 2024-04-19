@@ -174,8 +174,7 @@ export function TablaDepartamento() {
             {datos.map((departamentos) => (
               <Table.Row
                 className="bg-white"
-                key={departamentos.id_departamento}
-              >
+                key={departamentos.id_departamento}>
                 <Table.Cell className="whitespace-nowrap">
                   {departamentos.departamento}
                 </Table.Cell>
@@ -187,8 +186,7 @@ export function TablaDepartamento() {
                     />
                     <EditarDep
                       className="left-4"
-                      id={departamentos.id_departamento}
-                    />
+                      id={departamentos.id_departamento}/>
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>
@@ -323,14 +321,13 @@ export function TablaUsuario() {
           </Table.Head>
           <Table.Body className="divide-y">
             {datos.map((users) => (
-              // eslint-disable-next-line react/jsx-key
-              <Table.Row className="bg-white">
+              <Table.Row className="bg-white" key={users.id}>
                 <Table.Cell className="whitespace-nowrap">
                   {users.usuario}
                 </Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EditarUsr />
+                    <EditarUsr  id={users.id}/>
                     <EliminarUsr className="left-4" id={users.id} />
                   </Button.Group>
                 </Table.Cell>
@@ -373,7 +370,7 @@ export function TablaCategoria() {
                 </Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EditarCatg />
+                    <EditarCatg id={categorias.id_categoria}/>
                     <EliminarCatg
                       className="left-4"
                       id={categorias.id_categoria}

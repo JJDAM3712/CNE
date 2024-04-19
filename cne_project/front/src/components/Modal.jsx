@@ -777,20 +777,19 @@ export function EditarDep({ id }) {
     e.preventDefault();
     await axios.put(`http://localhost:4000/task/${id}`, { departamento });
     setOpenModal(false);
-    console.log("funca");
+    swal('actualizado')
   };
-  useEffect(() => {
-    getActualizar();
-  }, []);
-  const getActualizar = async () => {
+
+  const handleOpenModal = async () => {
     const res = await axios.get(`http://localhost:4000/task/${id}`);
-    setDepartamento(res.data.departamento);
+    setDepartamento(res.data[0].departamento);
+    setOpenModal(true);
   };
 
   return (
     <Container>
       <>
-        <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+        <Button onClick={handleOpenModal} color="purple" size="sm">
           <FaEdit />
         </Button>
         <Modal show={openModal} onClose={() => setOpenModal(false)}>
@@ -992,7 +991,7 @@ export function EliminarCargo({ id }) {
 
 //----------------------------------------------
 // registrar inventario
-export function RegisInv() {
+export function RegisInv({id}) {
   const [openModal, setOpenModal] = useState(false);
 
   // mostrar apartamentos en select
@@ -1313,28 +1312,27 @@ export function EditInv({ id }) {
     id_departamento: "Selecciona:",
     id_categoria: "Selecciona:",
   });
-
-  useEffect(() => {
-    getInventaryId();
-  }, []);
-
-  const getInventaryId = async () => {
-    const res = await axios.get(`http://localhost:4000/inventary/${id}`);
-    setDatos(res.data);
-    console.log(res.data);
-  };
-
   const handleChange = (e) => {
     let names = e.target.name;
     let values = e.target.value;
-    console.log(names);
     setDatos({ ...datos, [names]: values });
   };
+
+  const handleOpenModal = async () => {
+    const res = await axios.get(`http://localhost:4000/inventary/${id}`);
+    if (res.data[0]) {
+      setDatos(res.data[0]);
+    } else {
+      console.error('No se pudo obtener los datos del producto');
+    }
+    setOpenModal(true);
+  };
+
   // enviar datos al servidor
   const handleSend = async (e) => {
     e.preventDefault();
     // validar que los campos no esten vacios
-    if (Object.values(datos).some((field) => field.trim() === "")) {
+    if (Object.values(datos).some((field) => typeof field === 'string' && field.trim() === "")) {
       swal({
         title: "Campo vacio",
         text: "Debes ingresar todos los datos",
@@ -1342,34 +1340,33 @@ export function EditInv({ id }) {
         timer: "1500",
       });
     } else {
-      try {
-        await axios.put(`http://localhost:4000/inventary/${id}`, datos, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        setOpenModal(false);
-        swal({
-          title: "Articulo",
-          text: "Registrado exitosamente!",
-          icon: "success",
-          timer: "1500",
-        });
-      } catch (error) {
-        swal({
-          title: "Oops...",
-          text: "Ha ocurrido un error en el registro!",
-          icon: "error",
-          timer: "1500",
-        });
-        return console.log(error);
-      }
+      // si los campos no estan vacios realiza la funcion
+      const datosParaEnviar = {
+        nombre: datos.nombre,
+        marca: datos.marca,
+        codigo: datos.codigo,
+        modelo: datos.modelo,
+        estatus: datos.estatus,
+        cantidad: datos.cantidad,
+        id_categoria: datos.id_categoria,
+        id_departamento: datos.id_departamento,
+      };
+      await axios.put(`http://localhost:4000/inventary/${id}`, datosParaEnviar, {
+        headers: {"Content-Type": "application/json"}
+      });
+      setOpenModal(false);
+      swal({
+        title: "Articulo",
+        text: "Actualizado exitosamente!",
+        icon: "success",
+        timer: "1500",
+      });
     }
   };
 
   return (
     <>
-      <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+      <Button onClick={handleOpenModal} color="purple" size="sm">
         <FaEdit />
       </Button>
       <Modal
@@ -1782,9 +1779,29 @@ export function ModalUsr() {
     </Container>
   );
 }
-export function EliminarUsr() {
+export function EliminarUsr({id}) {
   const [openModal, setOpenModal] = useState(false);
-
+  const deleteInven = async () => {
+    try {
+      await axios.delete(`http://localhost:4000/signup/${id}`);
+      swal({
+        title: "Articulo",
+        text: "Eliminado exitosamente!",
+        icon: "success",
+        timer: "1000",
+      });
+      setOpenModal(false);
+    } catch (error) {
+      console.error("error", error);
+      swal({
+        title: "Articulo",
+        text: "Error en la eliminación!",
+        icon: "error",
+        timer: "1000",
+      });
+      setOpenModal(false);
+    }
+  };
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -1804,7 +1821,7 @@ export function EliminarUsr() {
               Estas seguro de querer eliminar este Registro?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setOpenModal(false)}>
+              <Button color="failure" onClick={deleteInven}>
                 {"Eliminar"}
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>
@@ -1817,7 +1834,7 @@ export function EliminarUsr() {
     </>
   );
 }
-export function EditarUsr() {
+export function EditarUsr({id}) {
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -2072,13 +2089,26 @@ export function EliminarCatg({ id }) {
     </>
   );
 }
-export function EditarCatg() {
+export function EditarCatg({id}) {
   const [openModal, setOpenModal] = useState(false);
+  const [categoria, setCategoria] = useState('')
+  // actualizar
+  const actualizar = async (e) => {
+    e.preventDefault();
+    await axios.put(`http://localhost:4000/categoria/${id}`, { categoria });
+    setOpenModal(false);
+    swal('actualizado')
+  };
 
+  const handleOpenModal = async () => {
+    const res = await axios.get(`http://localhost:4000/categoria/${id}`);
+    setCategoria(res.data[0].categoria);
+    setOpenModal(true);
+  };
   return (
     <Container>
       <>
-        <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+        <Button onClick={handleOpenModal} color="purple" size="sm">
           <FaEdit />
         </Button>
         <Modal
@@ -2088,13 +2118,16 @@ export function EditarCatg() {
         >
           <Modal.Header>Registrar Categoria</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full">
+            <form className="flex flex-col gap-4 max-w-full" onSubmit={actualizar}>
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="categoria" value="Categoria:" />
                 </div>
                 <TextInput
                   id="categoria"
+                  name="categoria"
+                  onChange={(e) => setCategoria(e.target.value)}
+                  value={categoria}
                   type="text"
                   rightIcon={HiPencil}
                   placeholder="Nombre categoria"

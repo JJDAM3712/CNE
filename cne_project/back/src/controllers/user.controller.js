@@ -19,7 +19,7 @@ export const ShowOneUser = async (req, res) => {
         if(result.length === 0){
             res.status(403).json({mensaje: "No existe este usuario"})
         }
-        res.json({result})
+        res.json(result)
     } catch (error) {
         return res.status(500).json({mensaje: error.message})
     }
@@ -29,34 +29,29 @@ export const CreateLogin = async (req, res) => {
     try {
         // recibe datos del cliente
         const {usuario, pass, quest, resp} = req.body;
-        try {
-            // hashea la contraseña recibida
-            const password = await bcrypt.hash(pass, 8);
-            // consulta sql. Valida si existe un usuario (sencible a minusculas y mayusculas)
-            const query_us = 'SELECT usuario FROM user WHERE BINARY usuario = ?'
-            const [result] = await pool.query(query_us, [usuario]);
-        } catch (error) {
-            return res.status(500).json({mensaje: error.message});
-        }
+
+        // consulta sql. Valida si existe un usuario (sencible a minusculas y mayusculas)
+        const query_us = 'SELECT usuario FROM user WHERE BINARY usuario = ?'
+        const [ result ] = await pool.query(query_us, [usuario]);
+
         // valida si existe un usuario con el mismo nombre
         if (result.length === 0){
             try {
+                // hashea la contraseña recibida
+                const password = bcrypt.hashSync(pass, 8);
+                 // consulta sql
                 const sql = 'INSERT INTO user (usuario, password, quest, resp) VALUES (?, ?, ?, ?)';
                 // ejecuta la consulta sql
                 const [ result ] = await pool.query(sql, [usuario, password, quest, resp]);
-                res.json({
-                    id: result.insertId,
-                    usuario,
-                    password,
-                    quest,
-                    resp
-                }); 
+                 // Devuelve éxito
+                 return res.status(200).json({ mensaje: "Usuario creado exitosamente" });
+
             } catch (error) {
+                
                 return res.status(500).json({mensaje: error.message});
             }
-        }else{
-            return res.status(300).json({mensaje: "Ya existe un usuario con ese nombre"})
         }
+        return res.status(300).json({mensaje: "Ya existe un usuario con ese nombre"})
     } catch (error) {
         return res.status(500).json({mensaje: error.message});
     }
@@ -71,7 +66,7 @@ export const UpdateUser = async (req, res) => {
         // consulta sql
         const sql = 'UPDATE user SET usuario = ?, password = ?, quest = ?, resp = ? WHERE id = ?';
         // ejecutar consulta sql
-        const [result] = await pool.query(sql, [usuario, email, password, quest, resp, req.params.id]);
+        const [result] = await pool.query(sql, [usuario, password, quest, resp, req.params.id]);
         res.json(result);
     } catch (error) {
         return res.status(500).json({mensaje: error.message})
@@ -88,8 +83,7 @@ export const DeleteUser = async (req, res) => {
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "El usuario no existe"});
         }
-        res.json({mensaje: "usuario eliminado"})
-        return res.sendStatus(204);
+           return res.status(200).json({ mensaje: "Usuario eliminado" });
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }
