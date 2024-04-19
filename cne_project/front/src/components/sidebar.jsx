@@ -116,50 +116,96 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
 // #endregion
 // #region LINKS
 const linksArray = [
+  //   {
+  //     label: "Home",
+  //     icon: <AiOutlineHome />,
+  //     to: "/",
+  //   },
+  //   {
+  //     label: "Personal",
+  //     icon: <PiUsersFourFill />,
+  //     to: "/personal",
+  //   },
+  //   {
+  //     label: "Asistencias",
+  //     icon: <PiCalendarFill />,
+  //     to: "/asistencias",
+  //   },
+  //   {
+  //     label: "Visitas",
+  //     icon: <MdSupervisedUserCircle />,
+  //     to: "/visitas",
+  //   },
+  //   {
+  //     label: "Inventario",
+  //     icon: <MdInventory />,
+  //     to: "/inventario",
+  //   },
+  //   {
+  //     label: "departamentos",
+  //     icon: <PiBankBold />,
+  //     to: "/departamentos",
+  //   },
+  //   {
+  //     label: "Cargos",
+  //     icon: <RiOrganizationChart />,
+  //     to: "/cargos",
+  //   },
+  //   {
+  //     label: "Categorias",
+  //     icon: <MdCategory />,
+  //     to: "/categoria",
+  //   },
+  //   {
+  //     label: "Usuarios",
+  //     icon: <PiUsersFill />,
+  //     to: "/usuario",
+  //   },
+  // ];
   {
     label: "Home",
     icon: <AiOutlineHome />,
-    to: "/",
+    to: "/app/home",
   },
   {
     label: "Personal",
     icon: <PiUsersFourFill />,
-    to: "/personal",
+    to: "/app/personal",
   },
   {
     label: "Asistencias",
     icon: <PiCalendarFill />,
-    to: "/asistencias",
+    to: "/app/asistencias",
   },
   {
     label: "Visitas",
     icon: <MdSupervisedUserCircle />,
-    to: "/visitas",
+    to: "/app/visitas",
   },
   {
     label: "Inventario",
     icon: <MdInventory />,
-    to: "/inventario",
+    to: "/app/inventario",
   },
   {
     label: "departamentos",
     icon: <PiBankBold />,
-    to: "/departamentos",
+    to: "/app/departamentos",
   },
   {
     label: "Cargos",
     icon: <RiOrganizationChart />,
-    to: "/cargos",
+    to: "/app/cargos",
   },
   {
     label: "Categorias",
     icon: <MdCategory />,
-    to: "/categoria",
+    to: "/app/categoria",
   },
   {
     label: "Usuarios",
     icon: <PiUsersFill />,
-    to: "/usuario",
+    to: "/app/usuario",
   },
 ];
 const secondarylinksArray = [
@@ -171,7 +217,7 @@ const secondarylinksArray = [
   {
     label: "Salir",
     icon: <MdLogout />,
-    to: "/login",
+    to: "/",
   },
 ];
 //#region STYLED COMPONENTS

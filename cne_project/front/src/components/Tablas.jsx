@@ -61,7 +61,7 @@ export function TablaPersonal() {
                 <Table.Cell>
                   <Button.Group>
                     <EditarPersona />
-                    <EliminarPersona id={personal.id_personal}/>
+                    <EliminarPersona id={personal.id_personal} />
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>
@@ -273,6 +273,7 @@ export function TablaInv() {
           </Table.Head>
           <Table.Body className="divide-y">
             {datos.map((inventary) => (
+              // eslint-disable-next-line react/jsx-key
               <Table.Row className="bg-white">
                 <Table.Cell className="whitespace-nowrap">
                   {inventary.nombre}
@@ -301,7 +302,6 @@ export function TablaInv() {
 //-------------------------------------------------
 // tabla de usuarios
 export function TablaUsuario() {
-  cons 
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -332,13 +332,13 @@ export function TablaUsuario() {
 export function TablaCategoria() {
   const [data, setData] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     ShowCategoria();
-  }, [])
+  }, []);
   const ShowCategoria = async () => {
     const res = await axios.get("http://localhost:4000/categoria");
-    setData(res.data)
-  }
+    setData(res.data);
+  };
 
   return (
     <Container>
@@ -351,12 +351,18 @@ export function TablaCategoria() {
           </Table.Head>
           <Table.Body className="divide-y">
             {data.map((categorias) => (
+              // eslint-disable-next-line react/jsx-key
               <Table.Row className="bg-white">
-                <Table.Cell className="whitespace-nowrap">{categorias.categoria}</Table.Cell>
+                <Table.Cell className="whitespace-nowrap">
+                  {categorias.categoria}
+                </Table.Cell>
                 <Table.Cell>
                   <Button.Group>
                     <EditarCatg />
-                    <EliminarCatg className="left-4" id={categorias.id_categoria}/>
+                    <EliminarCatg
+                      className="left-4"
+                      id={categorias.id_categoria}
+                    />
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>
