@@ -37,6 +37,8 @@ function Login() {
         });
         if(res.status === 200){
           navigate('./App.jsx')
+          // cambiar el estado de la funcion a
+          // true aqui   ---    ------
         } 
       }     
     } catch (error) {

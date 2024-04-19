@@ -301,7 +301,16 @@ export function TablaInv() {
 //-------------------------------------------------
 // tabla de usuarios
 export function TablaUsuario() {
-  cons 
+  const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    ShowDepart();
+  }, []);
+
+  const ShowDepart = async () => {
+    const res = await axios.get("http://localhost:4000/signup");
+    setDatos(res.data);
+  };
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -312,15 +321,18 @@ export function TablaUsuario() {
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap">Sub-Gerente</Table.Cell>
-              <Table.Cell>
-                <Button.Group>
-                  <EliminarUsr className="left-4" />
-                  <EditarUsr />
-                </Button.Group>
-              </Table.Cell>
-            </Table.Row>
+            {datos.map((users) => (
+              <Table.Row className="bg-white">
+                <Table.Cell className="whitespace-nowrap">{users.usuario}</Table.Cell>
+                <Table.Cell>
+                  <Button.Group>
+                    <EliminarUsr className="left-4" />
+                    <EditarUsr />
+                  </Button.Group>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+            
           </Table.Body>
         </Table>
       </div>
