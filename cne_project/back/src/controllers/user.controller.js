@@ -96,7 +96,7 @@ export const AuthenticLogin = async (req, res) => {
         // recibe datos del servidor
         const {usuario, password} = req.body;
         // consulta sql
-        const sql = 'SELECT usuario, password FROM user WHERE BINARY usuario = ?';
+        const sql = 'SELECT * FROM user WHERE BINARY usuario = ?';
         // ejecuta la consulta
         const [result] = await pool.query(sql, [usuario]);
         // valida que exista un resultado

@@ -301,6 +301,7 @@ export function TablaInv() {
 //-------------------------------------------------
 // tabla de usuarios
 export function TablaUsuario() {
+  cons 
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -308,15 +309,11 @@ export function TablaUsuario() {
         <Table>
           <Table.Head className="border-b-2">
             <Table.HeadCell>Nombre de Usuario</Table.HeadCell>
-            <Table.HeadCell>Correo Electronico</Table.HeadCell>
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             <Table.Row className="bg-white">
               <Table.Cell className="whitespace-nowrap">Sub-Gerente</Table.Cell>
-              <Table.Cell className="whitespace-nowrap">
-                ejemplo@ejemplo.co
-              </Table.Cell>
               <Table.Cell>
                 <Button.Group>
                   <EliminarUsr className="left-4" />

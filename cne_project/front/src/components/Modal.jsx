@@ -1558,7 +1558,7 @@ export function EliminarInv({id}) {
 }
 //---------------------------------------------
 
-
+// registrar usuarios
 export function ModalUsr() {
   const [openModal, setOpenModal] = useState(false);
 
