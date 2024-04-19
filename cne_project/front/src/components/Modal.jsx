@@ -1645,9 +1645,7 @@ export function ModalUsr() {
             "Content-Type": "application/json",
           },
         });
-        ShowDepart();
-        setData({ usuario: "", quest: "Selecciona:", resp: "" });
-        setPass("");
+        setData({ usuario: "", pass:"", quest: "Selecciona:", resp: "" });
         setSecondPass("");
         setOpenModal(false);
         swal({
