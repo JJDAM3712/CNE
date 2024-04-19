@@ -6,10 +6,11 @@ interface AuthProvProps {
 
 const AuthContext = createContext({
   isAuthenticated: false,
+  setIsAuthenticated: () => {},
 });
 
 export const AuthProv = ({ children }: AuthProvProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated }}>
