@@ -322,12 +322,12 @@ export function TablaUsuario() {
           </Table.Head>
           <Table.Body className="divide-y">
             {datos.map((users) => (
-              <Table.Row className="bg-white">
+              <Table.Row className="bg-white" key={users.id}>
                 <Table.Cell className="whitespace-nowrap">{users.usuario}</Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EliminarUsr className="left-4" />
                     <EditarUsr />
+                    <EliminarUsr className="left-4" id={users.id}/>
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>

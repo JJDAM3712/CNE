@@ -1561,7 +1561,72 @@ export function EliminarInv({id}) {
 // registrar usuarios
 export function ModalUsr() {
   const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({
+    usuario: "", quest: "Selecciona:", resp: ""
+  });
+  const [pass, setPass] = useState("");
+  const [secondPass, setSecondPass] = useState("")
 
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let value = e.target.value;
+  
+    if (names === "pass") {
+      setPass(value);
+    } else if (names === "secondPass") {
+      setSecondPass(value);
+    } else {
+      setData({ ...data, [names]: value });
+    }
+  };
+  // enviar datos al servidor
+  const handleSend = async (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if (Object.values(data).some((field) => field.trim() === "")) {
+      swal({
+        title: "Campo vacio",
+        text: "Debes ingresar todos los datos",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else if (pass !== secondPass) {
+      swal({
+        title: "Contraseñas no coinciden",
+        text: "Las contraseñas ingresadas no son iguales",
+        icon: "error",
+        timer: "1500",
+      });
+    } else {
+      const dataWithPass = { ...data, pass };
+      try {
+        await axios.post("http://localhost:4000/signup", dataWithPass, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        ShowDepart()
+        setData({ usuario: "", quest: "Selecciona:", resp: "" });
+        setPass('')
+        setSecondPass('')
+        setOpenModal(false);
+        swal({
+          title: "Usuario",
+          text: "Registro exitoso!",
+          icon: "success",
+          timer: "1500",
+        });
+      } catch (error) {
+        swal({
+          title: "Oops...",
+          text: "Ha ocurrido un error al registrar!",
+          icon: "error",
+          timer: "1500",
+        });
+        return console.log(error);
+      }
+    }
+  };
   return (
     <Container>
       <>
@@ -1571,17 +1636,20 @@ export function ModalUsr() {
         <Modal
           show={openModal}
           onClose={() => setOpenModal(false)}
-          position="top-center"
-        >
+          position="top-center">
           <Modal.Header>Registrar un Nuevo Usuario</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full">
+            <form onSubmit={handleSend} className="flex flex-col gap-4 max-w-full">
+              {/*-------- usuario ---------*/}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="usuario" value="Usuario:" />
                 </div>
                 <TextInput
                   id="usuario"
+                  name="usuario"
+                  onChange={handleChange}
+                  value={data.usuario}
                   type="text"
                   rightIcon={HiUser}
                   placeholder="Nombre Usuario"
@@ -1589,60 +1657,62 @@ export function ModalUsr() {
                   shadow
                 />
               </div>
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="email" value="Correo Electrónico:" />
-                </div>
-                <TextInput
-                  id="email"
-                  type="email"
-                  rightIcon={HiMail}
-                  placeholder="ejemplo@ejemplo.com"
-                  required
-                />
-              </div>
+              {/*------- contraseña -------*/}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="password" value="Contraseña: " />
                 </div>
                 <TextInput
-                  id="password"
+                  id="pass"
+                  name="pass"
+                  onChange={handleChange}
+                  value={pass}
                   type="password"
                   required
                   shadow
                   rightIcon={HiKey}
                 />
               </div>
+              {/*--- confirmar contraseña ---*/}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="password2" value="Repita su Contraseña: " />
                 </div>
                 <TextInput
-                  id="password2"
+                  id="secondPass"
+                  name="secondPass"
+                  onChange={handleChange}
+                  value={secondPass}
                   type="password"
                   required
                   shadow
                   rightIcon={HiKey}
                 />
               </div>
+              {/*------- pregunta --------- */}
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="pregunta" value="Pregunta de Seguridad:" />
+                  <Label htmlFor="quest" value="Pregunta de Seguridad:" />
                 </div>
-                <Select id="pregunta" required>
-                  <option disabled>Seleccione: </option>
-                  <option>Color Favorito</option>
-                  <option>Nombre de mi Perro</option>
-                  <option>Nombre de mi Madre</option>
-                  <option>Lugar de Nacimiento</option>
+                <Select id="quest" name="quest" value={data.quest}>
+                  <option value="Selecciona:" disabled>Seleccione:</option>
+                  <option value="1">¿Color Favorito?</option>
+                  <option value="2">¿Nombre de mi Perro?</option>
+                  <option value="3">¿Nombre de mi Madre?</option>
+                  <option value="4">¿Lugar de Nacimiento?</option>
+                  <option value="5">¿Primer auto?</option>
                 </Select>
               </div>
+              {/*------- respuesta ---------*/}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="respuesta" value="Respuesta:" />
                 </div>
                 <TextInput
-                  id="respuesta"
+                  id="resp"
+                  name="resp"
+                  onChange={handleChange}
+                  value={data.resp}
                   type="text"
                   rightIcon={HiPencil}
                   placeholder="Ingrese su Respuesta"
@@ -1650,7 +1720,6 @@ export function ModalUsr() {
                   shadow
                 />
               </div>
-              <div></div>
               <Button type="submit">Registrar</Button>
             </form>
           </Modal.Body>
