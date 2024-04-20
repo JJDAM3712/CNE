@@ -8,6 +8,7 @@ import { Usuario } from "../pages/Usuario";
 import { Cargos } from "../pages/Cargos";
 import { Visitas } from "../pages/Visitas";
 import { Categoria } from "../pages/Categoria";
+import { Respaldo } from "../pages/Respaldo";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const routes = [
@@ -20,6 +21,7 @@ export const routes = [
   { name: "Cargos", path: "/cargos", component: Cargos },
   { name: "Usuario", path: "/usuario", component: Usuario },
   { name: "Categoria", path: "/categoria", component: Categoria },
+  { name: "Respaldo", path: "/respaldo", component: Respaldo },
 ];
 
 export function MyRoutes() {

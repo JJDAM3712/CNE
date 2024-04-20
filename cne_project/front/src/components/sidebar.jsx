@@ -116,52 +116,6 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
 // #endregion
 // #region LINKS
 const linksArray = [
-  //   {
-  //     label: "Home",
-  //     icon: <AiOutlineHome />,
-  //     to: "/",
-  //   },
-  //   {
-  //     label: "Personal",
-  //     icon: <PiUsersFourFill />,
-  //     to: "/personal",
-  //   },
-  //   {
-  //     label: "Asistencias",
-  //     icon: <PiCalendarFill />,
-  //     to: "/asistencias",
-  //   },
-  //   {
-  //     label: "Visitas",
-  //     icon: <MdSupervisedUserCircle />,
-  //     to: "/visitas",
-  //   },
-  //   {
-  //     label: "Inventario",
-  //     icon: <MdInventory />,
-  //     to: "/inventario",
-  //   },
-  //   {
-  //     label: "departamentos",
-  //     icon: <PiBankBold />,
-  //     to: "/departamentos",
-  //   },
-  //   {
-  //     label: "Cargos",
-  //     icon: <RiOrganizationChart />,
-  //     to: "/cargos",
-  //   },
-  //   {
-  //     label: "Categorias",
-  //     icon: <MdCategory />,
-  //     to: "/categoria",
-  //   },
-  //   {
-  //     label: "Usuarios",
-  //     icon: <PiUsersFill />,
-  //     to: "/usuario",
-  //   },
-  // ];
   {
     label: "Home",
     icon: <AiOutlineHome />,
@@ -212,7 +166,7 @@ const secondarylinksArray = [
   {
     label: "Respaldo",
     icon: <AiOutlineSetting />,
-    to: "/respaldo",
+    to: "/app/respaldo",
   },
   {
     label: "Salir",
