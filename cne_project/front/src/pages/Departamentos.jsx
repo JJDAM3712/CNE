@@ -8,7 +8,7 @@ export function Departamentos() {
   return (
     <Container>
       <h1>Departamentos</h1>
-      <div className="flex flex-wrap gap-2 mb-1">
+      <div className="flex flex-wrap gap-2 mb-1 uppercase">
         <ModalDep />
         <Button color="success">
           Generar Reporte

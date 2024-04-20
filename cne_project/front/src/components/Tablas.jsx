@@ -38,7 +38,7 @@ export function TablaPersonal() {
       <div className="ContenedorTabla">
         <h1>Personal Registrado:</h1>
         <Table>
-          <Table.Head className="border-b-2">
+          <Table.Head className="border-b-2 uppercase">
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Apellido</Table.HeadCell>
             <Table.HeadCell>Cedula</Table.HeadCell>
@@ -47,7 +47,7 @@ export function TablaPersonal() {
             <Table.HeadCell>Departamento</Table.HeadCell>
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
-          <Table.Body className="divide-y">
+          <Table.Body className="divide-y uppercase">
             {datos.map((personal) => (
               <Table.Row className="bg-white" key={personal.id_personal}>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 ">
@@ -80,7 +80,7 @@ export function TablaAsistencias() {
       <div className="ContenedorTabla">
         <h1>Asistencias:</h1>
         <Table>
-          <Table.Head className="border-b-2">
+          <Table.Head className="border-b-2 uppercase">
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Apellido</Table.HeadCell>
             <Table.HeadCell>Cedula</Table.HeadCell>
@@ -89,7 +89,7 @@ export function TablaAsistencias() {
             <Table.HeadCell>Hora Salida</Table.HeadCell>
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
-          <Table.Body className="divide-y">
+          <Table.Body className="divide-y uppercase">
             <Table.Row className="bg-white">
               <Table.Cell className="whitespace-nowrap">
                 Marco Antonio
@@ -126,7 +126,7 @@ export function TablaVisitas() {
             <Table.HeadCell>Hora Salida</Table.HeadCell>
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
-          <Table.Body className="divide-y">
+          <Table.Body className="divide-y uppercase">
             <Table.Row className="bg-white">
               <Table.Cell className="whitespace-nowrap">
                 Marco Antonio
@@ -164,8 +164,8 @@ export function TablaDepartamento() {
     <Container>
       <div className="ContenedorTabla ">
         <h1>Departamentos:</h1>
-        <Table>
-          <Table.Head className="border-b-2">
+        <Table className="uppercase">
+          <Table.Head className="border-b-2 uppercase">
             <Table.HeadCell>Departamento</Table.HeadCell>
             <Table.HeadCell>Opciones</Table.HeadCell>
           </Table.Head>
@@ -174,7 +174,8 @@ export function TablaDepartamento() {
             {datos.map((departamentos) => (
               <Table.Row
                 className="bg-white"
-                key={departamentos.id_departamento}>
+                key={departamentos.id_departamento}
+              >
                 <Table.Cell className="whitespace-nowrap">
                   {departamentos.departamento}
                 </Table.Cell>
@@ -186,7 +187,8 @@ export function TablaDepartamento() {
                     />
                     <EditarDep
                       className="left-4"
-                      id={departamentos.id_departamento}/>
+                      id={departamentos.id_departamento}
+                    />
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>
@@ -214,7 +216,7 @@ export function TablaCargos() {
     <Container>
       <div className="ContenedorTabla ">
         <h1>Cargos:</h1>
-        <Table>
+        <Table className="uppercase">
           <Table.Head className="border-b-2">
             <Table.HeadCell>Cargo</Table.HeadCell>
             <Table.HeadCell>Cantidad de Puestos</Table.HeadCell>
@@ -257,7 +259,7 @@ export function TablaInv() {
     <Container>
       <div className="ContenedorTabla">
         <h1>Inventario:</h1>
-        <Table>
+        <Table className="uppercase">
           <Table.Head className="border-b-2">
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Marca</Table.HeadCell>
@@ -327,7 +329,7 @@ export function TablaUsuario() {
                 </Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EditarUsr  id={users.id}/>
+                    <EditarUsr id={users.id} />
                     <EliminarUsr className="left-4" id={users.id} />
                   </Button.Group>
                 </Table.Cell>
@@ -356,7 +358,7 @@ export function TablaCategoria() {
     <Container>
       <div className="ContenedorTabla ">
         <h1>Categorias:</h1>
-        <Table>
+        <Table className="uppercase">
           <Table.Head className="border-b-2">
             <Table.HeadCell>Nombre de Categoria</Table.HeadCell>
             <Table.HeadCell>Opciones</Table.HeadCell>
@@ -370,7 +372,7 @@ export function TablaCategoria() {
                 </Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EditarCatg id={categorias.id_categoria}/>
+                    <EditarCatg id={categorias.id_categoria} />
                     <EliminarCatg
                       className="left-4"
                       id={categorias.id_categoria}

@@ -62,7 +62,7 @@ export function ModalRegis() {
   });
   const handleChange = (e) => {
     let names = e.target.name;
-    let values = e.target.value;
+    let values = e.target.value.toUpperCase();
     console.log(names);
     setDatos({ ...datos, [names]: values });
   };
@@ -629,7 +629,7 @@ export function ModalDep() {
 
   const handleChange = (e) => {
     let names = e.target.name;
-    let value = e.target.value;
+    let value = e.target.value.toUpperCase();
     setData({ ...data, [names]: value });
   };
 
@@ -681,7 +681,7 @@ export function ModalDep() {
           <Modal.Header>Registrar un Nuevo Departamento</Modal.Header>
           <Modal.Body>
             <form
-              className="flex flex-col gap-4 max-w-full"
+              className="flex flex-col gap-4 max-w-full uppercase"
               onSubmit={handleSend}
             >
               <div>
@@ -696,6 +696,7 @@ export function ModalDep() {
                   name="departamento"
                   value={data.departamento}
                   shadow
+                  className="uppercase"
                 />
               </div>
               <Button type="submit">Registrar</Button>
@@ -777,7 +778,7 @@ export function EditarDep({ id }) {
     e.preventDefault();
     await axios.put(`http://localhost:4000/task/${id}`, { departamento });
     setOpenModal(false);
-    swal('actualizado')
+    swal("actualizado");
   };
 
   const handleOpenModal = async () => {
@@ -838,7 +839,7 @@ export function ModalCargo() {
 
   const handleChange = (e) => {
     let names = e.target.name;
-    let value = e.target.value;
+    let value = e.target.value.toUpperCase();
     setData({ ...data, [names]: value });
   };
   // enviar datos al servidor
@@ -991,7 +992,7 @@ export function EliminarCargo({ id }) {
 
 //----------------------------------------------
 // registrar inventario
-export function RegisInv({id}) {
+export function RegisInv({ id }) {
   const [openModal, setOpenModal] = useState(false);
 
   // mostrar apartamentos en select
@@ -1041,7 +1042,7 @@ export function RegisInv({id}) {
   });
   const handleChange = (e) => {
     let names = e.target.name;
-    let values = e.target.value;
+    let values = e.target.value.toUpperCase();
     console.log(names);
     setDatos({ ...datos, [names]: values });
   };
@@ -1104,7 +1105,7 @@ export function RegisInv({id}) {
         <Modal.Header />
         <Modal.Body>
           <form
-            className="flex flex-col gap-4 max-w-full"
+            className="flex flex-col gap-4 max-w-full uppercase"
             onSubmit={handleSend}
           >
             <h3 className="text-xl font-medium text-gray-900 text-center ">
@@ -1323,7 +1324,7 @@ export function EditInv({ id }) {
     if (res.data[0]) {
       setDatos(res.data[0]);
     } else {
-      console.error('No se pudo obtener los datos del producto');
+      console.error("No se pudo obtener los datos del producto");
     }
     setOpenModal(true);
   };
@@ -1332,7 +1333,11 @@ export function EditInv({ id }) {
   const handleSend = async (e) => {
     e.preventDefault();
     // validar que los campos no esten vacios
-    if (Object.values(datos).some((field) => typeof field === 'string' && field.trim() === "")) {
+    if (
+      Object.values(datos).some(
+        (field) => typeof field === "string" && field.trim() === ""
+      )
+    ) {
       swal({
         title: "Campo vacio",
         text: "Debes ingresar todos los datos",
@@ -1351,9 +1356,13 @@ export function EditInv({ id }) {
         id_categoria: datos.id_categoria,
         id_departamento: datos.id_departamento,
       };
-      await axios.put(`http://localhost:4000/inventary/${id}`, datosParaEnviar, {
-        headers: {"Content-Type": "application/json"}
-      });
+      await axios.put(
+        `http://localhost:4000/inventary/${id}`,
+        datosParaEnviar,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       setOpenModal(false);
       swal({
         title: "Articulo",
@@ -1642,7 +1651,7 @@ export function ModalUsr() {
             "Content-Type": "application/json",
           },
         });
-        setData({ usuario: "", pass:"", quest: "Selecciona:", resp: "" });
+        setData({ usuario: "", pass: "", quest: "Selecciona:", resp: "" });
         setSecondPass("");
         setOpenModal(false);
         swal({
@@ -1779,7 +1788,7 @@ export function ModalUsr() {
     </Container>
   );
 }
-export function EliminarUsr({id}) {
+export function EliminarUsr({ id }) {
   const [openModal, setOpenModal] = useState(false);
   const deleteInven = async () => {
     try {
@@ -1834,7 +1843,7 @@ export function EliminarUsr({id}) {
     </>
   );
 }
-export function EditarUsr({id}) {
+export function EditarUsr({ id }) {
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -1949,7 +1958,7 @@ export function ModalCatg() {
 
   const handleChange = (e) => {
     let names = e.target.name;
-    let value = e.target.value;
+    let value = e.target.value.toUpperCase();
     setData({ ...data, [names]: value });
   };
   // enviar datos al servidor
@@ -2089,15 +2098,15 @@ export function EliminarCatg({ id }) {
     </>
   );
 }
-export function EditarCatg({id}) {
+export function EditarCatg({ id }) {
   const [openModal, setOpenModal] = useState(false);
-  const [categoria, setCategoria] = useState('')
+  const [categoria, setCategoria] = useState("");
   // actualizar
   const actualizar = async (e) => {
     e.preventDefault();
     await axios.put(`http://localhost:4000/categoria/${id}`, { categoria });
     setOpenModal(false);
-    swal('actualizado')
+    swal("actualizado");
   };
 
   const handleOpenModal = async () => {
@@ -2118,7 +2127,10 @@ export function EditarCatg({id}) {
         >
           <Modal.Header>Registrar Categoria</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full" onSubmit={actualizar}>
+            <form
+              className="flex flex-col gap-4 max-w-full"
+              onSubmit={actualizar}
+            >
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="categoria" value="Categoria:" />
