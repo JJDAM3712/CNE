@@ -60,7 +60,7 @@ export function TablaPersonal() {
                 <Table.Cell>{personal.departamento}</Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EditarPersona />
+                    <EditarPersona id={personal.id_personal}/>
                     <EliminarPersona id={personal.id_personal} />
                   </Button.Group>
                 </Table.Cell>

@@ -19,37 +19,36 @@ export function ModalRegis() {
   const [openModal, setOpenModal] = useState(false);
   // mostrar apartamentos en select
   const [datosDep, setDatosDep] = useState([]);
-  useEffect(() => {
-    ShowDepart();
-  }, []);
-  const ShowDepart = async () => {
-    await axios
-      .get("http://localhost:4000/task")
-      .then((res) => {
-        console.log(res);
-        setDatosDep(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
   //--------------------------------
   // mostrar categorias en select
   const [datosCat, setDatosCat] = useState([]);
+
   useEffect(() => {
+    const ShowDepart = async () => {
+      await axios
+        .get("http://localhost:4000/task")
+        .then((res) => {
+          console.log(res);
+          setDatosDep(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+    const ShowCat = async () => {
+      await axios
+        .get("http://localhost:4000/cargos")
+        .then((res) => {
+          console.log(res);
+          setDatosCat(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+    ShowDepart();
     ShowCat();
   }, []);
-  const ShowCat = async () => {
-    await axios
-      .get("http://localhost:4000/cargos")
-      .then((res) => {
-        console.log(res);
-        setDatosCat(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
   //---------------------------------
   // regsitrar datos
   const [datos, setDatos] = useState({
@@ -100,12 +99,20 @@ export function ModalRegis() {
           timer: "1500",
         });
       } catch (error) {
-        swal({
-          title: "Oops...",
-          text: "Ha ocurrido un error en el registro!",
-          icon: "error",
-          timer: "1500",
-        });
+        if (error.response && error.response.status === 300) {
+          swal({
+            title: "Cedula invalida...",
+            text: `Ya existe un usuario registrado con este número de cedula!`,
+            icon: "error",
+            timer: "2000",
+          });
+        } else {
+          swal({
+            title: "Oops...",
+            text: `Ha ocurrido un error! ${error}`,
+            icon: "error",
+          });
+        }
         return console.log(error);
       }
     }
@@ -123,8 +130,7 @@ export function ModalRegis() {
           <Modal.Body>
             <form
               className="flex flex-col gap-4 max-w-full"
-              onSubmit={handleSend}
-            >
+              onSubmit={handleSend}>
               {/*----- nombre ------- */}
               <div>
                 <div className="mb-2 block">
@@ -252,13 +258,125 @@ export function ModalRegis() {
     </Container>
   );
 }
-export function EditarPersona() {
+export function EditarPersona({id}) {
   const [openModal, setOpenModal] = useState(false);
+  // mostrar apartamentos en select
+  const [datosDep, setDatosDep] = useState([]);
+  //--------------------------------
+  // mostrar categorias en select
+  const [datosCat, setDatosCat] = useState([]);
 
+  useEffect(() => {
+    const ShowDepart = async () => {
+      await axios
+        .get("http://localhost:4000/task")
+        .then((res) => {
+          console.log(res);
+          setDatosDep(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+    const ShowCat = async () => {
+      await axios
+        .get("http://localhost:4000/cargos")
+        .then((res) => {
+          console.log(res);
+          setDatosCat(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+    ShowDepart();
+    ShowCat();
+  }, []);
+  //---------------------------------
+
+
+
+  //---------------------------------
+  // regsitrar datos
+  const [datos, setDatos] = useState({
+    nombre: "",
+    apellido: "",
+    cedula: "",
+    telefono: "",
+    id_cargo: "Selecciona:",
+    id_departamento: "Selecciona:",
+  });
+
+  // capturar eventos de inputs
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let values = e.target.value;
+    console.log(names);
+    setDatos({ ...datos, [names]: values });
+  };
+  const handleOpenModal = async () => {
+    const res = await axios.get(`http://localhost:4000/personal/${id}`);
+    if (res.data[0]) {
+      setDatos(res.data[0]);
+    } else {
+      console.error('No se pudo obtener los datos del producto');
+    }
+    setOpenModal(true);
+  };
+  // enviar datos al servidor
+  const handleSend = async (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if (Object.values(datos).some((field) => typeof field === 'string' && field.trim() === "")) {
+      swal({
+        title: "Campo vacio",
+        text: "Debes ingresar todos los datos",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
+      try {
+        const datosParaEnviar = {
+          nombre: datos.nombre,
+          apellido: datos.apellido,
+          cedula: datos.cedula,
+          telefono: datos.telefono,
+          id_cargo: datos.id_cargo,
+          id_departamento: datos.id_departamento,
+        };
+        await axios.put(`http://localhost:4000/personal/${id}`, datosParaEnviar, {
+          headers: {"Content-Type": "application/json"}
+        });
+        setOpenModal(false);
+        swal({
+          title: "Personal",
+          text: "Actualizado exitosamente!",
+          icon: "success",
+          timer: "1500",
+        });
+      } catch (error) {
+        if (error.response && error.response.status === 300) {
+          swal({
+            title: "Cedula invalida...",
+            text: `Ya existe un usuario registrado con este número de cedula!`,
+            icon: "error",
+            timer: "2000",
+          });
+        } else {
+          swal({
+            title: "Oops...",
+            text: `Ha ocurrido un error! ${error}`,
+            icon: "error",
+          });
+        }
+        return console.log(error);
+      }
+    }
+  };
   return (
     <Container>
       <>
-        <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+        <Button onClick={handleOpenModal} color="purple" size="sm">
           <FaEdit />
         </Button>
         <Modal
@@ -268,64 +386,93 @@ export function EditarPersona() {
         >
           <Modal.Header>Editar Datos</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full">
+            <form
+              className="flex flex-col gap-4 max-w-full"
+              onSubmit={handleSend}>
+              {/*----- nombre ------- */}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="nombres" value="Nombre:" />
                 </div>
                 <TextInput
                   id="nombres"
+                  name="nombre"
+                  value={datos.nombre}
                   type="text"
                   placeholder="Nombre"
+                  onChange={handleChange}
                   required
                   shadow
                 />
               </div>
+              {/*----- apellido ------- */}
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="Apellidos" value="Apellidos:" />
+                  <Label htmlFor="apellido" value="Apellidos:" />
                 </div>
                 <TextInput
-                  id="Apellidos"
+                  id="apellido"
+                  name="apellido"
+                  value={datos.apellido}
                   type="text"
                   placeholder="Apellidos"
+                  onChange={handleChange}
                   required
                   shadow
                 />
               </div>
+              {/*----- cedula ------- */}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="cedula" value="Cedula:" />
                 </div>
                 <TextInput
                   id="cedula"
-                  type="number"
+                  name="cedula"
+                  type="text"
+                  value={datos.cedula}
                   placeholder="1234567890"
+                  onChange={handleChange}
                   required
                   shadow
                 />
               </div>
+              {/*----- telefono ------- */}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="telefono" value="Teléfono:" />
                 </div>
                 <TextInput
                   id="telefono"
-                  type="number"
+                  name="telefono"
+                  value={datos.telefono}
+                  type="text"
                   placeholder="Teléfono"
+                  onChange={handleChange}
                   required
                   shadow
                 />
               </div>
+              {/*----- cargo ------- */}
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="cargo" value="Selecciona un Cargo" />
+                  <Label htmlFor="id_cargo" value="Selecciona un Cargo" />
                 </div>
-                <Select id="cargo" required>
-                  <option>Cantante</option>
+                <Select
+                  id="id_cargo"
+                  name="id_cargo"
+                  value={datos.id_cargo}
+                  onChange={handleChange}>
+                  <option value="Selecciona:" disabled>Selecciona:</option>
+                  {datosCat.map((cargos) => (
+                    <option key={cargos.id_cargo} value={cargos.id_cargo}>
+                      {cargos.cargo}
+                    </option>
+                  ))}
                   <option>Conciencia</option>
                 </Select>
               </div>
+              {/*----- departamento ------- */}
               <div>
                 <div className="mb-2 block">
                   <Label
@@ -333,12 +480,26 @@ export function EditarPersona() {
                     value="Selecciona un Departamento"
                   />
                 </div>
-                <Select id="departamento" required>
-                  <option>Musica</option>
-                  <option>Mental</option>
+                <Select
+                  id="id_departamento"
+                  name="id_departamento"
+                  value={datos.id_departamento}
+                  onChange={handleChange}
+                >
+                  <option value="Selecciona:" disabled>
+                    Selecciona
+                  </option>
+                  {datosDep.map((depart) => (
+                    <option
+                      value={depart.id_departamento}
+                      key={depart.id_departamento}
+                    >
+                      {depart.departamento}
+                    </option>
+                  ))}
                 </Select>
               </div>
-              <Button type="submit">Ingresar Datos</Button>
+              <Button type="submit">Registrar Nuevo Usuario</Button>
             </form>
           </Modal.Body>
           <Modal.Footer>
@@ -1042,7 +1203,6 @@ export function RegisInv({id}) {
   const handleChange = (e) => {
     let names = e.target.name;
     let values = e.target.value;
-    console.log(names);
     setDatos({ ...datos, [names]: values });
   };
   // enviar datos al servidor
@@ -1652,12 +1812,20 @@ export function ModalUsr() {
           timer: "1500",
         });
       } catch (error) {
-        swal({
-          title: "Oops...",
-          text: "Ha ocurrido un error al registrar!",
-          icon: "error",
-          timer: "1500",
-        });
+        if (error.response && error.response.status === 300) {
+          swal({
+            title: "Usuario invalido...",
+            text: `Ya existe un usuario registrado con ese nombre!`,
+            icon: "error",
+            timer: "2000",
+          });
+        } else {
+          swal({
+            title: "Oops...",
+            text: `Ha ocurrido un error! ${error}`,
+            icon: "error",
+          });
+        }
         return console.log(error);
       }
     }
@@ -1836,11 +2004,98 @@ export function EliminarUsr({id}) {
 }
 export function EditarUsr({id}) {
   const [openModal, setOpenModal] = useState(false);
+  const [secondPass, setSecondPass] = useState("");
 
+  //---------------------------------
+  // actualizar datos
+  const [datos, setDatos] = useState({
+    usuario: "",
+    pass: "",
+    quest: "",
+    resp: "",
+  });
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let value = e.target.value;
+    if (names === "secondPass") {
+      setSecondPass(value);
+    } else {
+      setDatos({ ...datos, [names]: value });
+    }
+  };
+  // mostrar los datos en los inputs
+  const handleOpenModal = async () => {
+    const res = await axios.get(`http://localhost:4000/signup/${id}`);
+    if (res.data[0]) {
+      setDatos(res.data[0]);
+    } else {
+      console.error('No se pudo obtener los datos del producto');
+    }
+    setOpenModal(true);
+  };
+
+  // enviar los datos nuevos al servidor
+  const handleSend = async (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if (Object.values(datos).some((field) => typeof field === 'string' && field.trim() === "")) {
+      swal({
+        title: "Campo vacio",
+        text: "Debes ingresar todos los datos",
+        icon: "warning",
+        timer: "1500",
+      });
+      // valida que ambas contraseñas sean iguales
+    } else if (datos.pass !== secondPass) {
+      return swal({
+        title: "Contraseñas no coinciden",
+        text: "Las contraseñas ingresadas no son iguales",
+        icon: "error",
+        timer: "1500",
+      });
+    } else {
+      // si los campos no estan vacios realiza la funcion
+      const datosParaEnviar = {
+        usuario: datos.usuario,
+        pass: datos.pass,
+        quest: datos.quest,
+        resp: datos.resp,
+      };
+      try {
+        await axios.put(`http://localhost:4000/signup/${id}`, datosParaEnviar, {
+          headers: {"Content-Type": "application/json"}
+        });
+        setOpenModal(false);
+        swal({
+          title: "Articulo",
+          text: "Actualizado exitosamente!",
+          icon: "success",
+          timer: "1500",
+        });
+      } catch (error) {
+        if (error.response && error.response.status === 300) {
+          swal({
+            title: "Usuario invalido...",
+            text: `Ya existe un usuario registrado con ese nombre!`,
+            icon: "error",
+            timer: "2000",
+          });
+        } else {
+          swal({
+            title: "Oops...",
+            text: `Ha ocurrido un error! ${error}`,
+            icon: "error",
+          });
+        }
+        return console.log(error);
+      }
+      
+    }
+  };
   return (
     <Container>
       <>
-        <Button onClick={() => setOpenModal(true)} color="purple" size="sm">
+        <Button onClick={handleOpenModal} color="purple" size="sm">
           <FaEdit />
         </Button>
         <Modal
@@ -1850,13 +2105,20 @@ export function EditarUsr({id}) {
         >
           <Modal.Header>Editar datos de Usuario</Modal.Header>
           <Modal.Body>
-            <form className="flex flex-col gap-4 max-w-full">
+          <form
+          onSubmit={handleSend}
+              className="flex flex-col gap-4 max-w-full"
+            >
+              {/*-------- usuario ---------*/}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="usuario" value="Usuario:" />
                 </div>
                 <TextInput
                   id="usuario"
+                  name="usuario"
+                  onChange={handleChange}
+                  value={datos.usuario}
                   type="text"
                   rightIcon={HiUser}
                   placeholder="Nombre Usuario"
@@ -1864,60 +2126,69 @@ export function EditarUsr({id}) {
                   shadow
                 />
               </div>
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="email" value="Correo Electrónico:" />
-                </div>
-                <TextInput
-                  id="email"
-                  type="email"
-                  rightIcon={HiMail}
-                  placeholder="ejemplo@ejemplo.com"
-                  required
-                />
-              </div>
+              {/*------- contraseña -------*/}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="password" value="Contraseña: " />
                 </div>
                 <TextInput
-                  id="password"
+                  id="pass"
+                  name="pass"
+                  onChange={handleChange}
+                  value={datos.pass}
                   type="password"
                   required
                   shadow
                   rightIcon={HiKey}
                 />
               </div>
+              {/*--- confirmar contraseña ---*/}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="password2" value="Repita su Contraseña: " />
                 </div>
                 <TextInput
-                  id="password2"
+                  id="secondPass"
+                  name="secondPass"
+                  onChange={handleChange}
+                  value={secondPass}
                   type="password"
                   required
                   shadow
                   rightIcon={HiKey}
                 />
               </div>
+              {/*------- pregunta --------- */}
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="pregunta" value="Pregunta de Seguridad:" />
+                  <Label htmlFor="quest" value="Pregunta de Seguridad:" />
                 </div>
-                <Select id="pregunta" required>
-                  <option disabled>Seleccione: </option>
-                  <option>Color Favorito</option>
-                  <option>Nombre de mi Perro</option>
-                  <option>Nombre de mi Madre</option>
-                  <option>Lugar de Nacimiento</option>
+                <Select
+                  id="quest"
+                  name="quest"
+                  value={datos.quest}
+                  onChange={handleChange}
+                >
+                  <option value="Selecciona:" disabled>
+                    Seleccione:
+                  </option>
+                  <option value="1">¿Color Favorito?</option>
+                  <option value="2">¿Nombre de mi Perro?</option>
+                  <option value="3">¿Nombre de mi Madre?</option>
+                  <option value="4">¿Lugar de Nacimiento?</option>
+                  <option value="5">¿Primer auto?</option>
                 </Select>
               </div>
+              {/*------- respuesta ---------*/}
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="respuesta" value="Respuesta:" />
                 </div>
                 <TextInput
-                  id="respuesta"
+                  id="resp"
+                  name="resp"
+                  onChange={handleChange}
+                  value={datos.resp}
                   type="text"
                   rightIcon={HiPencil}
                   placeholder="Ingrese su Respuesta"
@@ -1925,8 +2196,7 @@ export function EditarUsr({id}) {
                   shadow
                 />
               </div>
-              <div></div>
-              <Button type="submit">Registrar</Button>
+              <Button type="submit">Actualizar</Button>
             </form>
           </Modal.Body>
           <Modal.Footer>
