@@ -4,8 +4,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./Login";
 import App from "./App";
 import "./index.css";
-import { Protect } from "./routers/Routes.Protect.tsx";
+import { Protect, ProtectForgot } from "./routers/Routes.Protect.tsx";
 import { AuthProv } from "./auth/AuthProvided.tsx";
+import Forgot from "./forgot.jsx";
+import { ResUser } from "./pages/ForgotPages/ResUser.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,20 @@ const router = createBrowserRouter([
       {
         path: "/app/*",
         element: <App />,
+      },
+    ],
+  },
+  {
+    path: "/forgot",
+    element: <Forgot />,
+  },
+  {
+    path: "/forgot",
+    element: <ProtectForgot />,
+    children: [
+      {
+        path: "/forgot/*",
+        element: <ResUser />,
       },
     ],
   },

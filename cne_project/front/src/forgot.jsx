@@ -2,31 +2,35 @@ import styled from "styled-components";
 import "./output.css";
 import logo from "./assets/img/CNE_logo.svg";
 import "./css/login.css";
-import { HiLockClosed, HiUser } from "react-icons/hi";
+import { HiUser } from "react-icons/hi";
 import { useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth/AuthProvided";
 
-function Login() {
+export function Forgot() {
   const [datos, setDatos] = useState({
     usuario: "",
     password: "",
   });
   const navigate = useNavigate();
+  //   ACTIVAR EL USO DE ESTA FUNCION (NO SUPE COMO XD)
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
     setDatos({ ...datos, [names]: value });
   };
   const { setIsAuthenticated } = useAuth();
-  setIsAuthenticated(false);
+  //   VALIDACION DE AUTENTICACION EVITA EL ACCESO NO AUTORIZADO AL SIGUIENTE FORMULARIO
+  //   setIsAuthenticated(false);
 
+  //   ACTIVAR EL USO DE ESTA FUNCION (NO SUPE COMO XD)
   const handleSend = async (e) => {
     e.preventDefault();
 
     try {
+      // EDITAR Y ADAPTAR LAS VALIDACIONES
       if (datos.usuario.trim() === "" && datos.password.trim() === "") {
         swal({
           title: "Campo vacio",
@@ -40,6 +44,7 @@ function Login() {
             "Content-Type": "application/json",
           },
         });
+        // CAMBIA LA AUTENTICACION DE RUTA A VERDADERO Y PERMITE EL ACCESO AL SIGUIENTE FORMULARIO
         if (res.status === 200) {
           setIsAuthenticated(true);
           navigate("/forgot/*");
@@ -63,14 +68,13 @@ function Login() {
       return console.log(error);
     }
   };
-
   return (
     <Container>
-      <form action="" className="form_main" onSubmit={handleSend}>
+      <form action="" className="form_main">
         <div className="flex ">
           <img src={logo} alt="Logo CNE" className="w-24" />
         </div>
-        <p className="heading">Ingresar al Sistema</p>
+        <p className="heading">Recuperar Contraseña</p>
         <div className="inputContainer">
           <HiUser className="inputIcon" />
           <input
@@ -78,28 +82,13 @@ function Login() {
             className="inputField"
             id="usuario"
             name="usuario"
-            value={datos.usuario}
             placeholder="Usuario"
-            onChange={handleChange}
           />
         </div>
 
-        <div className="inputContainer">
-          <HiLockClosed className="inputIcon" />
-          <input
-            type="password"
-            className="inputField"
-            id="password"
-            name="password"
-            value={datos.password}
-            onChange={handleChange}
-            placeholder="Contraseña"
-          />
-        </div>
-
-        <button id="button">Ingresar</button>
-        <a className="forgotLink" href="/forgot">
-          Olvidó su contraseña?
+        <button id="button">Buscar Usuario</button>
+        <a className="forgotLink" href="/">
+          Volver
         </a>
       </form>
     </Container>
@@ -114,4 +103,4 @@ const Container = styled.div`
   background-color: #ccc;
 `;
 
-export default Login;
+export default Forgot;

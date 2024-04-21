@@ -8,3 +8,10 @@ export const Protect = () => {
 
   return auth.isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };
+
+export const ProtectForgot = () => {
+  // valida el estado del login
+  const auth = useAuth();
+
+  return auth.isAuthenticated ? <Outlet /> : <Navigate to="/forgot" />;
+};
