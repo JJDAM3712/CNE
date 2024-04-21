@@ -309,7 +309,7 @@ export function EditarPersona({ id }) {
   // capturar eventos de inputs
   const handleChange = (e) => {
     let names = e.target.name;
-    let values = e.target.value;
+    let values = e.target.value.toUpperCase();
     console.log(names);
     setDatos({ ...datos, [names]: values });
   };
@@ -1487,7 +1487,7 @@ export function EditInv({ id }) {
   });
   const handleChange = (e) => {
     let names = e.target.name;
-    let values = e.target.value;
+    let values = e.target.value.toUpperCase();
     setDatos({ ...datos, [names]: values });
   };
 
