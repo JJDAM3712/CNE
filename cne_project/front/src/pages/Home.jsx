@@ -95,6 +95,6 @@ const Container = styled.div`
   hr {
     border: none;
     height: 1px;
-    background-color: #fff; /* establece el color de la línea */
+    background-color: #fff; /* establece el color de la linea */
   }
 `;
