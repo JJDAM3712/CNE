@@ -17,27 +17,18 @@ import {
   EliminarCatg,
   EditarCatg,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
+import { Asistencias } from "../pages/Asistencias";
 
 // LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
 
 //-------------------------------------------------
 // tabla personal
-export function TablaPersonal() {
-  const [datos, setDatos] = useState([]);
-  useEffect(() => {
-    ShowDepart();
-  }, []);
-
-  const ShowDepart = async () => {
-    const res = await axios.get("http://localhost:4000/personal");
-    setDatos(res.data);
-  };
-
+export function TablaPersonal({ innerRef, datos, setDatos }) {
   return (
     <Container>
       <div className="ContenedorTabla">
         <h1>Personal Registrado:</h1>
-        <Table>
+        <Table ref={innerRef}>
           <Table.Head className="border-b-2 uppercase">
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Apellido</Table.HeadCell>
@@ -45,7 +36,7 @@ export function TablaPersonal() {
             <Table.HeadCell>Teléfono</Table.HeadCell>
             <Table.HeadCell>Cargo</Table.HeadCell>
             <Table.HeadCell>Departamento</Table.HeadCell>
-            <Table.HeadCell>Opciones</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y uppercase">
             {datos.map((personal) => (
@@ -61,7 +52,7 @@ export function TablaPersonal() {
                 <Table.Cell>
                   <Button.Group>
                     <EditarPersona id={personal.id_personal}/>
-                    <EliminarPersona id={personal.id_personal} />
+                    <EliminarPersona id={personal.id_personal}/>
                   </Button.Group>
                 </Table.Cell>
               </Table.Row>
@@ -73,13 +64,13 @@ export function TablaPersonal() {
   );
 }
 //-------------------------------------------------
-// tabla personal
-export function TablaAsistencias() {
+// tabla asistencias
+export function TablaAsistencias({innerRef, datos}) {
   return (
     <Container>
       <div className="ContenedorTabla">
         <h1>Asistencias:</h1>
-        <Table>
+        <Table ref={innerRef}>
           <Table.Head className="border-b-2 uppercase">
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Apellido</Table.HeadCell>
@@ -87,22 +78,25 @@ export function TablaAsistencias() {
             <Table.HeadCell>Fecha</Table.HeadCell>
             <Table.HeadCell>Hora Entrada</Table.HeadCell>
             <Table.HeadCell>Hora Salida</Table.HeadCell>
-            <Table.HeadCell>Opciones</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y uppercase">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap">
-                Marco Antonio
-              </Table.Cell>
-              <Table.Cell>Solis</Table.Cell>
-              <Table.Cell>12345678</Table.Cell>
-              <Table.Cell>2024-01-01</Table.Cell>
-              <Table.Cell>12:32:32</Table.Cell>
-              <Table.Cell>12:33:33</Table.Cell>
-              <Table.Cell>
-                <EliminaAsist />
-              </Table.Cell>
-            </Table.Row>
+            {/* mostrar los datos */}
+            {datos.map((asistencias) => 
+              <Table.Row className="bg-white" key={asistencias.id_asistencia}>
+                <Table.Cell className="whitespace-nowrap">
+                  {asistencias.nombre}
+                </Table.Cell>
+                <Table.Cell>{asistencias.apellido}</Table.Cell>
+                <Table.Cell>{asistencias.cedula}</Table.Cell>
+                <Table.Cell>{asistencias.fecha}</Table.Cell>
+                <Table.Cell>{asistencias.entrada}</Table.Cell>
+                <Table.Cell>{asistencias.salida}</Table.Cell>
+                <Table.Cell>
+                  <EliminaAsist id={asistencias.id_asistencia}/>
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table>
       </div>
@@ -111,12 +105,12 @@ export function TablaAsistencias() {
 }
 //-------------------------------------------------
 // tabla personal
-export function TablaVisitas() {
+export function TablaVisitas({ innerRef }) {
   return (
     <Container>
       <div className="ContenedorTabla ">
         <h1>Visitas:</h1>
-        <Table>
+        <Table ref={innerRef}>
           <Table.Head className="border-b-2">
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Cedula</Table.HeadCell>
@@ -124,7 +118,7 @@ export function TablaVisitas() {
             <Table.HeadCell>Fecha</Table.HeadCell>
             <Table.HeadCell>Hora Entrada</Table.HeadCell>
             <Table.HeadCell>Hora Salida</Table.HeadCell>
-            <Table.HeadCell>Opciones</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y uppercase">
             <Table.Row className="bg-white">
@@ -159,7 +153,6 @@ export function TablaDepartamento() {
     const res = await axios.get("http://localhost:4000/task");
     setDatos(res.data);
   };
-
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -167,7 +160,7 @@ export function TablaDepartamento() {
         <Table className="uppercase">
           <Table.Head className="border-b-2 uppercase">
             <Table.HeadCell>Departamento</Table.HeadCell>
-            <Table.HeadCell>Opciones</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {/* mostrar datos de bd en tabla */}
@@ -207,7 +200,6 @@ export function TablaCargos() {
   useEffect(() => {
     ShowDepart();
   }, []);
-
   const ShowDepart = async () => {
     const res = await axios.get("http://localhost:4000/cargos");
     setDatos(res.data);
@@ -220,7 +212,7 @@ export function TablaCargos() {
           <Table.Head className="border-b-2">
             <Table.HeadCell>Cargo</Table.HeadCell>
             <Table.HeadCell>Cantidad de Puestos</Table.HeadCell>
-            <Table.HeadCell>Opciones</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {datos.map((cargos) => (
@@ -244,22 +236,12 @@ export function TablaCargos() {
 }
 //-------------------------------------------------
 // tabla de inventario
-export function TablaInv() {
-  const [datos, setDatos] = useState([]);
-
-  useEffect(() => {
-    ShowDepart();
-  }, []);
-
-  const ShowDepart = async () => {
-    const res = await axios.get("http://localhost:4000/inventary");
-    setDatos(res.data);
-  };
+export function TablaInv({ innerRef, datos, setDatos }) {
   return (
     <Container>
       <div className="ContenedorTabla">
         <h1>Inventario:</h1>
-        <Table className="uppercase">
+        <Table className="uppercase" ref={innerRef}>
           <Table.Head className="border-b-2">
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Marca</Table.HeadCell>
@@ -269,7 +251,7 @@ export function TablaInv() {
             <Table.HeadCell>Estado</Table.HeadCell>
             <Table.HeadCell>Cantidad</Table.HeadCell>
             <Table.HeadCell>Cantegoria</Table.HeadCell>
-            <Table.HeadCell>Opciones</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {datos.map((inventary) => (
@@ -319,7 +301,7 @@ export function TablaUsuario() {
         <Table>
           <Table.Head className="border-b-2">
             <Table.HeadCell>Nombre de Usuario</Table.HeadCell>
-            <Table.HeadCell>Opciones</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {datos.map((users) => (
@@ -353,7 +335,6 @@ export function TablaCategoria() {
     const res = await axios.get("http://localhost:4000/categoria");
     setData(res.data);
   };
-
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -361,7 +342,7 @@ export function TablaCategoria() {
         <Table className="uppercase">
           <Table.Head className="border-b-2">
             <Table.HeadCell>Nombre de Categoria</Table.HeadCell>
-            <Table.HeadCell>Opciones</Table.HeadCell>
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {data.map((categorias) => (

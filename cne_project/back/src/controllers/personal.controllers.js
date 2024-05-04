@@ -78,17 +78,15 @@ export const updatePersonal = async (req, res) => {
         // valida si existe un usuario con el mismo nombre
         if (result.length === 0){
             try{
-                // hashear la contraseña nueva
-                const password = await bcrypt.hash(pass, 8);
                 // consulta sql
                 const sql = `UPDATE personal SET 
                                         nombre = ?, apellido = ?,
                                         cedula = ?, telefono = ?,
                                         id_cargo = ?, id_departamento = ? 
-                                        WHERE id = ?`;
+                                        WHERE id_personal = ?`;
                 // ejecutar consulta sql
                 const [result] = await pool.query(sql, [
-                    nombre, apellido, cedula, telefono,id_cargo,id_departamento, req.params.id
+                    nombre, apellido, cedula, telefono, id_cargo,id_departamento, req.params.id
                 ]);
                 // devuelve exito
                 return res.status(200).json({ mensaje: "Usuario modificado exitosamente" });

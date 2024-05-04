@@ -42,7 +42,7 @@ function Login() {
         });
         if (res.status === 200) {
           setIsAuthenticated(true);
-          navigate("/forgot/*");
+          navigate("/app/*");
         }
       }
     } catch (error) {

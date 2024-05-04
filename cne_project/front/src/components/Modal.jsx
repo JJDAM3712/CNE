@@ -580,9 +580,29 @@ export function EliminarPersona({ id }) {
 }
 
 // -----------------------------------------
-export function EliminaAsist() {
+export function EliminaAsist({id}) {
   const [openModal, setOpenModal] = useState(false);
-
+  const deleteAsistence = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:4000/asistencia/${id}`);
+      swal({
+        title: "Registro",
+        text: "Eliminado exitosamente!",
+        icon: "success",
+        timer: "2000",
+      });
+      setOpenModal(false);
+    } catch (error) {
+      console.error("error", error);
+      swal({
+        title: "Registro",
+        text: "Error en la eliminación!",
+        icon: "error",
+        timer: "2000",
+      });
+      setOpenModal(false);
+    }
+  };
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -602,7 +622,7 @@ export function EliminaAsist() {
               Estas seguro de querer eliminar este Registro?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setOpenModal(false)}>
+              <Button color="failure" onClick={deleteAsistence}>
                 {"Aceptar"}
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>
@@ -617,7 +637,79 @@ export function EliminaAsist() {
 }
 export function RegisAsist() {
   const [openModal, setOpenModal] = useState(false);
-
+  const [data, setData] = useState({
+    cedula: "", asistencia: "entrada"
+  })
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let value = e.target.value;
+    setData({ ...data, [names]: value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const url_0 = 'http://localhost:4000/asistencia/entrada';
+      const url_1 = 'http://localhost:4000/asistencia/salida';
+      // Define la URL dependiendo del valor de asistencia
+      const url = data.asistencia === 'entrada' ? url_0 : url_1;
+      const response = await axios.post(url, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data);
+      setOpenModal(false);
+      swal({
+        title: "Asistencia",
+        text: "Registro exitoso!",
+        icon: "success",
+        timer: "1500",
+      });
+    } catch (error) {
+      switch(error.response && error.response.status) {
+        case 402: 
+          swal({
+            title: "Entrada no registrada!",
+            text: `Debes registrar tu entrada primero`,
+            icon: "error",
+            timer: "2000",
+          });
+          break;
+        case 403:
+          swal({
+            title: "Salida registrada",
+            text: `Ya se ha registrado una salida hoy`,
+            icon: "error",
+            timer: "2000",
+          });
+          break;
+        case 405:
+          swal({
+            title: "Cedula errorea!",
+            text: `La cedula no existe`,
+            icon: "error",
+            timer: "2000",
+          });
+          break;
+        case 406:
+          swal({
+            title: "Entrada registrada",
+            text: `Ya se ha registrado una entrada hoy`,
+            icon: "error",
+            timer: "2000",
+          });
+          break;
+        default:
+          swal({
+            title: "Oops...",
+            text: `Ha ocurrido un error! ${error}`,
+            icon: "error",
+          });
+          console.error(error);
+      }
+    }
+  };
+  
   return (
     <>
       <Button onClick={() => setOpenModal(true)}>Registrar Asistencia</Button>
@@ -634,36 +726,38 @@ export function RegisAsist() {
               <img src={logo} alt="Logo CNE" className="w-20" />
             </div>
           </div>
-          <form className="space-y-6 flex max-w-md flex-col gap-4">
+          <form className="space-y-6 flex max-w-md flex-col gap-4" onSubmit={handleSubmit}>
             <h3 className="text-xl font-medium text-gray-900 text-center ">
               REGISTRAR ASISTENCIA
             </h3>
+            {/*---- cedula -----*/}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="cedula" value="Cedula:" />
+                <Label htmlFor="id_personal" value="Cedula:" />
               </div>
               <TextInput
                 id="cedula"
+                name="cedula"
                 placeholder="Ingrese su Cedula de identidad"
-                required
+                onChange={handleChange}
+                value={data.cedula}
               />
             </div>
+            {/*---- checkbox -----*/}
             <fieldset className="flex max-w-md gap-4">
               <legend className="mb-4">Selecciona el tipo de Registro</legend>
               <div className="flex items-center gap-2">
-                <Radio
-                  id="united-state"
-                  name="asistencia"
-                  value="entrada"
-                  defaultChecked
-                />
-                <Label htmlFor="united-state">ENTRADA</Label>
+                <Radio id="entrada" name="asistencia" value="entrada"
+                  checked={data.asistencia === 'entrada'} onChange={handleChange}/>
+                <Label htmlFor="entrada">ENTRADA</Label>
               </div>
               <div className="flex items-center gap-2">
-                <Radio id="salida" name="asistencia" value="salida" />
+                <Radio id="salida" name="asistencia" value="salida"
+                  checked={data.asistencia === 'salida'} onChange={handleChange}/>
                 <Label htmlFor="salida">SALIDA</Label>
               </div>
             </fieldset>
+            {/*---- checkbox -----*/}
             <div className="w-full flex justify-between">
               <Button type="submit">REGISTRAR</Button>
               <Button color="failure" onClick={() => setOpenModal(false)}>
