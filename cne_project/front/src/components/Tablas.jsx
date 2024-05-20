@@ -17,13 +17,13 @@ import {
   EliminarCatg,
   EditarCatg,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
-import { Asistencias } from "../pages/Asistencias";
+import socketIOClient from 'socket.io-client'
 
-// LOS DATOS UTILIZADOS EN LAS FILAS ACUALES SON PARA EJEMPLO
+
 
 //-------------------------------------------------
 // tabla personal
-export function TablaPersonal({ innerRef, datos, setDatos }) {
+export function TablaPersonal({ innerRef, datos }) {
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -66,6 +66,18 @@ export function TablaPersonal({ innerRef, datos, setDatos }) {
 //-------------------------------------------------
 // tabla asistencias
 export function TablaAsistencias({innerRef, datos}) {
+  const [asistencia, setAsistencia] = useState(datos);
+  
+  useEffect(() => {
+    const socket = socketIOClient('http://localhost:4000');
+    
+    socket.on('TablaActualizada', (nuevasAsistencias) => {
+      setAsistencia(nuevasAsistencias)
+    });
+    return () => {
+      socket.disconnect();
+    }
+  }, []);
   return (
     <Container>
       <div className="ContenedorTabla">
