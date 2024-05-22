@@ -25,7 +25,6 @@ export const GetVisitas = async (req, res) => {
         return res.status(500).json({mensaje: error.message});
     }
 }
-
 // Registrar una entrada de visita
 export const RegisVisitaEnter = async (req, res) => {
     try {
@@ -57,17 +56,16 @@ export const RegisVisitaEnter = async (req, res) => {
                         fecha, 
                         hora_entrada
                     ]);
+                console.log(result);
                 res.status(200).json({mensaje: "visita registrada!"})
             } catch (error) {
                 return res.status(500).json({mensaje: error.message})
             }
         }
-       
     } catch (error) {
         return res.status(500).json({mensaje: error.message});
     }
 }
-
 // Registrar una salida de visita
 export const RegisVisitaExit = async (req, res) => {
     try {
@@ -77,34 +75,44 @@ export const RegisVisitaExit = async (req, res) => {
         const fechaHora = new Date();
         const fecha = fechaHora.toISOString().split('T')[0];
         // obtiene la hora actual
-        const salida = fechaHora.toTimeString().split(' ')[0];
+        const hora_salida = fechaHora.toTimeString().split(' ')[0];
         // consultas sql
-        const sql_0 = `SELECT * FROM personal WHERE cedula = ?`;
-        const sql_1 = `SELECT * FROM asistencia WHERE id_personal = ? AND fecha = ?`;
-        const sql_2 = `UPDATE asistencia SET salida = ? WHERE id_personal = ? AND fecha = ?`;
+        const sql_0 = `SELECT * FROM visita WHERE cedula = ?`;
+        const sql_1 = `SELECT * FROM visita WHERE cedula = ? AND fecha = ?`;
+        const sql_2 = `UPDATE visita SET hora_salida = ? WHERE cedula = ? AND fecha = ?`;
         // valida que la cedula exista
         const [result_0] = await pool.query(sql_0, [cedula]);
         if (result_0.length === 0) {
-            return res.status(405).json('La cédula ingresada no corresponde a ningún empleado');
+            return res.status(405).json('La cédula ingresada no se ha registrado hoy');
         }
-        // obtiene el id del personal
-        const id_personal = result_0[0].id_personal
         // ejecuta query para validar la entrada "hoy"
-        const [result] = await pool.query(sql_1, [id_personal, fecha]);
+        const [result] = await pool.query(sql_1, [cedula, fecha]);
         // valida el resultado del query
-        if (result.length === 0) {
-            return res.status(402).json('No has registrado tu entrada hoy');
-        } else if (result[0].salida) {
+        if (result[0].hora_salida) {
             // valida si ya se registró una salida "hoy"
             return res.status(403).json('Ya registraste tu salida hoy');
         } else {
             try {
-                const [result] = await pool.query(sql_2, [salida, id_personal, fecha])
+                const [result] = await pool.query(sql_2, [hora_salida, cedula, fecha])
                 res.status(200).json('Salida registrada!')
             } catch (error) {
                 return res.status(500).json({mensaje: error.message})
             }
         }
+    } catch (error) {
+        return res.status(500).json({mensaje: error.message})
+    }
+}
+// borrar asistencias
+export const DeleteVisitas = async (req, res) => {
+    try {
+        // consulta sql
+        const sql = `DELETE FROM visita WHERE id_visita = ?`;
+        const [result] = await pool.query(sql, [req.params.id])
+        if (result.affectedRows === 0){
+            return res.status(404).json({mensaje: "No existe el registro"})
+        }
+        return res.status(202).json("Registro eliminado con exito!")
     } catch (error) {
         return res.status(500).json({mensaje: error.message})
     }

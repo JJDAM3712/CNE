@@ -62,7 +62,9 @@ export function ModalRegis() {
   const handleChange = (e) => {
     let names = e.target.name;
     let values = e.target.value.toUpperCase();
-    console.log(names);
+    if (names === 'cedula') {
+      values = values.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    }
     setDatos({ ...datos, [names]: values });
   };
   // enviar datos al servidor
@@ -310,7 +312,9 @@ export function EditarPersona({ id }) {
   const handleChange = (e) => {
     let names = e.target.name;
     let values = e.target.value.toUpperCase();
-    console.log(names);
+    if (names === 'cedula') {
+      values = values.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    }
     setDatos({ ...datos, [names]: values });
   };
   const handleOpenModal = async () => {
@@ -643,6 +647,9 @@ export function RegisAsist() {
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
+    if (names === 'cedula') {
+      value = value.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    }
     setData({ ...data, [names]: value });
   };
   const handleSubmit = async (e) => {
@@ -774,7 +781,85 @@ export function RegisAsist() {
 // ------------------------------------------
 export function RegisVisita() {
   const [openModal, setOpenModal] = useState(false);
-
+  const [data, setData] = useState({
+    nombre:"", cedula: "", motivo: "", id_departamento: "Selecciona:"
+  });
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let value = e.target.value.toUpperCase();
+    if (names === 'cedula') {
+      value = value.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    }
+    setData({ ...data, [names]: value });
+  };
+  // mostrar apartamentos en select
+  const [datosDep, setDatosDep] = useState([]);
+  useEffect(() => {
+    ShowDepart();
+  }, []);
+  const ShowDepart = async () => {
+    await axios
+      .get("http://localhost:4000/task")
+      .then((res) => {
+        console.log(res);
+        setDatosDep(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  // enviar datos al servidor
+  const handleSend = async (e) => {
+    e.preventDefault();
+    // validar que los campos no esten vacios
+    if (Object.values(data).some((field) => field.trim() === "")) {
+      swal({
+        title: "Campo vacio",
+        text: "Debes ingresar todos los datos",
+        icon: "warning",
+        timer: "1500",
+      });
+    } else {
+      try {
+        await axios.post("http://localhost:4000/visita/entrada", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setData({
+          nombre: "",
+          cedula: "",
+          motivo: "",
+          id_departamento: "Selecciona:"
+        });
+        setOpenModal(false);
+        swal({
+          title: "Articulo",
+          text: "Registrado exitosamente!",
+          icon: "success",
+          timer: "1500",
+        });
+      } catch (error) {
+        switch(error.response && error.response.status) {
+          case 406:
+            swal({
+              title: "Entrada registrada",
+              text: `Ya se ha registrado esta visita hoy`,
+              icon: "error",
+              timer: "2000",
+            });
+            break;
+          default:
+            swal({
+              title: "Oops...",
+              text: `Ha ocurrido un error! ${error}`,
+              icon: "error",
+            });
+            console.error(error);
+        }
+      }
+    }
+  };
   return (
     <>
       <Button onClick={() => setOpenModal(true)}>Registrar Visita</Button>
@@ -791,51 +876,174 @@ export function RegisVisita() {
               <img src={logo} alt="Logo CNE" className="w-20" />
             </div>
           </div>
-          <form className="space-y-6 flex max-w-md flex-col gap-4">
+          <form className="space-y-6 flex max-w-md flex-col gap-4" onSubmit={handleSend}>
             <h3 className="text-xl font-medium text-gray-900 text-center ">
               REGISTRAR VISITA
             </h3>
+            {/* NOMBRE */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="nombre" value="Nombre:" />
               </div>
-              <TextInput id="nombre" placeholder="Nombre:" required />
+              <TextInput 
+                id="nombre"
+                name="nombre"
+                value={data.nombre}
+                onChange={handleChange}
+                placeholder="Nombre:" />
             </div>
+            {/* CEDULA */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="cedula" value="Cedula:" />
               </div>
               <TextInput
                 id="cedula"
-                placeholder="Ingrese su Cedula de identidad"
-                required
-              />
+                name="cedula"
+                value={data.cedula}
+                onChange={handleChange}
+                placeholder="Ingrese su Cedula de identidad" />
             </div>
+            {/* MOTIVO */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="motivo" value="Motivo:" />
               </div>
               <TextInput
                 id="motivo"
-                placeholder="Ingrese su Motivo de Visita"
-                required
-              />
+                name="motivo"
+                value={data.motivo}
+                onChange={handleChange}
+                placeholder="Ingrese su Motivo de Visita" />
             </div>
+            {/* DEPARTAMENtO */}
             <div>
               <div className="mb-2 block">
-                <Label
-                  htmlFor="departamento"
-                  value="Selecciona el Departamento al que pertence"
-                />
+                <Label htmlFor="Departamento" value="Departamento:" />
               </div>
-              <Select id="departamento" required>
-                <option value="" key="Selec" disabled selected>
+              <Select
+                id="id_departamento"
+                name="id_departamento"
+                onChange={handleChange}
+                value={data.id_departamento}
+              >
+                <option value="Selecciona:" disabled>
                   Selecciona:
                 </option>
-                <option value="ejemplo" key="1">
-                  Ejemplo de Departamento
-                </option>
+                {datosDep.map((depart) => (
+                  <option
+                    value={depart.id_departamento}
+                    key={depart.id_departamento}
+                  >
+                    {depart.departamento}
+                  </option>
+                ))}
               </Select>
+            </div>
+
+            <div className="w-full flex justify-between">
+              <Button type="submit">REGISTRAR</Button>
+              <Button color="failure" onClick={() => setOpenModal(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
+export function RegisSalidaVisita() {
+  const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({
+    cedula: ""
+  });
+  const handleChange = (e) => {
+    let names = e.target.name;
+    let value = e.target.value;
+    if (names === 'cedula') {
+      value = value.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    }
+    setData({ ...data, [names]: value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const url = 'http://localhost:4000/visita/salida';
+      const response = await axios.put(url, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data);
+      setOpenModal(false);
+      swal({
+        title: "Salida",
+        text: "Registro exitoso!",
+        icon: "success",
+        timer: "1500",
+      });
+    } catch (error) {
+      switch(error.response && error.response.status) {
+        case 403:
+          swal({
+            title: "Salida registrada",
+            text: `Ya se ha registrado una salida hoy`,
+            icon: "error",
+            timer: "2000",
+          });
+          break;
+        case 405:
+          swal({
+            title: "Cedula errorea!",
+            text: `La cedula no se ha registrado hoy`,
+            icon: "error",
+            timer: "2000",
+          });
+          break;
+        default:
+          swal({
+            title: "Oops...",
+            text: `Ha ocurrido un error! ${error}`,
+            icon: "error",
+          });
+          console.error(error);
+      }
+    }
+  };
+  
+  return (
+    <>
+      <Button onClick={() => setOpenModal(true)} color="failure">Registrar Salida</Button>
+      <Modal
+        show={openModal}
+        size="md"
+        popup
+        onClose={() => setOpenModal(false)}
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="flex justify-center align-middle">
+            <div className="flex ">
+              <img src={logo} alt="Logo CNE" className="w-20" />
+            </div>
+          </div>
+          <form className="space-y-6 flex max-w-md flex-col gap-4" onSubmit={handleSubmit}>
+            <h3 className="text-xl font-medium text-gray-900 text-center ">
+              REGISTRAR SALIDA
+            </h3>
+            {/*---- cedula -----*/}
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="id_personal" value="Cedula:" />
+              </div>
+              <TextInput
+                id="cedula"
+                name="cedula"
+                placeholder="Ingrese su Cedula de identidad"
+                onChange={handleChange}
+                value={data.cedula}
+              />
             </div>
             <div className="w-full flex justify-between">
               <Button type="submit">REGISTRAR</Button>
@@ -849,9 +1057,29 @@ export function RegisVisita() {
     </>
   );
 }
-export function EliminaVisita() {
+export function EliminaVisita({id}) {
   const [openModal, setOpenModal] = useState(false);
-
+  const deleteVisita = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:4000/visita/${id}`);
+      swal({
+        title: "Registro",
+        text: "Eliminado exitosamente!",
+        icon: "success",
+        timer: "2000",
+      });
+      setOpenModal(false);
+    } catch (error) {
+      console.error("error", error);
+      swal({
+        title: "Registro",
+        text: "Error en la eliminación!",
+        icon: "error",
+        timer: "2000",
+      });
+      setOpenModal(false);
+    }
+  };
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color="failure" size="sm">
@@ -871,7 +1099,7 @@ export function EliminaVisita() {
               Estas seguro de querer eliminar este Registro?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setOpenModal(false)}>
+              <Button color="failure" onClick={deleteVisita}>
                 {"Eliminar"}
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>

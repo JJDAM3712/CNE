@@ -26,7 +26,8 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
         origin: 'http://localhost:5173',
-        methods: ['GET', 'POST', 'PUT', 'DELETE']
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true
     }
 });
 io.on('connection', (socket) => {
@@ -39,7 +40,12 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log(`Cliente conectado a ${socket.id}`);
     })
-})
+});
+app.use(cors({
+    origin: 'http://localhost:5173', // Ajusta esto para permitir solicitudes desde tu cliente React
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true // Si necesitas enviar cookies o headers de autenticación
+}));
 
 // procesar los datos del cliente
 app.use(express.json());

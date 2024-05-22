@@ -117,7 +117,7 @@ export function TablaAsistencias({innerRef, datos}) {
 }
 //-------------------------------------------------
 // tabla personal
-export function TablaVisitas({ innerRef }) {
+export function TablaVisitas({ innerRef, datos }) {
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -127,25 +127,29 @@ export function TablaVisitas({ innerRef }) {
             <Table.HeadCell>Nombre</Table.HeadCell>
             <Table.HeadCell>Cedula</Table.HeadCell>
             <Table.HeadCell>Departamento</Table.HeadCell>
+            <Table.HeadCell>Motivo</Table.HeadCell>
             <Table.HeadCell>Fecha</Table.HeadCell>
             <Table.HeadCell>Hora Entrada</Table.HeadCell>
             <Table.HeadCell>Hora Salida</Table.HeadCell>
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y uppercase">
-            <Table.Row className="bg-white">
-              <Table.Cell className="whitespace-nowrap">
-                Marco Antonio
-              </Table.Cell>
-              <Table.Cell>12345678</Table.Cell>
-              <Table.Cell>Musica</Table.Cell>
-              <Table.Cell>2024-01-01</Table.Cell>
-              <Table.Cell>12:32:32</Table.Cell>
-              <Table.Cell>12:33:33</Table.Cell>
-              <Table.Cell>
-                <EliminaVisita />
-              </Table.Cell>
-            </Table.Row>
+            {datos.map((visitas) => (
+              <Table.Row className="bg-white" key={visitas.id_visita}>
+                <Table.Cell className="whitespace-nowrap">
+                  {visitas.nombre}
+                </Table.Cell>
+                <Table.Cell>{visitas.cedula}</Table.Cell>
+                <Table.Cell>{visitas.departamento}</Table.Cell>
+                <Table.Cell>{visitas.motivo}</Table.Cell>
+                <Table.Cell>{visitas.fecha}</Table.Cell>
+                <Table.Cell>{visitas.hora_entrada}</Table.Cell>
+                <Table.Cell>{visitas.hora_salida}</Table.Cell>
+                <Table.Cell>
+                  <EliminaVisita id={visitas.id_visita}/>
+                </Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </div>
