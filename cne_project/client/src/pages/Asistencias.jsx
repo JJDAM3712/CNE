@@ -6,11 +6,24 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 import { Datepicker, Button } from "flowbite-react";
 import { RegisAsist } from "../components/Modal";
 import { HiOutlineArrowRight } from "react-icons/hi";
+import socketIOClient from 'socket.io-client'
 
 export function Asistencias() {
   const [datos, setDatos] = useState([]);
   const [fechaMin, setFechaMin] = useState(null);
   const [fechaMax, setFechaMax] = useState(null);
+
+  useEffect(() => {
+    const socket = socketIOClient('http://localhost:4000');
+
+    socket.on('ActualizatTable', (nuevasAsistencias) => {
+      setDatos(nuevasAsistencias);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     ShowDepart();
@@ -19,6 +32,7 @@ export function Asistencias() {
     const res = await axios.get("http://localhost:4000/asistencia");
     setDatos(res.data);
   };
+
   // Filtra los datos de asistencia por fecha
   const datosFiltrados = datos.filter(asistencia => {
     const fechaAsistencia = new Date(asistencia.fecha);

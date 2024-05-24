@@ -8,11 +8,9 @@ import {
 const router = Router();
 
 // rutas de las asistencias
-router.get('/asistencia', ShowAsistencce)
+router.get('/asistencia', ShowAsistencce);
 router.post('/asistencia/entrada', RegisEntrada);
 router.post('/asistencia/salida', RegistrarSalida);
-router.delete('/asistencia/:id', DeleteAsistence)
-
-
+router.delete('/asistencia/:id', DeleteAsistence);
 
 export default router;

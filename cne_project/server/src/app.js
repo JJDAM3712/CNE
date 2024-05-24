@@ -15,7 +15,8 @@ import {
     inventary,
     login,
     entrada,
-    visita
+    visita,
+    respaldo
 } from './routes/all.routes.js'
 
 // Inicializaciones
@@ -23,7 +24,7 @@ const app = express();
 const httpServer = createServer(app);
 
 // middlewares
-const io = new Server(httpServer, {
+export const io = new Server(httpServer, {
     cors: {
         origin: 'http://localhost:5173',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -31,7 +32,7 @@ const io = new Server(httpServer, {
     }
 });
 io.on('connection', (socket) => {
-    console.log(`Cliente conectado a ${socket.io}`);
+    console.log(`Cliente conectado a ${socket.id}`);
 
     socket.on('ActualizatTable', (data) => {
         io.emit('TablaActualizada', data)
@@ -60,6 +61,7 @@ app.use(inventary);
 app.use(login);
 app.use(entrada);
 app.use(visita);
+app.use(respaldo);
 
 // configuraciones 
 app.use(morgan('dev'));

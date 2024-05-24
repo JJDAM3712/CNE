@@ -17,7 +17,7 @@ import {
   EliminarCatg,
   EditarCatg,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
-import socketIOClient from 'socket.io-client'
+
 
 
 
@@ -66,18 +66,7 @@ export function TablaPersonal({ innerRef, datos }) {
 //-------------------------------------------------
 // tabla asistencias
 export function TablaAsistencias({innerRef, datos}) {
-  const [asistencia, setAsistencia] = useState(datos);
-  
-  useEffect(() => {
-    const socket = socketIOClient('http://localhost:4000');
-    
-    socket.on('TablaActualizada', (nuevasAsistencias) => {
-      setAsistencia(nuevasAsistencias)
-    });
-    return () => {
-      socket.disconnect();
-    }
-  }, []);
+
   return (
     <Container>
       <div className="ContenedorTabla">
