@@ -1,11 +1,13 @@
 import { pool } from '../db.js';
 import bcrypt from 'bcrypt';
+import { io } from '../app.js';
 
 // mostrar ususarios 
 export const ShowUser = async (req, res) => {
     try {
         const sql = 'SELECT * FROM user ORDER BY usuario ASC'
-        const [result] = await pool.query(sql)
+        const [result] = await pool.query(sql);
+        io.emit('ActualizatTable', result);
         res.json(result)
     } catch (error) {
         res.status(500).json({mensaje: error.message})
@@ -44,6 +46,10 @@ export const CreateLogin = async (req, res) => {
                 // ejecuta la consulta sql
                 const [ result ] = await pool.query(sql, [usuario, password, quest, resp]);
                 // Devuelve éxito
+                const sql_2 = `SELECT * FROM user ORDER BY usuario ASC`;
+                const [nuevasAsistencias] = await pool.query(sql_2);
+                // emite el evento con los datos actualizados
+                io.emit('ActualizatTable', nuevasAsistencias);
                 return res.status(200).json({ mensaje: "Usuario creado exitosamente" });
             } catch (error) {
                 return res.status(500).json({mensaje: error.message});
@@ -72,6 +78,10 @@ export const UpdateUser = async (req, res) => {
                 const sql = 'UPDATE user SET usuario = ?, password = ?, quest = ?, resp = ? WHERE id = ?';
                 // ejecutar consulta sql
                 const [result] = await pool.query(sql, [usuario, password, quest, resp, req.params.id]);
+                const sql_2 = `SELECT * FROM user ORDER BY usuario ASC`;
+                const [nuevasAsistencias] = await pool.query(sql_2);
+                // emite el evento con los datos actualizados
+                io.emit('ActualizatTable', nuevasAsistencias);
                 // devuelve exito
                 return res.status(200).json({ mensaje: "Usuario modificado exitosamente" });
             }catch (error) {
@@ -94,7 +104,11 @@ export const DeleteUser = async (req, res) => {
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "El usuario no existe"});
         }
-           return res.status(200).json({ mensaje: "Usuario eliminado" });
+        const sql_2 = `SELECT * FROM user ORDER BY usuario ASC`;
+        const [nuevasAsistencias] = await pool.query(sql_2);
+        // emite el evento con los datos actualizados
+        io.emit('ActualizatTable', nuevasAsistencias);
+        return res.status(200).json({ mensaje: "Usuario eliminado" });
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }

@@ -2713,7 +2713,12 @@ export function EditarCatg({ id }) {
     e.preventDefault();
     await axios.put(`http://localhost:4000/categoria/${id}`, { categoria });
     setOpenModal(false);
-    swal("actualizado");
+    swal({
+      title: "Categoria",
+      text: "Actualizado exitosamente!",
+      icon: "success",
+      timer: "2000",
+    });
   };
 
   const handleOpenModal = async () => {

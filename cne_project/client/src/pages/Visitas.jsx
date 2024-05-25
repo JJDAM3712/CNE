@@ -6,9 +6,22 @@ import { TablaVisitas } from "../components/Tablas";
 import axios from "axios";
 import { useRef, useState, useEffect } from "react";
 import { useDownloadExcel } from 'react-export-table-to-excel';
+import socketIOClient from 'socket.io-client';
 
 export function Visitas() {
     const [datos, setDatos] = useState([]);
+
+    useEffect(() => {
+      const socket = socketIOClient('http://localhost:4000');
+  
+      socket.on('ActualizatTable', (nuevasAsistencias) => {
+        setDatos(nuevasAsistencias);
+      });
+  
+      return () => {
+        socket.disconnect();
+      };
+    }, []);
 
     useEffect(() => {
       ShowDepart();

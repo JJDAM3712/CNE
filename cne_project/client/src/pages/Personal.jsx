@@ -7,6 +7,7 @@ import { TablaPersonal } from "../components/Tablas";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { useDownloadExcel } from 'react-export-table-to-excel';
 import axios from "axios";
+import socketIOClient from 'socket.io-client';
 
 export function Personal() {
   const { setTheme, theme } = useContext(ThemeContext);
@@ -16,6 +17,19 @@ export function Personal() {
   // optener datos del personal
   // Mover la lógica de obtener los datos a este componente
   const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    const socket = socketIOClient('http://localhost:4000');
+
+    socket.on('ActualizatTable', (nuevasAsistencias) => {
+      setDatos(nuevasAsistencias);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     ShowDepart();
   }, []);

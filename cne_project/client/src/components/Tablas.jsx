@@ -17,8 +17,7 @@ import {
   EliminarCatg,
   EditarCatg,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
-
-
+import socketIOClient from 'socket.io-client';
 
 
 //-------------------------------------------------
@@ -66,7 +65,6 @@ export function TablaPersonal({ innerRef, datos }) {
 //-------------------------------------------------
 // tabla asistencias
 export function TablaAsistencias({innerRef, datos}) {
-
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -152,8 +150,16 @@ export function TablaDepartamento() {
 
   useEffect(() => {
     ShowDepart();
-  }, []);
+    const socket = socketIOClient('http://localhost:4000');
 
+    socket.on('ActualizatTable', (nuevasAsistencias) => {
+      setDatos(nuevasAsistencias);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
   const ShowDepart = async () => {
     const res = await axios.get("http://localhost:4000/task");
     setDatos(res.data);
@@ -204,6 +210,15 @@ export function TablaCargos() {
 
   useEffect(() => {
     ShowDepart();
+    const socket = socketIOClient('http://localhost:4000');
+
+    socket.on('ActualizatTable', (nuevasAsistencias) => {
+      setDatos(nuevasAsistencias);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
   const ShowDepart = async () => {
     const res = await axios.get("http://localhost:4000/cargos");
@@ -293,6 +308,15 @@ export function TablaUsuario() {
 
   useEffect(() => {
     ShowDepart();
+    const socket = socketIOClient('http://localhost:4000');
+
+    socket.on('ActualizatTable', (nuevasAsistencias) => {
+      setDatos(nuevasAsistencias);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const ShowDepart = async () => {
@@ -335,7 +359,17 @@ export function TablaCategoria() {
 
   useEffect(() => {
     ShowCategoria();
+    const socket = socketIOClient('http://localhost:4000');
+
+    socket.on('ActualizatTable', (nuevasAsistencias) => {
+      setDatos(nuevasAsistencias);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
+  
   const ShowCategoria = async () => {
     const res = await axios.get("http://localhost:4000/categoria");
     setData(res.data);

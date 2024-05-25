@@ -1,4 +1,5 @@
 import { pool } from "../db.js";
+import { io } from '../app.js';
 
 // mostrar todo el inventario
 export const showInventarys= async (req, res) => {
@@ -10,6 +11,7 @@ export const showInventarys= async (req, res) => {
             join departamento on departamento.id_departamento = inventario.id_departamento`,
             [req.params.id]
         );
+        io.emit('ActualizatTable', result);
         res.json(result);
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -45,7 +47,12 @@ export const createInventary = async (req, res) => {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [nombre, marca, codigo, modelo, estatus, cantidad, id_departamento, id_categoria]
         );
-        console.log(result);
+        const sql = `SELECT * FROM inventario 
+            join categoria on categoria.id_categoria = inventario.id_categoria 
+            join departamento on departamento.id_departamento = inventario.id_departamento`;
+        const [nuevasAsistencias] = await pool.query(sql);
+        // emite el evento con los datos actualizados
+        io.emit('ActualizatTable', nuevasAsistencias) 
         res.json({
             id_inventario: result.insertId,
             nombre, 
@@ -57,6 +64,7 @@ export const createInventary = async (req, res) => {
             id_departamento, 
             id_categoria
         });
+        
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }
@@ -71,6 +79,12 @@ export const updateInventary = async (req, res) => {
                 req.body,
                 req.params.id
             ]);
+        const sql = `SELECT * FROM inventario 
+            join categoria on categoria.id_categoria = inventario.id_categoria 
+            join departamento on departamento.id_departamento = inventario.id_departamento`;
+        const [nuevasAsistencias] = await pool.query(sql);
+        // emite el evento con los datos actualizados
+        io.emit('ActualizatTable', nuevasAsistencias) 
         res.json(result)
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -86,6 +100,12 @@ export const deleteInventary = async (req, res) => {
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "El producto no existe"});
         }
+        const sql = `SELECT * FROM inventario 
+            join categoria on categoria.id_categoria = inventario.id_categoria 
+            join departamento on departamento.id_departamento = inventario.id_departamento`;
+        const [nuevasAsistencias] = await pool.query(sql);
+        // emite el evento con los datos actualizados
+        io.emit('ActualizatTable', nuevasAsistencias) 
         return res.sendStatus(204);    
     } catch(error){
         return res.status(500).json({mensaje: error.message});

@@ -6,7 +6,7 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 import { Datepicker, Button } from "flowbite-react";
 import { RegisAsist } from "../components/Modal";
 import { HiOutlineArrowRight } from "react-icons/hi";
-import socketIOClient from 'socket.io-client'
+import socketIOClient from 'socket.io-client';
 
 export function Asistencias() {
   const [datos, setDatos] = useState([]);

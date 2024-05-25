@@ -1,4 +1,5 @@
 import { pool } from "../db.js";
+import { io } from "../app.js"
 
 // ver todas las visitas
 export const GetVisitas = async (req, res) => {
@@ -20,6 +21,7 @@ export const GetVisitas = async (req, res) => {
                 fecha
             }
         })
+        io.emit('ActualizatTable', formateDate);
         res.json(formateDate)
     } catch (error) {
         return res.status(500).json({mensaje: error.message});
@@ -56,7 +58,12 @@ export const RegisVisitaEnter = async (req, res) => {
                         fecha, 
                         hora_entrada
                     ]);
-                console.log(result);
+                const sql = `SELECT * FROM visita 
+                            JOIN departamento ON
+                            departamento.id_departamento = visita.id_departamento`;
+                const [nuevasAsistencias] = await pool.query(sql);
+                // emite el evento con los datos actualizados
+                io.emit('ActualizatTable', nuevasAsistencias);
                 res.status(200).json({mensaje: "visita registrada!"})
             } catch (error) {
                 return res.status(500).json({mensaje: error.message})
@@ -93,8 +100,14 @@ export const RegisVisitaExit = async (req, res) => {
             return res.status(403).json('Ya registraste tu salida hoy');
         } else {
             try {
-                const [result] = await pool.query(sql_2, [hora_salida, cedula, fecha])
-                res.status(200).json('Salida registrada!')
+                const [result] = await pool.query(sql_2, [hora_salida, cedula, fecha]);
+                const sql = `SELECT * FROM visita 
+                            JOIN departamento ON
+                            departamento.id_departamento = visita.id_departamento`;
+                const [nuevasAsistencias] = await pool.query(sql);
+                // emite el evento con los datos actualizados
+                io.emit('ActualizatTable', nuevasAsistencias);
+                res.status(200).json('Salida registrada!');
             } catch (error) {
                 return res.status(500).json({mensaje: error.message})
             }
@@ -112,7 +125,13 @@ export const DeleteVisitas = async (req, res) => {
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "No existe el registro"})
         }
-        return res.status(202).json("Registro eliminado con exito!")
+        const sql_2 = `SELECT * FROM visita 
+                JOIN departamento ON
+                departamento.id_departamento = visita.id_departamento`;
+        const [nuevasAsistencias] = await pool.query(sql_2);
+        // emite el evento con los datos actualizados
+        io.emit('ActualizatTable', nuevasAsistencias);
+        return res.status(202).json("Registro eliminado con exito!");
     } catch (error) {
         return res.status(500).json({mensaje: error.message})
     }
