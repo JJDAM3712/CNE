@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Button } from "flowbite-react";
-import { useContext, useRef, useState, useEffect } from "react";
+import { useContext, useRef, useState, useEffect, Suspense } from "react";
 import { ThemeContext } from "../App";
 import { ModalRegis } from "../components/Modal";
 import { TablaPersonal } from "../components/Tablas";
@@ -8,6 +8,8 @@ import { HiOutlineArrowRight } from "react-icons/hi";
 import { useDownloadExcel } from 'react-export-table-to-excel';
 import axios from "axios";
 import socketIOClient from 'socket.io-client';
+
+
 
 export function Personal() {
   const { setTheme, theme } = useContext(ThemeContext);
@@ -58,7 +60,10 @@ export function Personal() {
           </Button>
         {/* --- tabla personal */}
       </div>
-      <TablaPersonal innerRef={TablaPers} datos={datos} setDatos={setDatos}/>
+      <Suspense fallback={<div>Cargando...</div>}>
+        <TablaPersonal innerRef={TablaPers} datos={datos}/>
+      </Suspense>
+      
     </Container>
   );
 }

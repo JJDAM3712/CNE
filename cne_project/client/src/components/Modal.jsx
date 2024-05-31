@@ -1272,7 +1272,12 @@ export function EditarDep({ id }) {
     e.preventDefault();
     await axios.put(`http://localhost:4000/task/${id}`, { departamento });
     setOpenModal(false);
-    swal("actualizado");
+    swal({
+      title: "Departamento",
+      text: "Actualización exitososa!",
+      icon: "success",
+      timer: "2000",
+    });
   };
 
   const handleOpenModal = async () => {

@@ -1,6 +1,7 @@
 import { pool } from '../db.js';
 import bcrypt from 'bcrypt';
 import { io } from '../app.js';
+import { generateToken } from '../modules/user_module.js';
 
 // mostrar ususarios 
 export const ShowUser = async (req, res) => {
@@ -132,7 +133,11 @@ export const AuthenticLogin = async (req, res) => {
         if (!match) {
             return res.status(300).json({mensaje: "usuario o contraseña incorrecto"})
         }
+        // Después de verificar la contraseña
+        const userId = result[0].id; // Obtén el ID del usuario desde result
+        const token = generateToken(userId);
         // muestra el resultado
+        console.log(token);
         res.json({mensaje: "usuario y password correctos!"})
     } catch (error) {
         return res.status(500).json({mensaje: error.message});

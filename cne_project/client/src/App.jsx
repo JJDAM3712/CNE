@@ -3,8 +3,7 @@ import { Light, Dark } from "./css/Themes"; //RUTA a los Temas de color
 import { MyRoutes } from "./routers/routes"; //Componente de Rutas
 import { Sidebar } from "./components/sidebar"; //Sidebar
 import styled from "styled-components"; //Componente para Estilos directo al JSX
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
 export const ThemeContext = React.createContext(null);
 
@@ -12,6 +11,7 @@ function App() {
   const [theme, setTheme] = useState("light");
   const themeStyle = theme === "light" ? Light : Dark;
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  console.log('error esta aqui')
   return (
     <>
       <ThemeContext.Provider value={{ setTheme, theme }}>

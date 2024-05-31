@@ -5,6 +5,7 @@ import { HiOutlineArrowRight } from "react-icons/hi";
 import { TablaCargos } from "../components/Tablas";
 
 export function Cargos() {
+  console.log("esta pagina se esta cargando")
   return (
     <Container>
       <h1>Cargos</h1>

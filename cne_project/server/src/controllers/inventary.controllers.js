@@ -1,11 +1,12 @@
 import { pool } from "../db.js";
 import { io } from '../app.js';
+import { obtenerInventary } from "../config/consultas.config.js";
 
 // mostrar todo el inventario
 export const showInventarys= async (req, res) => {
     try{
         const [result] = await pool.query(
-            `SELECT * 
+            `SELECT *
             FROM inventario 
             join categoria on categoria.id_categoria = inventario.id_categoria 
             join departamento on departamento.id_departamento = inventario.id_departamento`,
@@ -21,7 +22,7 @@ export const showInventarys= async (req, res) => {
 export const showInventary = async (req, res) => {
     try{
         const [result] = await pool.query(
-            `SELECT * 
+            `SELECT nombre, marca, codigo, modelo, departamento, estado, cantidad, categoria 
             FROM inventario 
             join categoria on categoria.id_categoria = inventario.id_categoria 
             join departamento on departamento.id_departamento = inventario.id_departamento
@@ -47,12 +48,7 @@ export const createInventary = async (req, res) => {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [nombre, marca, codigo, modelo, estatus, cantidad, id_departamento, id_categoria]
         );
-        const sql = `SELECT * FROM inventario 
-            join categoria on categoria.id_categoria = inventario.id_categoria 
-            join departamento on departamento.id_departamento = inventario.id_departamento`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias) 
+        obtenerInventary()
         res.json({
             id_inventario: result.insertId,
             nombre, 
@@ -79,12 +75,7 @@ export const updateInventary = async (req, res) => {
                 req.body,
                 req.params.id
             ]);
-        const sql = `SELECT * FROM inventario 
-            join categoria on categoria.id_categoria = inventario.id_categoria 
-            join departamento on departamento.id_departamento = inventario.id_departamento`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias) 
+        obtenerInventary()
         res.json(result)
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -100,12 +91,7 @@ export const deleteInventary = async (req, res) => {
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "El producto no existe"});
         }
-        const sql = `SELECT * FROM inventario 
-            join categoria on categoria.id_categoria = inventario.id_categoria 
-            join departamento on departamento.id_departamento = inventario.id_departamento`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias) 
+        obtenerInventary();
         return res.sendStatus(204);    
     } catch(error){
         return res.status(500).json({mensaje: error.message});

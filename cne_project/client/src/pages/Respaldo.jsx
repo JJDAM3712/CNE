@@ -109,7 +109,6 @@ export function Respaldo() {
             <span>{nombreArchivo || 'Seleccione un archivo'}</span>
           </label>
           <input
-            className=""
             type="file"
             id="fileInput"
             accept=".sql"

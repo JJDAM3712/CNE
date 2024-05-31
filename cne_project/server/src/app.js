@@ -4,6 +4,7 @@ import morgan from "morgan";
 import cors from 'cors';
 import { Server } from "socket.io";
 import { createServer } from "http";
+import cookieParser from 'cookie-parser';
 
 // importando rutas
 import indexRoutes from './routes/index.routes.js';
@@ -18,6 +19,7 @@ import {
     visita,
     respaldo
 } from './routes/all.routes.js'
+import cookie from './routes/cookie.routes.js'
 
 // Inicializaciones
 const app = express();
@@ -47,6 +49,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true // Si necesitas enviar cookies o headers de autenticación
 }));
+app.use(cookieParser());
 
 // procesar los datos del cliente
 app.use(express.json());

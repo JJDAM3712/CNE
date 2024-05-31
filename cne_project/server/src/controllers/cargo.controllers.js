@@ -1,12 +1,13 @@
 import { pool} from "../db.js";
-import { io } from '../app.js';
+import { obtenerCargos } from "../config/consultas.config.js";
+import { io } from "../app.js";
 
 // mostrar todos los cargos
 export const showCargos= async (req, res) => {
     try{
         const [result] = await pool.query(
             "SELECT * FROM cargos ORDER BY cargo ASC");
-        io.emit('ActualizatTable', result);
+        //io.emit('ActualizatTable', result);
         res.json(result);
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -36,10 +37,7 @@ export const insertCargos = async (req, res) => {
             "INSERT INTO cargos(cargo, cantidad) VALUES (?, ?)",
             [cargo, cantidad]
         );
-        const sql = `SELECT * FROM cargos ORDER BY cargo ASC`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias);
+        obtenerCargos()
         res.json({
             id_cargo: result.insertId,
             cargo,
@@ -59,10 +57,7 @@ export const updateCago = async (req, res) => {
                 req.body,
                 req.params.id
             ]);
-        const sql = `SELECT * FROM cargos ORDER BY cargo ASC`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias);
+        obtenerCargos()
         res.json(result)
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -78,10 +73,7 @@ export const deleteCargo = async (req, res) => {
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "El cargo no existe"});
         }
-        const sql = `SELECT * FROM cargos ORDER BY cargo ASC`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias);
+        obtenerCargos()
         return res.sendStatus(204);    
     } catch(error){
         return res.status(500).json({mensaje: error.message});

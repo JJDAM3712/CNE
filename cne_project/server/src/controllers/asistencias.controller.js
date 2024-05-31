@@ -1,5 +1,6 @@
-import { pool } from '../db.js';
 import { io } from '../app.js';
+import { obtenerAsistence } from '../config/consultas.config.js';
+import { pool } from '../db.js';
 
 // mostrar todas las asistencias en el dia
 export const ShowAsistencce = async (req, res) => {
@@ -19,7 +20,7 @@ export const ShowAsistencce = async (req, res) => {
                 fecha
             }
         })
-        io.emit('ActualizatTable', formateDate);
+        //io.emit('ActualizatTable', formateDate);
         res.json(formateDate)
     } catch (error) {
         console.error(error)
@@ -42,9 +43,6 @@ export const RegisEntrada = async (req, res) => {
         const sql_1 = `SELECT * FROM asistencia WHERE id_personal = ? AND fecha = ?`;
         const sql_2 = `INSERT INTO asistencia (id_personal, fecha, entrada) 
                         VALUES (?, ?, ?)`;
-        const sql_3 = `SELECT *
-                        FROM asistencia JOIN personal ON
-                        personal.id_personal = asistencia.id_personal`
         // valida que la cedula exista
         const [result_0] = await pool.query(sql_0, [cedula]);
         if (result_0.length === 0) {
@@ -62,9 +60,7 @@ export const RegisEntrada = async (req, res) => {
                 // si no hay registros de entrada la registra
                 const [result] = await pool.query(sql_2, [id_personal, fecha, entrada])
                 // obtén los datos actualizados de la base de datos
-                const [nuevasAsistencias] = await pool.query(sql_3);
-                // emite el evento con los datos actualizados
-                io.emit('ActualizatTable', nuevasAsistencias)
+                obtenerAsistence()
                 res.status(200).json({mensaje: "entrada registrada!"})
             } catch (error) {
                 return res.status(500).json({mensaje: error.message})
@@ -89,9 +85,6 @@ export const RegistrarSalida = async (req, res) => {
         const sql_0 = `SELECT * FROM personal WHERE cedula = ?`;
         const sql_1 = `SELECT * FROM asistencia WHERE id_personal = ? AND fecha = ?`;
         const sql_2 = `UPDATE asistencia SET salida = ? WHERE id_personal = ? AND fecha = ?`;
-        const sql_3 = `SELECT *
-                        FROM asistencia JOIN personal ON
-                        personal.id_personal = asistencia.id_personal`
         // valida que la cedula exista
         const [result_0] = await pool.query(sql_0, [cedula]);
         if (result_0.length === 0) {
@@ -111,9 +104,7 @@ export const RegistrarSalida = async (req, res) => {
             try {
                 const [result] = await pool.query(sql_2, [salida, id_personal, fecha]);
                 // obtén los datos actualizados de la base de datos
-                const [nuevasAsistencias] = await pool.query(sql_3);
-                // emite el evento con los datos actualizados
-                io.emit('ActualizatTable', nuevasAsistencias)
+                obtenerAsistence()
                 res.status(200).json('Salida registrada!');
             } catch (error) {
                 return res.status(500).json({mensaje: error.message})
@@ -129,16 +120,11 @@ export const DeleteAsistence = async (req, res) => {
     try {
         // consulta sql
         const sql = `DELETE FROM asistencia WHERE id_asistencia = ?`;
-        const sql_3 = `SELECT *
-                        FROM asistencia JOIN personal ON
-                        personal.id_personal = asistencia.id_personal`
         const [result] = await pool.query(sql, [req.params.id])
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "No existe el registro"})
         }
-        const [nuevasAsistencias] = await pool.query(sql_3);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias)
+        obtenerAsistence();
         return res.status(202).json("Registro eliminado con exito!");
     } catch (error) {
         return res.status(500).json({mensaje: error.message})

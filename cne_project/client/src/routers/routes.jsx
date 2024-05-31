@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import { lazy } from "react";
+
 import { Home } from "../pages/Home";
 import { Personal } from "../pages/Personal";
 import { Asistencias } from "../pages/Asistencias";

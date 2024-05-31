@@ -1,3 +1,5 @@
+import { io } from "../app.js";
+import { obtenerDepart } from "../config/consultas.config.js";
 import { pool} from "../db.js";
 
 // mostrar todos los departamentos
@@ -5,7 +7,7 @@ export const obtenerDeparts = async (req, res) => {
     try{
         const [result] = await pool.query(
             "SELECT * FROM departamento ORDER BY departamento ASC");
-        io.emit('ActualizatTable', result);
+        //io.emit('ActualizatTable', result);
         res.json(result);
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -35,10 +37,7 @@ export const crearDepart = async (req, res) => {
             "INSERT INTO departamento(departamento) VALUES (?)",
             [departamento]
         );
-        const sql = `SELECT * FROM departamento ORDER BY departamento ASC`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias);
+        obtenerDepart()
         res.json({
             id_departamento: result.insertId,
             departamento
@@ -57,10 +56,7 @@ export const updateDepart = async (req, res) => {
                 req.body,
                 req.params.id
             ]);
-        const sql = `SELECT * FROM departamento ORDER BY departamento ASC`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias);
+        obtenerDepart()
         res.json(result)
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -76,10 +72,7 @@ export const deleteDepart = async (req, res) => {
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "El departamento no existe"});
         }
-        const sql = `SELECT * FROM departamento ORDER BY departamento ASC`;
-        const [nuevasAsistencias] = await pool.query(sql);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias);
+        obtenerDepart();
         return res.sendStatus(204);    
     } catch(error){
         return res.status(500).json({mensaje: error.message});

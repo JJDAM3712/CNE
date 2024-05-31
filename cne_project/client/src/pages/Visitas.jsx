@@ -4,9 +4,12 @@ import { Datepicker, Button } from "flowbite-react";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { TablaVisitas } from "../components/Tablas";
 import axios from "axios";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { useDownloadExcel } from 'react-export-table-to-excel';
 import socketIOClient from 'socket.io-client';
+
+
+//const Tabla = lazy(() => import("../components/Tablas/TablaVisitas"));
 
 export function Visitas() {
     const [datos, setDatos] = useState([]);
@@ -56,7 +59,11 @@ export function Visitas() {
                     </div>
                 </form>
             </div>
-            <TablaVisitas datos={datos} innerRef={TablaVisita} />
+
+            <Suspense fallback={<p>cargando esta monda</p>}>
+              <TablaVisitas datos={datos} innerRef={TablaVisita} />
+            </Suspense>
+            
         </Container>
     )    
 }

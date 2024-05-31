@@ -4,16 +4,20 @@ interface AuthProvProps {
   children: React.ReactNode;
 }
 
-const AuthContext = createContext({
-  isAuthenticated: false,
-  setIsAuthenticated: () => {},
-});
+const AuthContext = createContext();
 
 export const AuthProv = ({ children }: AuthProvProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
 
+  const login = () => {
+    setIsAuthenticated(true)
+  }
+  const logout = () => {
+    setIsAuthenticated(false)
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout}}>
       {children}
     </AuthContext.Provider>
   );

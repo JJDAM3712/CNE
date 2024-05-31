@@ -7,8 +7,6 @@ import { useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./auth/AuthProvided";
-
 function Login() {
   const [datos, setDatos] = useState({
     usuario: "",
@@ -20,8 +18,6 @@ function Login() {
     let value = e.target.value;
     setDatos({ ...datos, [names]: value });
   };
-  const { setIsAuthenticated } = useAuth();
-  setIsAuthenticated(false);
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -41,7 +37,6 @@ function Login() {
           },
         });
         if (res.status === 200) {
-          setIsAuthenticated(true);
           navigate("/app/*");
         }
       }

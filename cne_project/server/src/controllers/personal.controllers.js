@@ -1,5 +1,6 @@
 import { pool } from "../db.js";
 import { io } from "../app.js"
+import { obtenerPersonal } from "../config/consultas.config.js";
 
 // mostrar todo el personal
 export const showPersonals= async (req, res) => {
@@ -11,7 +12,7 @@ export const showPersonals= async (req, res) => {
             join departamento on departamento.id_departamento = personal.id_departamento`,
             [req.params.id]
         );
-        io.emit('ActualizatTable', result);
+        //io.emit('ActualizatTable', result);
         res.json(result);
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -56,12 +57,7 @@ export const createPersonal = async (req, res) => {
                     VALUES (?, ?, ?, ?, ?, ?)`,
                     [nombre, apellido, cedula, telefono, id_cargo, id_departamento]
                 );
-                const sql = `SELECT * FROM personal 
-                    join cargos on cargos.id_cargo = personal.id_cargo 
-                    join departamento on departamento.id_departamento = personal.id_departamento`;
-                const [nuevasAsistencias] = await pool.query(sql);
-                // emite el evento con los datos actualizados
-                io.emit('ActualizatTable', nuevasAsistencias) 
+                obtenerPersonal();
                 // Devuelve éxito
                 return res.status(200).json({ mensaje: "Personal creado exitosamente" });
             } catch (error) {
@@ -79,36 +75,19 @@ export const updatePersonal = async (req, res) => {
     try{
         const {nombre, apellido, cedula, telefono, id_cargo, id_departamento} = req.body;
 
-        // consulta sql. Valida si existe un usuario con la misma cedula
-        const query_us = 'SELECT cedula FROM personal WHERE cedula = ?'
-        const [ result ] = await pool.query(query_us, [cedula]);
-
-        // valida si existe un usuario con el mismo nombre
-        if (result.length === 0){
-            try{
-                // consulta sql
-                const sql = `UPDATE personal SET 
-                                        nombre = ?, apellido = ?,
-                                        cedula = ?, telefono = ?,
-                                        id_cargo = ?, id_departamento = ? 
-                                        WHERE id_personal = ?`;
-                // ejecutar consulta sql
-                const [result] = await pool.query(sql, [
-                    nombre, apellido, cedula, telefono, id_cargo,id_departamento, req.params.id
-                ]);
-                const sql_2 = `SELECT * FROM personal 
-                    join cargos on cargos.id_cargo = personal.id_cargo 
-                    join departamento on departamento.id_departamento = personal.id_departamento`;
-                const [nuevasAsistencias] = await pool.query(sql_2);
-                // emite el evento con los datos actualizados
-                io.emit('ActualizatTable', nuevasAsistencias) 
-                // devuelve exito
-                return res.status(200).json({ mensaje: "Usuario modificado exitosamente" });
-            }catch (error) {
-                return res.status(500).json({mensaje: error.message});
-            }
-        }
-        return res.status(300).json({mensaje: "Ya existe un usuario con esta cedula"})
+        // consulta sql
+        const sql = `UPDATE personal SET 
+                                nombre = ?, apellido = ?,
+                                cedula = ?, telefono = ?,
+                                id_cargo = ?, id_departamento = ? 
+                                WHERE id_personal = ?`;
+        // ejecutar consulta sql
+        const [result] = await pool.query(sql, [
+            nombre, apellido, cedula, telefono, id_cargo,id_departamento, req.params.id
+        ]);
+        obtenerPersonal();
+        // devuelve exito
+        return res.status(200).json({ mensaje: "Usuario modificado exitosamente" });
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }
@@ -123,12 +102,7 @@ export const deletePersonal = async (req, res) => {
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "La persona no existe"});
         }
-        const sql_2 = `SELECT * FROM personal 
-                join cargos on cargos.id_cargo = personal.id_cargo 
-                join departamento on departamento.id_departamento = personal.id_departamento`;
-        const [nuevasAsistencias] = await pool.query(sql_2);
-        // emite el evento con los datos actualizados
-        io.emit('ActualizatTable', nuevasAsistencias)
+        obtenerPersonal();
         return res.status(204);    
     } catch(error){
         return res.status(500).json({mensaje: error.message});

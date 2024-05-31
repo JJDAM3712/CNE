@@ -104,7 +104,7 @@ export function TablaAsistencias({innerRef, datos}) {
 }
 //-------------------------------------------------
 // tabla personal
-export function TablaVisitas({ innerRef, datos }) {
+export const TablaVisitas = ({ innerRef, datos }) => {
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -256,7 +256,7 @@ export function TablaCargos() {
 }
 //-------------------------------------------------
 // tabla de inventario
-export function TablaInv({ innerRef, datos, setDatos }) {
+export function TablaInv({ innerRef, datos }) {
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -362,7 +362,7 @@ export function TablaCategoria() {
     const socket = socketIOClient('http://localhost:4000');
 
     socket.on('ActualizatTable', (nuevasAsistencias) => {
-      setDatos(nuevasAsistencias);
+      setData(nuevasAsistencias);
     });
 
     return () => {
