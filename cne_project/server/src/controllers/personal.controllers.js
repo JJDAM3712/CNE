@@ -29,7 +29,6 @@ export const showPersonal = async (req, res) => {
             where id_personal = ?`,
             [req.params.id]
         );
-        console.log(result);
         if (result === 0){
             return res.status(404).json({mensaje: `El cargo no existe`})
         }
@@ -76,11 +75,7 @@ export const updatePersonal = async (req, res) => {
         const {nombre, apellido, cedula, telefono, id_cargo, id_departamento} = req.body;
 
         // consulta sql
-        const sql = `UPDATE personal SET 
-                                nombre = ?, apellido = ?,
-                                cedula = ?, telefono = ?,
-                                id_cargo = ?, id_departamento = ? 
-                                WHERE id_personal = ?`;
+        const sql = `UPDATE personal SET ? WHERE id_personal = ?`;
         // ejecutar consulta sql
         const [result] = await pool.query(sql, [
             nombre, apellido, cedula, telefono, id_cargo,id_departamento, req.params.id

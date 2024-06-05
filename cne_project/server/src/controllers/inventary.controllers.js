@@ -22,7 +22,7 @@ export const showInventarys= async (req, res) => {
 export const showInventary = async (req, res) => {
     try{
         const [result] = await pool.query(
-            `SELECT nombre, marca, codigo, modelo, departamento, estado, cantidad, categoria 
+            `SELECT * 
             FROM inventario 
             join categoria on categoria.id_categoria = inventario.id_categoria 
             join departamento on departamento.id_departamento = inventario.id_departamento

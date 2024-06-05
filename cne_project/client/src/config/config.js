@@ -1,0 +1,1 @@
+export const ServidorURL = 'http://localhost:4000';

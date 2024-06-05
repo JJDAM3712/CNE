@@ -11,7 +11,6 @@ function App() {
   const [theme, setTheme] = useState("light");
   const themeStyle = theme === "light" ? Light : Dark;
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  console.log('error esta aqui')
   return (
     <>
       <ThemeContext.Provider value={{ setTheme, theme }}>

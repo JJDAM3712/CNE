@@ -7,7 +7,7 @@ interface AuthProvProps {
 const AuthContext = createContext();
 
 export const AuthProv = ({ children }: AuthProvProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = () => {
     setIsAuthenticated(true)

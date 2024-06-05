@@ -60,8 +60,7 @@ export const obtenerAsistence = async () => {
 // envento inventario
 export const obtenerInventary = async (req , res) => {
   try {
-    const sql = `SELECT  nombre, marca, codigo, modelo, departamento, estado, cantidad, categoria
-    
+    const sql = `SELECT  *
             FROM inventario 
             join categoria on categoria.id_categoria = inventario.id_categoria 
             join departamento on departamento.id_departamento = inventario.id_departamento`;
@@ -77,7 +76,7 @@ export const obtenerInventary = async (req , res) => {
 // evento personal
 export const obtenerPersonal = async () => {
   try {
-    const sql = `SELECT nombre, apellido, cedula, telefono, cargo, departamento
+    const sql = `SELECT *
         FROM personal 
         join cargos on cargos.id_cargo = personal.id_cargo 
         join departamento on departamento.id_departamento = personal.id_departamento`;

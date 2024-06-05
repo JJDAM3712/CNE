@@ -27,7 +27,7 @@ export const ShowOneUser = async (req, res) => {
         return res.status(500).json({mensaje: error.message})
     }
 } 
-// registrar usuario
+// registrar usuario  
 export const CreateLogin = async (req, res) => {
     try {
         // recibe datos del cliente
