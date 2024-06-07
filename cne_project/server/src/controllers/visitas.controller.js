@@ -8,7 +8,8 @@ export const GetVisitas = async (req, res) => {
         // consulta sql
         const sql = `SELECT * FROM visita 
                     JOIN departamento ON
-                    departamento.id_departamento = visita.id_departamento`;
+                    departamento.id_departamento = visita.id_departamento
+                    ORDER BY fecha DESC, hora_entrada DESC`;
         // ejecuta la consulta sql
         const [result] = await pool.query(sql, [req.params.id]);
         // formatea la fecha para mostrarla

@@ -1421,9 +1421,9 @@ export function RegisInv({ id }) {
         await PeticionAxios('inventary', 'post', datos)
         limpiarCampos();
         setOpenModal(false);
-        alert("Articulo","Registrado exitosamente!","success","1500",)
+        alert("Articulo","Registrado exitosamente!","success","2000",)
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error en el registro!","error","1500",)
+        alert("Oops...","Ha ocurrido un error en el registro!","error","2000",)
         return console.log(error);
       }
     }
@@ -1537,9 +1537,9 @@ export function RegisInv({ id }) {
                 <option value="Selecciona:" disabled>
                   Selecciona:
                 </option>
-                <option value="Nuevo">Nuevo</option>
-                <option value="Usado">Usado</option>
-                <option value="Deteriorado">Deteriorado</option>
+                <option value="NUEVO">NUEVO</option>
+                <option value="USADO">USADO</option>
+                <option value="DETERIORADO">DETERIORADO</option>
               </Select>
             </div>
             {/* ------ departamento --------- */}
@@ -1826,9 +1826,9 @@ export function EditInv({ id }) {
                 <option value="Selecciona:" disabled>
                   Selecciona:
                 </option>
-                <option value="Nuevo">Nuevo</option>
-                <option value="Usado">Usado</option>
-                <option value="Deteriorado">Deteriorado</option>
+                <option value="NUEVO">NUEVO</option>
+                <option value="USADO">USADO</option>
+                <option value="DETERIORADO">DETERIORADO</option>
               </Select>
             </div>
             {/* ------ departamento --------- */}
@@ -2109,14 +2109,23 @@ export function EliminarUsr({ id }) {
   const deleteInven = async () => {
     try {
       // peticion al servidor
-      await PeticionAxios(`signup/${id}`, 'delete');
+      await axios.delete(`${ServidorURL}/signup/${id}`,
+        {withCredentials: true,}        
+      );
       // alerta de exito
       alert("Usuario","Eliminado exitosamente!","success","2000")
       setOpenModal(false);
     } catch (error) {
+      switch(error.response && error.response.status) {
+        case 400:
+          alert('Imposible',"No puedes eliminar tu usuario!","warning","2000");
+          break;
+        default:
+          alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000");
+          console.error(error);
+      }
       console.error("error", error);
       // alerta de error
-      alert('Usuario',"Error en la eliminación!","error","2000")
       setOpenModal(false);
     }
   };
@@ -2228,7 +2237,7 @@ export function EditarUsr({ id }) {
         limpiarCampos()
         alert("Articulo","Actualizado exitosamente!","success","2000")
       } catch (error) {
-        if (error.response && error.response.status === 300) {
+        if (error.response && error.response.status === 400) {
           alert("Usuario invalido...",`Ya existe un usuario registrado con ese nombre!`,"error","2000")
         } else {
           alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000")
@@ -2443,14 +2452,14 @@ export function EliminarCatg({ id }) {
   
   const deleteInven = async () => {
     try {
-      await PeticionAxios(`categoria/${id}`, 'delete')
-      setOpenModal(false);
-      alert("Categoria", "Eliminado exitosamente!", "success", "2000") 
+      const res = await axios.delete(`${ServidorURL}/categoria/${id}`);
+      if (res.response && res.response.status === 204) {
+        alert("Categoria", "Eliminado exitosamente!", "success", "2000");
+      }
     } catch (error) {
-      console.error("error", error);
-      alert("Categoria", "Error en la eliminacion", "error", "2000")
-      setOpenModal(false);
+      return alert("Categoria", "Error en la eliminacion", "error", "2000");
     }
+    setOpenModal(false);
   };
   return (
     <>
@@ -2500,7 +2509,7 @@ export function EditarCatg({ id }) {
   const actualizar = async (e) => {
     try {
       e.preventDefault();
-      await PeticionAxios(`categoria/${id}`, "put", {categoria})
+      await axios.put(`${ServidorURL}/categoria/${id}`, { categoria })
       setOpenModal(false);
       alert("Categoria","Actualizado exitosamente!","success","2000");
     } catch (error) {

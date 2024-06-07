@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { io } from '../app.js';
 import { generateToken } from '../modules/user_module.js';
 import { BuscarUser } from '../config/consultas.config.js';
+import { DefaultUser } from '../modules/default.use.js';
 
 // mostrar ususarios 
 export const ShowUser = async (req, res) => {
@@ -67,6 +68,13 @@ export const UpdateUser = async (req, res) => {
     try {
         // recibir los datos del cliente
         const {usuario, pass, quest, resp} = req.body;
+        // valida que no haya un usuario repetido
+        const sql_check = 'SELECT * FROM user WHERE usuario = ? AND id != ?';
+        const [users] = await pool.query(sql_check, [usuario, req.params.id]);
+        // si el usuario existe con un nombre de usuario diferente, devuelve un error
+        if (users.length > 0) {
+            return res.status(400).json({ mensaje: "Usuario ya existente" });
+        }
         // hashear la contraseña nueva
         const password = await bcrypt.hash(pass, 8);
         // consulta sql
@@ -86,10 +94,18 @@ export const UpdateUser = async (req, res) => {
 // eliminar usuario
 export const DeleteUser = async (req, res) => {
     try{
+        // recibe el id a eliminar
+        const { id } = req.params;
+        // verifica si el usuario esta logeado o no
+        if (req.user.id == id) {
+            return res.status(400).json({ mensaje: "No puedes eliminar tu propia cuenta mientras estás logueado" });
+        }
+        console.log(typeof req.params)
+        console.log(typeof req.user.id)
         // consulta sql
         const sql = 'DELETE FROM user WHERE id = ?'
         // ejecuta consulta
-        const [result] = await pool.query(sql, [req.params.id]);
+        const [result] = await pool.query(sql, [id]);
         // valida que exista un usuario que eliminar
         if (result.affectedRows === 0){
             return res.status(404).json({mensaje: "El usuario no existe"});
@@ -100,6 +116,7 @@ export const DeleteUser = async (req, res) => {
         io.emit('ActualizatTable', nuevasAsistencias);
         return res.status(200).json({ mensaje: "Usuario eliminado" });
     } catch(error){
+        console.error(error);
         return res.status(500).json({mensaje: error.message});
     }
 }
@@ -109,6 +126,15 @@ export const AuthenticLogin = async (req, res) => {
     try {
         // recibe datos del servidor
         const {usuario, password} = req.body;
+        // Verifica las credenciales contra el usuario predeterminado
+        if (usuario === DefaultUser.usuario && password === DefaultUser.password) {
+            const token = generateToken(DefaultUser.id);
+            res.cookie('access_token', token, {
+                httpOnly: true,
+            });
+            return res.status(200).json({ mensaje: 'Inicio de sesión exitoso para el usuario predeterminado.' });
+        }
+
         let result;
         try {
             result = await BuscarUser(usuario);
@@ -127,8 +153,13 @@ export const AuthenticLogin = async (req, res) => {
         // Después de verificar la contraseña
         const userId = result[0].id; // Obtén el ID del usuario desde result
         const token = generateToken(userId);
+        // Configura el token en una cookie
+        res.cookie('access_token', token, {
+            httpOnly: true,
+        });
+        console.log(token)
         // muestra el resultado
-        res.json({mensaje: token})
+        return res.status(200).json({ mensaje: "Inicio de sesión exitoso" });
     } catch (error) {
         return res.status(500).json({mensaje: error.message});
     }

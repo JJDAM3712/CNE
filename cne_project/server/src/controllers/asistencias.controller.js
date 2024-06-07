@@ -7,7 +7,8 @@ export const ShowAsistencce = async (req, res) => {
     try {
         const sql = `SELECT *
                 FROM asistencia JOIN personal ON
-                personal.id_personal = asistencia.id_personal`
+                personal.id_personal = asistencia.id_personal
+                ORDER BY fecha DESC, entrada DESC`
         const [result] = await pool.query(sql)
         // formatea la fecha para mostrarla
         const formateDate = result.map(result => {

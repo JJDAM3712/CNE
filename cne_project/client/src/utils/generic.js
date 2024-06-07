@@ -17,6 +17,7 @@ export const PeticionAxios = async (endpoint, metodo, datos = null, params = {})
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
     };
     // Solo añade 'data' a la configuración si 'datos' no es null
     if (datos) {

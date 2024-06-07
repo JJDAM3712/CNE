@@ -12,7 +12,7 @@ export const showPersonals= async (req, res) => {
             join departamento on departamento.id_departamento = personal.id_departamento`,
             [req.params.id]
         );
-        //io.emit('ActualizatTable', result);
+        io.emit('ActualizatTable', result);
         res.json(result);
     } catch(error){
         return res.status(500).json({mensaje: error.message});
@@ -75,7 +75,9 @@ export const updatePersonal = async (req, res) => {
         const {nombre, apellido, cedula, telefono, id_cargo, id_departamento} = req.body;
 
         // consulta sql
-        const sql = `UPDATE personal SET ? WHERE id_personal = ?`;
+        const sql = `UPDATE personal SET nombre = ?, apellido = ?, cedula = ?, 
+                        telefono = ?, id_cargo = ?, id_departamento = ? 
+                        WHERE id_personal = ?`;
         // ejecutar consulta sql
         const [result] = await pool.query(sql, [
             nombre, apellido, cedula, telefono, id_cargo,id_departamento, req.params.id

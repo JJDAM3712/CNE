@@ -40,10 +40,11 @@ function Login() {
       if (datos.usuario.trim() === "" && datos.password.trim() === "") {
         alert("Campo vacio","Debes ingresar todos los datos","warning","2000");
       } else {
-        const res = await axios.post(`http://localhost:4000/login`, datos, {
+        const res = await axios.post(`${ServidorURL}/login`, datos, {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         });
         if (res.status === 200) {
           login(res.data.mensaje);

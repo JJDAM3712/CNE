@@ -41,19 +41,22 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log(`Cliente conectado a ${socket.id}`);
+        console.log(`Cliente desconectado a ${socket.id}`);
     })
 });
 app.use(cors({
-    origin: 'http://localhost:5173', // Ajusta esto para permitir solicitudes desde tu cliente React
+    origin: 'http://localhost:5173', //permitir solicitudes desde tel cliente
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true // Si necesitas enviar cookies o headers de autenticación
+    credentials: true //enviar cookies o headers de autenticación
 }));
 app.use(cookieParser());
 
 // procesar los datos del cliente
 app.use(express.json());
 
+
+// validacion de token
+app.use(token);
 // recibir querys
 app.use(indexRoutes);
 app.use(departamento);
@@ -65,7 +68,6 @@ app.use(login);
 app.use(entrada);
 app.use(visita);
 app.use(respaldo);
-app.use(token);
 
 // configuraciones 
 app.use(morgan('dev'));

@@ -47,7 +47,8 @@ export const obtenerAsistence = async () => {
   try {
     const sql_3 = `SELECT *
               FROM asistencia JOIN personal ON
-              personal.id_personal = asistencia.id_personal`;
+              personal.id_personal = asistencia.id_personal
+              ORDER BY fecha DESC, entrada DESC`;
     const [nuevasAsistencias] = await pool.query(sql_3);
     // emite el evento con los datos actualizados
     io.emit('ActualizatTable', nuevasAsistencias)
@@ -94,7 +95,8 @@ export const obtenerVisitas = async () => {
   try {
     const sql = `SELECT * FROM visita 
                 JOIN departamento ON
-                departamento.id_departamento = visita.id_departamento`;
+                departamento.id_departamento = visita.id_departamento 
+                ORDER BY fecha DESC, hora_entrada DESC`;
     const [nuevasAsistencias] = await pool.query(sql);
     // emite el evento con los datos actualizados
     io.emit('ActualizatTable', nuevasAsistencias);
