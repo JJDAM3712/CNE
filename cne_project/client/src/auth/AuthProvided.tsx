@@ -3,24 +3,50 @@ import { useContext, createContext, useState, useEffect } from "react";
 interface AuthProvProps {
   children: React.ReactNode;
 }
+interface AuthState {
+  isAuthenticated: boolean;
+  token: string | null;
+}
 
-const AuthContext = createContext();
+const AuthContext = createContext<{
+  authState: AuthState;
+  login: (token: string) => void;
+  logout: () => void;
+} | null>(null);
 
 export const AuthProv = ({ children }: AuthProvProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authState, setAuthState] = useState<AuthState>({
+    isAuthenticated: false,
+    token: null,
+  });
 
-  const login = () => {
-    setIsAuthenticated(true)
-  }
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setAuthState({ isAuthenticated: true, token });
+    }
+  }, []);
+
+  const login = (token: string) => {
+    console.log('Logging in with token:', token);
+    setAuthState({ isAuthenticated: true, token});
+    localStorage.setItem('token', token);
+  };
   const logout = () => {
-    setIsAuthenticated(false)
-  }
+    setAuthState( {isAuthenticated: false, token: null});
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout}}>
+    <AuthContext.Provider value={{ authState, login, logout}}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProv');
+  }
+  return context;
+};

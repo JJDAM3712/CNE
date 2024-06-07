@@ -23,6 +23,7 @@ import {
   MdCategory,
 } from "react-icons/md";
 import { RiOrganizationChart } from "react-icons/ri";
+import { useAuth } from "../auth/AuthProvided";
 
 // #region Sidebar
 export function Sidebar({ sidebarOpen, setSidebarOpen }) {
@@ -33,6 +34,16 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const CambiarTheme = () => {
     setTheme((theme) => (theme === "light" ? "dark" : "light"));
   };
+  // Utiliza el hook useAuth para acceder a la función logout
+  const { logout } = useAuth();
+
+  // Función para manejar el clic en el botón "Salir"
+  const handleLogoutClick = () => {
+    logout(); // Llama a la función logout de tu contexto
+    localStorage.removeItem('token'); // Limpia el token del almacenamiento local
+    window.location.href = '/'; // Redirige al usuario a la página de inicio de sesión
+  };
+
   return (
     <Container isOpen={sidebarOpen} themeUse={theme}>
       <div className="Logocontent">
@@ -66,7 +77,9 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
       <button className="Sidebarbutton" onClick={ModSidebaropen}>
         <AiOutlineMenuFold />
       </button>
+      {/* aqui etan todos los links del menú principal */}
       {linksArray.map(({ icon, label, to }) => (
+        
         <div className="LinkContainer" key={label}>
           <NavLink
             to={to}
@@ -78,17 +91,12 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
         </div>
       ))}
       <Divider />
-      {secondarylinksArray.map(({ icon, label, to }) => (
-        <div className="LinkContainer" key={label}>
-          <NavLink
-            to={to}
-            className={({ isActive }) => `Links${isActive ? ` active` : ``}`}
-          >
-            <div className="Linkicon">{icon}</div>
-            {sidebarOpen && <span>{label}</span>}
-          </NavLink>
+      <div className="LinkContainer">
+        <div onClick={handleLogoutClick} className="Links">
+          <div className="Linkicon"><MdLogout /></div>
+          {sidebarOpen && <span>Salir</span>}
         </div>
-      ))}
+      </div>
       <Divider />
       <div className="Themecontent">
         {sidebarOpen && <span className="titletheme">Modo Oscuro</span>}
@@ -161,19 +169,13 @@ const linksArray = [
     icon: <PiUsersFill />,
     to: "/app/usuario",
   },
-];
-const secondarylinksArray = [
   {
     label: "Respaldo",
     icon: <AiOutlineSetting />,
     to: "/app/respaldo",
   },
-  {
-    label: "Salir",
-    icon: <MdLogout />,
-    to: "/",
-  },
 ];
+
 //#region STYLED COMPONENTS
 const Container = styled.div`
   background: ${(props) => props.theme.bg};

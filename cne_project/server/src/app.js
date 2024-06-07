@@ -17,9 +17,9 @@ import {
     login,
     entrada,
     visita,
-    respaldo
+    respaldo, 
+    token
 } from './routes/all.routes.js'
-import cookie from './routes/cookie.routes.js'
 
 // Inicializaciones
 const app = express();
@@ -65,6 +65,7 @@ app.use(login);
 app.use(entrada);
 app.use(visita);
 app.use(respaldo);
+app.use(token);
 
 // configuraciones 
 app.use(morgan('dev'));

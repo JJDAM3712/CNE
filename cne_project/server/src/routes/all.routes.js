@@ -8,6 +8,7 @@ import loginRoutes from './users.routes.js';
 import asistenciaRoutes from './asistencia.routes.js';
 import visitasRouter from './visita.routes.js';
 import respaldoRouter from './respaldo.routes.js';
+import tokenValidator from './token.routes.js';
 
 // exportar todas las rutas
 export const departamento = deparRoutes;
@@ -19,3 +20,4 @@ export const login = loginRoutes;
 export const entrada = asistenciaRoutes;
 export const visita = visitasRouter;
 export const respaldo = respaldoRouter;
+export const token = tokenValidator;

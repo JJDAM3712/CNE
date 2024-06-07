@@ -2,6 +2,7 @@ import { pool } from '../db.js';
 import bcrypt from 'bcrypt';
 import { io } from '../app.js';
 import { generateToken } from '../modules/user_module.js';
+import { BuscarUser } from '../config/consultas.config.js';
 
 // mostrar ususarios 
 export const ShowUser = async (req, res) => {
@@ -32,17 +33,17 @@ export const CreateLogin = async (req, res) => {
     try {
         // recibe datos del cliente
         const {usuario, pass, quest, resp} = req.body;
-
-        // consulta sql. Valida si existe un usuario (sencible a minusculas y mayusculas)
-        const query_us = 'SELECT usuario FROM user WHERE BINARY usuario = ?'
-        const [ result ] = await pool.query(query_us, [usuario]);
-
-        // valida si existe un usuario con el mismo nombre
-        if (result.length === 0){
-            try {
+        try {
+            // valida que exista o no un usuario ya registrado
+            const [result] = await BuscarUser(usuario);
+            // lanza error si existe un usuario
+            throw new Error("Ya existe un usuario con ese nombre");
+        } catch (error) {
+            // valida si existe un usuario con el mismo nombre
+            if (error.message === "usuario incorrecto") {
                 // hashea la contraseña recibida
                 const password = bcrypt.hashSync(pass, 8);
-                 // consulta sql
+                // consulta sql
                 const sql = 'INSERT INTO user (usuario, password, quest, resp) VALUES (?, ?, ?, ?)';
                 // ejecuta la consulta sql
                 const [ result ] = await pool.query(sql, [usuario, password, quest, resp]);
@@ -52,11 +53,11 @@ export const CreateLogin = async (req, res) => {
                 // emite el evento con los datos actualizados
                 io.emit('ActualizatTable', nuevasAsistencias);
                 return res.status(200).json({ mensaje: "Usuario creado exitosamente" });
-            } catch (error) {
-                return res.status(500).json({mensaje: error.message});
+            } else {
+                // Si el error es otro, se devuelve el error
+                throw error;
             }
         }
-        return res.status(300).json({mensaje: "Ya existe un usuario con ese nombre"})
     } catch (error) {
         return res.status(500).json({mensaje: error.message});
     }
@@ -66,30 +67,18 @@ export const UpdateUser = async (req, res) => {
     try {
         // recibir los datos del cliente
         const {usuario, pass, quest, resp} = req.body;
-        // consulta sql. Valida si existe un usuario (sencible a minusculas y mayusculas)
-        const query_us = 'SELECT usuario FROM user WHERE BINARY usuario = ?'
-        const [ result ] = await pool.query(query_us, [usuario]);
-
-        // valida si existe un usuario con el mismo nombre
-        if (result.length === 0){
-            try{
-                // hashear la contraseña nueva
-                const password = await bcrypt.hash(pass, 8);
-                // consulta sql
-                const sql = 'UPDATE user SET usuario = ?, password = ?, quest = ?, resp = ? WHERE id = ?';
-                // ejecutar consulta sql
-                const [result] = await pool.query(sql, [usuario, password, quest, resp, req.params.id]);
-                const sql_2 = `SELECT * FROM user ORDER BY usuario ASC`;
-                const [nuevasAsistencias] = await pool.query(sql_2);
-                // emite el evento con los datos actualizados
-                io.emit('ActualizatTable', nuevasAsistencias);
-                // devuelve exito
-                return res.status(200).json({ mensaje: "Usuario modificado exitosamente" });
-            }catch (error) {
-                return res.status(500).json({mensaje: error.message});
-            }
-        }
-        return res.status(300).json({mensaje: "Ya existe un usuario con ese nombre"})
+        // hashear la contraseña nueva
+        const password = await bcrypt.hash(pass, 8);
+        // consulta sql
+        const sql = 'UPDATE user SET usuario = ?, password = ?, quest = ?, resp = ? WHERE id = ?';
+        // ejecutar consulta sql
+        const [result] = await pool.query(sql, [usuario, password, quest, resp, req.params.id]);
+        const sql_2 = `SELECT * FROM user ORDER BY usuario ASC`;
+        const [nuevasAsistencias] = await pool.query(sql_2);
+        // emite el evento con los datos actualizados
+        io.emit('ActualizatTable', nuevasAsistencias);
+        // devuelve exito
+        return res.status(200).json({ mensaje: "Usuario modificado exitosamente" });
     } catch (error) {
         return res.status(500).json({mensaje: error.message})
     }
@@ -120,25 +109,26 @@ export const AuthenticLogin = async (req, res) => {
     try {
         // recibe datos del servidor
         const {usuario, password} = req.body;
-        // consulta sql
-        const sql = 'SELECT * FROM user WHERE BINARY usuario = ?';
-        // ejecuta la consulta
-        const [result] = await pool.query(sql, [usuario]);
-        // valida que exista un resultado
-        if (result.length === 0 ){
-            return res.status(300).json({mensaje: "usuario o contraseña incorrecto"})
+        let result;
+        try {
+            result = await BuscarUser(usuario);
+        } catch (error) {
+            if (error.message === "usuario incorrecto") {
+                return res.status(401).json({mensaje: "usuario o contraseña incorrecto"});
+            } else {
+                throw error;
+            }
         }
         // compara la contraseña con el hash almacenado en la base de datos
         const match = await bcrypt.compare(password, result[0].password);
         if (!match) {
-            return res.status(300).json({mensaje: "usuario o contraseña incorrecto"})
+            return res.status(401).json({mensaje: "usuario o contraseña incorrecto"})
         }
         // Después de verificar la contraseña
         const userId = result[0].id; // Obtén el ID del usuario desde result
         const token = generateToken(userId);
         // muestra el resultado
-        console.log(token);
-        res.json({mensaje: "usuario y password correctos!"})
+        res.json({mensaje: token})
     } catch (error) {
         return res.status(500).json({mensaje: error.message});
     }
@@ -148,13 +138,10 @@ export const UserValidator = async (req, res) => {
     try {
         // recibir datos del cliente
         const {usuario} = req.body;
-        const [result] = await pool.query('SELECT * FROM user WHERE BINARY usuario = ?', [usuario])
-        if(result.length === 0) {
-            return res.status(400).json({mensaje: "usuario incorrecto"})
-        }
+        const [result] = await BuscarUser(usuario);
         return res.status(200).json({result})
     } catch (error) {
-        return res.status(500).json({mensaje: error.message});
+        return res.status(500).json(error.message === "usuario incorrecto" ? 400 : 500).json({mensaje: error.message});
     }
 }
 // cambiar password

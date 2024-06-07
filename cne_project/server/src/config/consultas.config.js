@@ -1,4 +1,4 @@
-import { pool} from "../db.js";
+import { pool } from "../db.js";
 import { io } from '../app.js';
 
 // eventos io.emit para websockets
@@ -102,4 +102,14 @@ export const obtenerVisitas = async () => {
     console.error('Error al obtener y enviar cargos:', error);
     // Maneja el error según tus necesidades
   }
+}
+
+// buscar usuario
+export const BuscarUser = async (usuario) => {
+  const sql = 'SELECT * FROM user WHERE BINARY usuario = ?';
+  const [result] = await pool.query(sql, [usuario]);
+  if(result.length === 0) {
+      throw new Error("usuario incorrecto");
+  }
+  return result;
 }

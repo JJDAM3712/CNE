@@ -3,15 +3,15 @@ import { useAuth } from "../auth/AuthProvided";
 import React from "react";
 
 export const Protect = () => {
-  // valida el estado del login
-  const auth = useAuth();
+   // Accede al estado del login desde authState
+   const { authState } = useAuth();
 
-  return auth.isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+  return authState.isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };
 
 export const ProtectForgot = () => {
-  // valida el estado del login
-  const auth = useAuth();
+  // Accede al estado del login desde authState
+  const { authState } = useAuth();
 
-  return auth.isAuthenticated ? <Outlet /> : <Navigate to="/forgot" />;
+  return authState.isAuthenticated ? <Outlet /> : <Navigate to="/forgot" />;
 };
