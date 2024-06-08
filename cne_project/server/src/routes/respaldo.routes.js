@@ -20,33 +20,49 @@ router.post('/back',  upload.single('file'), async (req, res) => {
     if (!fs.existsSync(backupFilePath)) {
       return res.status(404).json({ mensaje: 'El archivo de respaldo no existe' });
     }
+    // Obtén la versión de MySQL
+    const [rows] = await pool.query('SELECT VERSION()');
+    const mysqlVersion = rows[0]['VERSION()'];
+
+    // Selecciona la collation basada en la versión de MySQL
+    let collation;
+    if (mysqlVersion.startsWith('8.')) {
+      collation = 'utf8mb4_0900_ai_ci';
+    } else {
+      collation = 'utf8mb4_general_ci';
+    }
 
     const backupContent = fs.readFileSync(backupFilePath, 'utf-8');
     const sqlStatements = backupContent.split(';\n').map(statement => statement.trim()).filter(statement => statement.length > 0);
 
     const tablesInBackup = new Set();
+    
     for (const statement of sqlStatements) {
-      if (statement.startsWith('CREATE TABLE')) {
-        const tableNameMatch = statement.match(/CREATE TABLE `([^`]+)`/);
-        if (tableNameMatch) {
-          const tableName = tableNameMatch[1];
-          tablesInBackup.add(tableName);
-        }
+      // Reemplaza la collation en la sentencia SQL
+      const modifiedStatement = statement.replace(/utf8mb4_0900_ai_ci/g, collation);
+
+      const createTableMatch = modifiedStatement.match(/CREATE TABLE `([^`]+)`/);
+      if (createTableMatch) {
+        const tableName = createTableMatch[1];
+        tablesInBackup.add(tableName);
       }
     }
+    const validTables = [...tablesInBackup];
 
     const [existingTables] = await pool.query('SHOW TABLES');
     const tablesInDB = existingTables.map(table => Object.values(table)[0]);
-
     console.log('Tablas en la base de datos actual:', tablesInDB);
 
-    const validTables = [...tablesInBackup];
+    
 
     console.log('Tablas válidas en el respaldo:', validTables);
 
     await pool.query('SET FOREIGN_KEY_CHECKS = 0');
 
     for (const statement of sqlStatements) {
+      // Reemplaza la collation en la sentencia SQL
+      const modifiedStatement = statement.replace(/utf8mb4_0900_ai_ci/g, collation);
+
       const createTableMatch = statement.match(/CREATE TABLE `([^`]+)`/);
       const insertMatch = statement.match(/INSERT INTO `([^`]+)`/);
 
@@ -57,7 +73,7 @@ router.post('/back',  upload.single('file'), async (req, res) => {
           // Eliminar la tabla si ya existe
           await pool.query(`DROP TABLE IF EXISTS ${tableName}`);
           // Crear la tabla
-          await pool.query(statement);
+          await pool.query(modifiedStatement);
           console.log(`Tabla ${tableName} creada correctamente.`);
         } else {
           console.warn(`La tabla ${tableName} no está en la lista de tablas válidas`);
@@ -80,19 +96,17 @@ router.post('/back',  upload.single('file'), async (req, res) => {
           console.warn(`La tabla ${tableName} no está en la lista de tablas válidas`);
         }
       } else {
-        console.warn('No se pudo encontrar una sentencia válida en:', statement);
+        console.warn('No se pudo encontrar una sentencia válida en:', modifiedStatement);
       }
     }
-
     await pool.query('SET FOREIGN_KEY_CHECKS = 1');
-
     console.log('Restauración de la base de datos completada correctamente.');
     return res.status(200).json({ mensaje: 'Restauración completada con éxito' });
   } catch (error) {
     console.error('Error al restaurar la base de datos:', error);
     return res.status(500).json({ mensaje: error.message });
   }
-})
+});
 
 
 export default router;
