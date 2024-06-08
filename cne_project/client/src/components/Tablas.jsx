@@ -18,11 +18,23 @@ import {
   EditarCatg,
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
 import socketIOClient from 'socket.io-client';
-
+import Pagination from "./Pagination";
 
 //-------------------------------------------------
 // tabla personal
 export function TablaPersonal({ innerRef, datos }) {
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10;
+  // Calcula los elementos que se mostrarán en la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = datos.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Función para cambiar la página actual
+  const changePage = (event) => {
+    const pageNumber = Number(event.target.textContent);
+    setCurrentPage(pageNumber);
+  };
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -38,7 +50,7 @@ export function TablaPersonal({ innerRef, datos }) {
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y uppercase">
-            {datos.map((personal) => (
+            {currentItems.map((personal) => (
               <Table.Row className="bg-white" key={personal.id_personal}>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 ">
                   {personal.nombre}
@@ -58,6 +70,12 @@ export function TablaPersonal({ innerRef, datos }) {
             ))}
           </Table.Body>
         </Table>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={datos.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
+        />
       </div>
     </Container>
   );
@@ -65,6 +83,18 @@ export function TablaPersonal({ innerRef, datos }) {
 //-------------------------------------------------
 // tabla asistencias
 export function TablaAsistencias({innerRef, datos}) {
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10; 
+  // Calcula los elementos que se mostrarán en la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = datos.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Función para cambiar la página actual
+  const changePage = (event) => {
+    const pageNumber = Number(event.target.textContent);
+    setCurrentPage(pageNumber);
+  };
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -81,7 +111,7 @@ export function TablaAsistencias({innerRef, datos}) {
           </Table.Head>
           <Table.Body className="divide-y uppercase">
             {/* mostrar los datos */}
-            {datos.map((asistencias) => 
+            {currentItems.map((asistencias) => 
               <Table.Row className="bg-white" key={asistencias.id_asistencia}>
                 <Table.Cell className="whitespace-nowrap">
                   {asistencias.nombre}
@@ -98,6 +128,12 @@ export function TablaAsistencias({innerRef, datos}) {
             )}
           </Table.Body>
         </Table>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={datos.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
+        />
       </div>
     </Container>
   );
@@ -105,6 +141,18 @@ export function TablaAsistencias({innerRef, datos}) {
 //-------------------------------------------------
 // tabla personal
 export const TablaVisitas = ({ innerRef, datos }) => {
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10;
+  // Calcula los elementos que se mostrarán en la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = datos.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Función para cambiar la página actual
+  const changePage = (event) => {
+    const pageNumber = Number(event.target.textContent);
+    setCurrentPage(pageNumber);
+  };
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -121,7 +169,7 @@ export const TablaVisitas = ({ innerRef, datos }) => {
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y uppercase">
-            {datos.map((visitas) => (
+            {currentItems.map((visitas) => (
               <Table.Row className="bg-white" key={visitas.id_visita}>
                 <Table.Cell className="whitespace-nowrap">
                   {visitas.nombre}
@@ -139,6 +187,12 @@ export const TablaVisitas = ({ innerRef, datos }) => {
             ))}
           </Table.Body>
         </Table>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={datos.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
+        />
       </div>
     </Container>
   );
@@ -147,6 +201,8 @@ export const TablaVisitas = ({ innerRef, datos }) => {
 // tabla de departamento
 export function TablaDepartamento() {
   const [datos, setDatos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage =10; 
 
   useEffect(() => {
     ShowDepart();
@@ -164,6 +220,16 @@ export function TablaDepartamento() {
     const res = await axios.get("http://localhost:4000/task");
     setDatos(res.data);
   };
+   // Calcula los elementos que se mostrarán en la página actual
+   const indexOfLastItem = currentPage * itemsPerPage;
+   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+   const currentItems = datos.slice(indexOfFirstItem, indexOfLastItem);
+ 
+   // Función para cambiar la página actual
+   const changePage = (event) => {
+     const pageNumber = Number(event.target.textContent);
+     setCurrentPage(pageNumber);
+   };
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -175,7 +241,7 @@ export function TablaDepartamento() {
           </Table.Head>
           <Table.Body className="divide-y">
             {/* mostrar datos de bd en tabla */}
-            {datos.map((departamentos) => (
+            {currentItems.map((departamentos) => (
               <Table.Row
                 className="bg-white"
                 key={departamentos.id_departamento}
@@ -199,6 +265,12 @@ export function TablaDepartamento() {
             ))}
           </Table.Body>
         </Table>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={datos.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
+        />
       </div>
     </Container>
   );
@@ -207,15 +279,15 @@ export function TablaDepartamento() {
 // tabla de departamento
 export function TablaCargos() {
   const [datos, setDatos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10; 
 
   useEffect(() => {
     ShowDepart();
     const socket = socketIOClient('http://localhost:4000');
-
     socket.on('ActualizatTable', (nuevasAsistencias) => {
       setDatos(nuevasAsistencias);
     });
-
     return () => {
       socket.disconnect();
     };
@@ -223,6 +295,17 @@ export function TablaCargos() {
   const ShowDepart = async () => {
     const res = await axios.get("http://localhost:4000/cargos");
     setDatos(res.data);
+  };
+
+  // Calcula los elementos que se mostrarán en la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = datos.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Función para cambiar la página actual
+  const changePage = (event) => {
+    const pageNumber = Number(event.target.textContent);
+    setCurrentPage(pageNumber);
   };
   return (
     <Container>
@@ -235,7 +318,7 @@ export function TablaCargos() {
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {datos.map((cargos) => (
+            {currentItems.map((cargos) => (
               <Table.Row className="bg-white" key={cargos.id_cargo}>
                 <Table.Cell className="whitespace-nowrap">
                   {cargos.cargo}
@@ -250,6 +333,12 @@ export function TablaCargos() {
             ))}
           </Table.Body>
         </Table>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={datos.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
+        />
       </div>
     </Container>
   );
@@ -257,6 +346,18 @@ export function TablaCargos() {
 //-------------------------------------------------
 // tabla de inventario
 export function TablaInv({ innerRef, datos }) {
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10; 
+  // Calcula los elementos que se mostrarán en la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = datos.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Función para cambiar la página actual
+  const changePage = (event) => {
+    const pageNumber = Number(event.target.textContent);
+    setCurrentPage(pageNumber);
+  };
   return (
     <Container>
       <div className="ContenedorTabla">
@@ -274,7 +375,7 @@ export function TablaInv({ innerRef, datos }) {
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {datos.map((inventary) => (
+            {currentItems.map((inventary) => (
               // eslint-disable-next-line react/jsx-key
               <Table.Row className="bg-white">
                 <Table.Cell className="whitespace-nowrap">
@@ -297,6 +398,12 @@ export function TablaInv({ innerRef, datos }) {
             ))}
           </Table.Body>
         </Table>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={datos.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
+        />
       </div>
     </Container>
   );
@@ -305,6 +412,8 @@ export function TablaInv({ innerRef, datos }) {
 // tabla de usuarios
 export function TablaUsuario() {
   const [datos, setDatos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10; 
 
   useEffect(() => {
     ShowDepart();
@@ -323,6 +432,16 @@ export function TablaUsuario() {
     const res = await axios.get("http://localhost:4000/signup");
     setDatos(res.data);
   };
+  // Calcula los elementos que se mostrarán en la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = datos.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Función para cambiar la página actual
+  const changePage = (event) => {
+    const pageNumber = Number(event.target.textContent);
+    setCurrentPage(pageNumber);
+  };
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -333,7 +452,7 @@ export function TablaUsuario() {
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {datos.map((users) => (
+            {currentItems.map((users) => (
               <Table.Row className="bg-white" key={users.id}>
                 <Table.Cell className="whitespace-nowrap">
                   {users.usuario}
@@ -348,6 +467,12 @@ export function TablaUsuario() {
             ))}
           </Table.Body>
         </Table>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={datos.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
+        />
       </div>
     </Container>
   );
@@ -356,6 +481,8 @@ export function TablaUsuario() {
 // tabla de categorias
 export function TablaCategoria() {
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10; 
 
   useEffect(() => {
     ShowCategoria();
@@ -374,6 +501,16 @@ export function TablaCategoria() {
     const res = await axios.get("http://localhost:4000/categoria");
     setData(res.data);
   };
+  // Calcula los elementos que se mostrarán en la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Función para cambiar la página actual
+  const changePage = (event) => {
+    const pageNumber = Number(event.target.textContent);
+    setCurrentPage(pageNumber);
+  };
   return (
     <Container>
       <div className="ContenedorTabla ">
@@ -384,7 +521,7 @@ export function TablaCategoria() {
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {data.map((categorias) => (
+            {currentItems.map((categorias) => (
               // eslint-disable-next-line react/jsx-key
               <Table.Row className="bg-white">
                 <Table.Cell className="whitespace-nowrap">
@@ -403,6 +540,12 @@ export function TablaCategoria() {
             ))}
           </Table.Body>
         </Table>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={data.length}
+          paginate={setCurrentPage}
+          currentPage={currentPage}
+        />
       </div>
     </Container>
   );

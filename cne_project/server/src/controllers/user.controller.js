@@ -157,7 +157,6 @@ export const AuthenticLogin = async (req, res) => {
         res.cookie('access_token', token, {
             httpOnly: true,
         });
-        console.log(token)
         // muestra el resultado
         return res.status(200).json({ mensaje: "Inicio de sesión exitoso" });
     } catch (error) {
