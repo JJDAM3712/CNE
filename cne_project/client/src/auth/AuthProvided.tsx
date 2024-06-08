@@ -21,19 +21,20 @@ export const AuthProv = ({ children }: AuthProvProps) => {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       setAuthState({ isAuthenticated: true, token });
-    }
+    };
   }, []);
 
   const login = (token: string) => {
     console.log('Logging in with token:', token);
     setAuthState({ isAuthenticated: true, token});
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
   };
   const logout = () => {
     setAuthState( {isAuthenticated: false, token: null});
+    sessionStorage.removeItem('token');
   };
 
   return (
