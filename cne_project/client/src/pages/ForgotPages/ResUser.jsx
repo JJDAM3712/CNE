@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import "../../output.css";
+import "../../css/output.css";
 import logo from "../../assets/img/CNE_logo.svg";
 import "../../css/login.css";
 import {

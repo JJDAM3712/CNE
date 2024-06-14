@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import "./output.css";
-import logo from "./assets/img/CNE_logo.svg";
-import "./css/login.css";
+import "../css/output.css";
+import logo from "../assets/img/CNE_logo.svg";
+import "../css/login.css";
 import { HiLockClosed, HiUser } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import axios from "axios";

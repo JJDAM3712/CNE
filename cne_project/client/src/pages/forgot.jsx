@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import "./output.css";
-import logo from "./assets/img/CNE_logo.svg";
-import "./css/login.css";
+import "../css/output.css";
+import logo from "../assets/img/CNE_logo.svg";
+import "../css/login.css";
 import { HiUser } from "react-icons/hi";
 import { useState, useEffect } from "react";
-import swal from "sweetalert";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvided";

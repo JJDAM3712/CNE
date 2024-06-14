@@ -1,4 +1,4 @@
-import "../src/output.css";
+import "./css/output.css";
 import { Light, Dark } from "./css/Themes"; //RUTA a los Temas de color
 import { MyRoutes } from "./routers/routes"; //Componente de Rutas
 import { Sidebar } from "./components/sidebar"; //Sidebar
