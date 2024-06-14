@@ -49,18 +49,7 @@ export const createInventary = async (req, res) => {
             [nombre, marca, codigo, modelo, estatus, cantidad, id_departamento, id_categoria]
         );
         obtenerInventary()
-        res.json({
-            id_inventario: result.insertId,
-            nombre, 
-            marca, 
-            codigo,
-            modelo, 
-            estatus,
-            cantidad,
-            id_departamento, 
-            id_categoria
-        });
-        
+        res.status(200).json({mensaje: "Inventario registrado"});
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }

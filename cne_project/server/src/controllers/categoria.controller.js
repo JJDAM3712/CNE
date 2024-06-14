@@ -39,10 +39,7 @@ export const crearCategoria = async (req, res) => {
             [categoria]
         );
         obtenerCategory();
-        res.json({
-            id_categoria: result.insertId,
-            categoria
-        });
+        res.status(200).json({mensaje: "Categoria registrado"});
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }
@@ -58,7 +55,7 @@ export const updateCategoria = async (req, res) => {
                 req.params.id
             ]);
         obtenerCategory();
-        res.json(result)
+        res.status(200).json({mensaje: "Categoria registrado"});
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }

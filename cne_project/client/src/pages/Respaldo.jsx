@@ -5,29 +5,20 @@ import "../css/login.css";
 import "../css/respaldo.css";
 import { MdCloudDownload } from "react-icons/md";
 import axios from "axios";
-import swal from "sweetalert";
 import { useState } from "react";
+import { ServidorURL } from "../config/config";
+import { alert } from "../utils/generic";
 
 export function Respaldo() {
   // realizar respaldo de datos
   const handleRespaldarDatos = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/back');
-      swal({
-        title: "Respaldado!",
-        text: "El respaldo se realizo exitosamente!",
-        icon: "success",
-        timer: "2500",
-      });
+      const response = await axios.get(`${ServidorURL}/back`);
+      alert("Respaldado!","El respaldo se realizo exitosamente!","success");
     } catch (error) {
       console.error('Error al realizar el respaldo:', error);
       // Manejar el error si es necesario
-      swal({
-        title: "Error!",
-        text: "Ocurrio un error durante el respaldo!",
-        icon: "error",
-        timer: "2500",
-      });
+      alert("Error!","Ocurrio un error durante el respaldo!","error");
     }
   };
 
@@ -43,12 +34,7 @@ export function Respaldo() {
         setArchivoSQL(archivoSeleccionado);
         setNombreArchivo(archivoSeleccionado.name);
       } else {
-        swal({
-          title: "Archivo incorrecto!",
-          text: "Por favor seleccione un archivo valido!",
-          icon: "error",
-          timer: "2500",
-        });
+        alert("Archivo incorrecto!","Por favor seleccione un archivo valido!","error");
       }
     }
   };
@@ -58,35 +44,20 @@ export function Respaldo() {
       formData.append('file', archivoSQL);
 
       try {
-        const response = await axios.post('http://localhost:4000/back', formData, {
+        const response = await axios.post(`${ServidorURL}/back`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
-        swal({
-          title: "Datos restaurados",
-          text: "Los datos se han restablecido exitosamente",
-          icon: "success",
-          timer: "2500",
-        });
+        alert("Datos restaurados","Los datos se han restablecido exitosamente","success");
       } catch (error) {
         console.error('Error al enviar el archivo:', error);
-        swal({
-          title: "Error!",
-          text: "Ocurrio un error durante la restauracion!",
-          icon: "error",
-          timer: "2500",
-        });
+        alert("Error!","Ocurrio un error durante la restauracion!","error");
       } finally {
         setNombreArchivo('');
       }
     } else {
-      swal({
-        title: "Sin archivo!",
-        text: "Por favor seleccione un archivo!",
-        icon: "warning",
-        timer: "2500",
-      });
+      alert("Sin archivo!","Por favor seleccione un archivo!","warning");
     }
   };
   

@@ -34,11 +34,11 @@ export const PeticionAxios = async (endpoint, metodo, datos = null, params = {})
 
 
 // funcion de alertas
-export const alert = (titulo, texto, icono, tiempo) => {
+export const alert = (titulo, texto, icono) => {
     swal({
       title: titulo,
       text: texto,
       icon: icono,
-      timer: tiempo
+      timer: "2000"
     });
 }

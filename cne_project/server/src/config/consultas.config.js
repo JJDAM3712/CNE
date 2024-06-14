@@ -113,5 +113,6 @@ export const BuscarUser = async (usuario) => {
   if(result.length === 0) {
       throw new Error("usuario incorrecto");
   }
+  
   return result;
 }

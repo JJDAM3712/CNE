@@ -7,6 +7,7 @@ import { Datepicker, Button } from "flowbite-react";
 import { RegisAsist } from "../components/Modal";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import socketIOClient from 'socket.io-client';
+import { ServidorURL } from "../config/config";
 
 export function Asistencias() {
   const [datos, setDatos] = useState([]);
@@ -14,7 +15,7 @@ export function Asistencias() {
   const [fechaMax, setFechaMax] = useState(null);
 
   useEffect(() => {
-    const socket = socketIOClient('http://localhost:4000');
+    const socket = socketIOClient(ServidorURL);
 
     socket.on('ActualizatTable', (nuevasAsistencias) => {
       setDatos(nuevasAsistencias);
@@ -29,7 +30,7 @@ export function Asistencias() {
     ShowDepart();
   }, [fechaMin, fechaMax]);
   const ShowDepart = async () => {
-    const res = await axios.get("http://localhost:4000/asistencia");
+    const res = await axios.get(`${ServidorURL}/asistencia`);
     setDatos(res.data);
   };
 
