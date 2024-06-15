@@ -18,7 +18,8 @@ import {
     entrada,
     visita,
     respaldo, 
-    token
+    token,
+    conter
 } from './routes/all.routes.js'
 
 // Inicializaciones
@@ -68,6 +69,7 @@ app.use(login);
 app.use(entrada);
 app.use(visita);
 app.use(respaldo);
+app.use(conter);
 
 // configuraciones 
 app.use(morgan('dev'));
