@@ -1,0 +1,5 @@
+@echo off
+cd client
+start client.vbs
+cd ..\server
+start server.vbs
