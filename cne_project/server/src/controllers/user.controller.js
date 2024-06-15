@@ -22,7 +22,7 @@ export const ShowOneUser = async (req, res) => {
         const sql = "SELECT * FROM user WHERE id = ?";
         const [result] = await pool.query(sql, [req.params.id])
         if(result.length === 0){
-            res.status(403).json({mensaje: "No existe este usuario"})
+            return res.status(403).json({mensaje: "No existe este usuario"})
         }
         res.json(result)
     } catch (error) {
@@ -100,8 +100,6 @@ export const DeleteUser = async (req, res) => {
         if (req.user.id == id) {
             return res.status(400).json({ mensaje: "No puedes eliminar tu propia cuenta mientras estás logueado" });
         }
-        console.log(typeof req.params)
-        console.log(typeof req.user.id)
         // consulta sql
         const sql = 'DELETE FROM user WHERE id = ?'
         // ejecuta consulta
@@ -134,7 +132,6 @@ export const AuthenticLogin = async (req, res) => {
             });
             return res.status(200).json({ mensaje: 'Inicio de sesión exitoso para el usuario predeterminado.' });
         }
-
         let result;
         try {
             result = await BuscarUser(usuario);
@@ -168,10 +165,21 @@ export const UserValidator = async (req, res) => {
     try {
         // recibir datos del cliente
         const {usuario} = req.body;
-        const [result] = await BuscarUser(usuario);
-        return res.status(200).json({result})
+        const result = await BuscarUser(usuario);
+        if(result.length === 0){
+            return res.status(400).json({mensaje: "Usuario incorrecto"})
+        }
+
+        // Obtén el ID del usuario desde result
+        const userId = result[0].id; 
+        const token = generateToken(userId);
+        // Configura el token en una cookie
+        res.cookie('access_token', token, {
+            httpOnly: true,
+        });
+        return res.status(200).json({token, userId});
     } catch (error) {
-        return res.status(500).json(error.message === "usuario incorrecto" ? 400 : 500).json({mensaje: error.message});
+        return res.status(500).json({mensaje: error.message});
     }
 }
 // cambiar password
@@ -191,7 +199,7 @@ export const PassRecovery = async (req, res) => {
             const sql = 'UPDATE user SET password = ? WHERE id = ?';
             // ejecutar consulta sql
             const [result] = await pool.query(sql, [password, req.params.id]);
-            res.json(result);
+            return res.status(200).json({ mensaje: 'Cambio de contraseña exitoso' });
         }
     } catch (error) {
         return res.status(500).json({mensaje: error.message});

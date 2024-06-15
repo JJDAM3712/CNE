@@ -79,7 +79,7 @@ export function ModalRegis() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (Object.values(datos).some((field) => field.trim() === "")) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning","2000");
+      alert("Campo vacio","Debes ingresar todos los datos","warning");
     } else {
       try {
         await axios.post(`${ServidorURL}/personal`, datos, {
@@ -91,9 +91,9 @@ export function ModalRegis() {
         alert("Personal","Registrado exitosamente!","success","1500",);
       } catch (error) {
         if (error.response && error.response.status === 300) {
-          alert("Cedula invalida...",`Ya existe un usuario registrado con este número de cedula!`,"error","2000");
+          alert("Cedula invalida...",`Ya existe un usuario registrado con este número de cedula!`,"error");
         } else {
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000");
+          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
         }
         return console.log(error);
       }
@@ -315,7 +315,7 @@ export function EditarPersona({ id }) {
         (field) => typeof field === "string" && field.trim() === ""
       )
     ) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning","2000");
+      alert("Campo vacio","Debes ingresar todos los datos","warning");
     } else {
       try {
         const datosParaEnviar = {
@@ -332,12 +332,12 @@ export function EditarPersona({ id }) {
           }
         );
         setOpenModal(false);
-        alert("Personal","Actualizado exitosamente!","success","2000");
+        alert("Personal","Actualizado exitosamente!","success");
       } catch (error) {
         if (error.response && error.response.status === 300) {
-          alert("Cedula invalida...",`Ya existe un usuario registrado con este número de cedula!`,"error","2000");
+          alert("Cedula invalida...",`Ya existe un usuario registrado con este número de cedula!`,"error");
         } else {
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000");
+          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
         }
         return console.log(error);
       }
@@ -491,11 +491,11 @@ export function EliminarPersona({ id }) {
   const deleteDepa = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/personal/${id}`);
-      alert("Personal","Eliminado exitosamente!","success","2000");
+      alert("Personal","Eliminado exitosamente!","success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Personal","Error en la eliminación!","error","2000");
+      alert("Personal","Error en la eliminación!","error");
       setOpenModal(false);
     }
   };
@@ -538,11 +538,11 @@ export function EliminaAsist({id}) {
   const deleteAsistence = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/asistencia/${id}`);
-      alert("Registro","Eliminado exitosamente!","success","2000");
+      alert("Registro","Eliminado exitosamente!","success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Registro","Error en la eliminación!","error","2000");
+      alert("Registro","Error en la eliminación!","error");
       setOpenModal(false);
     }
   };
@@ -614,23 +614,23 @@ export function RegisAsist() {
         },
       });
       handleCloseModal();
-      alert("Asistencia","Registro exitoso!","success","2000");
+      alert("Asistencia","Registro exitoso!","success");
     } catch (error) {
       switch(error.response && error.response.status) {
         case 402:
-          alert("Entrada no registrada!",`Debes registrar tu entrada primero`,"error","2000");
+          alert("Entrada no registrada!",`Debes registrar tu entrada primero`,"error");
           break;
         case 403:
-          alert("Salida registrada",`Ya se ha registrado una salida hoy`,"error","2000");
+          alert("Salida registrada",`Ya se ha registrado una salida hoy`,"error");
           break;
         case 405:
-          alert("Cedula errorea!",`La cedula no existe`,"error","2000");
+          alert("Cedula errorea!",`La cedula no existe`,"error");
           break;
         case 406:
-          alert("Entrada registrada",`Ya se ha registrado una entrada hoy`,"error","2000");
+          alert("Entrada registrada",`Ya se ha registrado una entrada hoy`,"error");
           break;
         default:
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error", "2000");
+          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
           console.error(error);
       }
     }
@@ -742,7 +742,7 @@ export function RegisVisita() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (Object.values(data).some((field) => field.trim() === "")) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning","2000");
+      alert("Campo vacio","Debes ingresar todos los datos","warning");
     } else {
       try {
         await axios.post(`${ServidorURL}/visita/entrada`, data, {
@@ -751,14 +751,14 @@ export function RegisVisita() {
           },
         });
         handleCloseModal()
-        alert("Articulo","Registrado exitosamente!","success","2000");
+        alert("Visita","Registrada exitosamente!","success");
       } catch (error) {
         switch(error.response && error.response.status) {
           case 406:
-            alert("Entrada registrada",`Ya se ha registrado esta visita hoy`,"error","2000");
+            alert("Entrada registrada",`Ya se ha registrado esta visita hoy`,"error");
             break;
           default:
-            alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000");
+            alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
             console.error(error);
         }
       }
@@ -890,17 +890,17 @@ export function RegisSalidaVisita() {
         },
       });
       handleCloseModal();
-      alert("Salida","Registro exitoso!","success","2000");
+      alert("Salida","Registro exitoso!","success");
     } catch (error) {
       switch(error.response && error.response.status) {
         case 403:
-          alert("Salida registrada","Ya se ha registrado una salida hoy","error","2000");
+          alert("Salida registrada","Ya se ha registrado una salida hoy","error");
           break;
         case 405:
-          alert("Cedula errorea!",`La cedula no se ha registrado hoy`,"error","2000");
+          alert("Cedula errorea!",`La cedula no se ha registrado hoy`,"error");
           break;
         default:
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000");
+          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
           console.error(error);
       }
     }
@@ -956,11 +956,11 @@ export function EliminaVisita({id}) {
   const deleteVisita = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/visita/${id}`);
-      alert("Registro","Eliminado exitosamente!","success","2000");
+      alert("Registro","Eliminado exitosamente!","success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Registro","Error en la eliminación!","error","2000");
+      alert("Registro","Error en la eliminación!","error");
       setOpenModal(false);
     }
   };
@@ -1025,7 +1025,7 @@ export function ModalDep() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (data.departamento.trim() === "") {
-      alert("Campo vacio","Debes agregar un departamento","warning","2000")
+      alert("Campo vacio","Debes agregar un departamento","warning")
     } else {
       try {
         await axios.post(`${ServidorURL}/task`, data, {
@@ -1034,9 +1034,9 @@ export function ModalDep() {
           },
         });
         handleCloseModal()
-        alert("Departamento","Registro exitoso!","success","2000")
+        alert("Departamento","Registro exitoso!","success")
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error al registrar!","error","2000")
+        alert("Oops...","Ha ocurrido un error al registrar!","error")
         return console.log(error);
       }
     }
@@ -1090,11 +1090,11 @@ export function EliminarDep({ id }) {
   const deleteDepa = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/task/${id}`);
-      alert("Departamento","Eliminado exitosamente!","success","2000");
+      alert("Departamento","Eliminado exitosamente!","success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Departamento","Error en la eliminación!","error","2000");
+      alert("Departamento","Error en la eliminación!","error");
       setOpenModal(false);
     }
   };
@@ -1139,7 +1139,7 @@ export function EditarDep({ id }) {
     e.preventDefault();
     await axios.put(`${ServidorURL}/task/${id}`, { departamento });
     setOpenModal(false);
-    alert( "Departamento","Actualización exitososa!","success","2000");
+    alert( "Departamento","Actualización exitososa!","success");
   };
 
   const handleOpenModal = async () => {
@@ -1222,7 +1222,7 @@ export function ModalCargo() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (data.cargo.trim() === "" || data.cantidad.trim() === "") {
-      alert("Campo vacio","Debes llenar todos los campos","warning","2000");
+      alert("Campo vacio","Debes llenar todos los campos","warning");
     } else {
       try {
         await axios.post(`${ServidorURL}/cargos`, data, {
@@ -1231,9 +1231,9 @@ export function ModalCargo() {
           },
         });
         handleCloseModal();
-        alert("Cargo","Registro exitoso!","success","2000")
+        alert("Cargo","Registro exitoso!","success")
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error al registrar!","error","2000")
+        alert("Oops...","Ha ocurrido un error al registrar!","error")
         return console.log(error);
       }
     }
@@ -1298,10 +1298,10 @@ export function EliminarCargo({ id }) {
   const deleteDepa = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/cargos/${id}`);
-      alert("Cargo","Eliminado exitosamente!","success","2000")
+      alert("Cargo","Eliminado exitosamente!","success")
       setOpenModal(false);
     } catch (error) {
-      alert("Cargo","Error en la eliminación!","error","2000")
+      alert("Cargo","Error en la eliminación!","error")
       setOpenModal(false);
     }
   };
@@ -1415,15 +1415,15 @@ export function RegisInv({ id }) {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (Object.values(datos).some((field) => field.trim() === "")) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning","2000")
+      alert("Campo vacio","Debes ingresar todos los datos","warning")
     } else {
       try {
         await PeticionAxios('inventary', 'post', datos)
         limpiarCampos();
         setOpenModal(false);
-        alert("Articulo","Registrado exitosamente!","success","2000",)
+        alert("Articulo","Registrado exitosamente!","success")
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error en el registro!","error","2000",)
+        alert("Oops...","Ha ocurrido un error en el registro!","error")
         return console.log(error);
       }
     }
@@ -1691,7 +1691,7 @@ export function EditInv({ id }) {
         (field) => typeof field === "string" && field.trim() === ""
       )
     ) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning","2000")
+      alert("Campo vacio","Debes ingresar todos los datos","warning")
     } else {
       // si los campos no estan vacios realiza la funcion
       const datosParaEnviar = {
@@ -1712,7 +1712,7 @@ export function EditInv({ id }) {
         }
       );
       handleCloseModal()
-      alert("Articulo","Actualizado exitosamente!","success","2000");
+      alert("Articulo","Actualizado exitosamente!","success");
     }
   };
 
@@ -1896,11 +1896,11 @@ export function EliminarInv({ id }) {
   const deleteInven = async () => {
     try {
       await axios.delete(`${ServidorURL}/inventary/${id}`);
-      alert("Articulo","Eliminado exitosamente!","success","2000")
+      alert("Articulo","Eliminado exitosamente!","success")
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Articulo","Error en la eliminación!","error","2000")
+      alert("Articulo","Error en la eliminación!","error")
       setOpenModal(false);
     }
   };
@@ -1963,9 +1963,9 @@ export function ModalUsr() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (Object.values(data).some((field) => field.trim() === "")) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning","1500")
+      alert("Campo vacio","Debes ingresar todos los datos","warning")
     } else if (data.pass !== secondPass) {
-      return alert("Contraseñas no coinciden","Las contraseñas ingresadas no son iguales","error","2000")
+      return alert("Contraseñas no coinciden","Las contraseñas ingresadas no son iguales","error")
     } else {
       try {
         // peticion de registro
@@ -1975,13 +1975,13 @@ export function ModalUsr() {
         setSecondPass("");
         setOpenModal(false);
         // alerta de exito
-        alert("Usuario","Registro exitoso!","success","2000")
+        alert("Usuario","Registro exitoso!","success")
       } catch (error) {
         // alerta de errores
         if (error.response && error.response.status === 300) {
-          alert("Usuario invalido...",`Ya existe un usuario registrado con ese nombre!`,"error","2000")
+          alert("Usuario invalido...",`Ya existe un usuario registrado con ese nombre!`,"error")
         } else {
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error", "2000")
+          alert("Oops...",`Ha ocurrido un error! ${error}`,"error")
         }
         return console.log(error);
       }
@@ -2113,15 +2113,15 @@ export function EliminarUsr({ id }) {
         {withCredentials: true,}        
       );
       // alerta de exito
-      alert("Usuario","Eliminado exitosamente!","success","2000")
+      alert("Usuario","Eliminado exitosamente!","success")
       setOpenModal(false);
     } catch (error) {
       switch(error.response && error.response.status) {
         case 400:
-          alert('Imposible',"No puedes eliminar tu usuario!","warning","2000");
+          alert('Imposible',"No puedes eliminar tu usuario!","warning");
           break;
         default:
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000");
+          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
           console.error(error);
       }
       console.error("error", error);
@@ -2217,10 +2217,10 @@ export function EditarUsr({ id }) {
         (field) => typeof field === "string" && field.trim() === ""
       )
     ) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning","2000")
+      alert("Campo vacio","Debes ingresar todos los datos","warning")
       // valida que ambas contraseñas sean iguales
     } else if (datos.pass !== secondPass) {
-      return alert("Contraseñas no coinciden","Las contraseñas ingresadas no son iguales","error","2000")
+      return alert("Contraseñas no coinciden","Las contraseñas ingresadas no son iguales","error")
     } else {
       // si los campos no estan vacios realiza la funcion
       const datosParaEnviar = {
@@ -2235,12 +2235,12 @@ export function EditarUsr({ id }) {
         });
         setOpenModal(false);
         limpiarCampos()
-        alert("Articulo","Actualizado exitosamente!","success","2000")
+        alert("Articulo","Actualizado exitosamente!","success")
       } catch (error) {
         if (error.response && error.response.status === 400) {
-          alert("Usuario invalido...",`Ya existe un usuario registrado con ese nombre!`,"error","2000")
+          alert("Usuario invalido...",`Ya existe un usuario registrado con ese nombre!`,"error")
         } else {
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000")
+          alert("Oops...",`Ha ocurrido un error! ${error}`,"error")
         }
         return console.log(error);
       }
@@ -2389,15 +2389,15 @@ export function ModalCatg() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (data.categoria.trim() === "") {
-      alert("Campo vacio","Debes llenar todos los campos","warning","1500")
+      alert("Campo vacio","Debes llenar todos los campos","warning")
     } else {
       try {
         PeticionAxios("categoria", "post", data)
         setData({ categoria: "" });
         setOpenModal(false);
-        alert("Categoria","Registro exitoso!","success","2000")
+        alert("Categoria","Registro exitoso!","success")
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error al registrar!","error","2000")
+        alert("Oops...","Ha ocurrido un error al registrar!","error")
         return console.log(error);
       }
     }
@@ -2454,10 +2454,10 @@ export function EliminarCatg({ id }) {
     try {
       const res = await axios.delete(`${ServidorURL}/categoria/${id}`);
       if (res.response && res.response.status === 204) {
-        alert("Categoria", "Eliminado exitosamente!", "success", "2000");
+        alert("Categoria", "Eliminado exitosamente!", "success");
       }
     } catch (error) {
-      return alert("Categoria", "Error en la eliminacion", "error", "2000");
+      return alert("Categoria", "Error en la eliminacion", "error");
     }
     setOpenModal(false);
   };
@@ -2511,7 +2511,7 @@ export function EditarCatg({ id }) {
       e.preventDefault();
       await axios.put(`${ServidorURL}/categoria/${id}`, { categoria })
       setOpenModal(false);
-      alert("Categoria","Actualizado exitosamente!","success","2000");
+      alert("Categoria","Actualizado exitosamente!","success");
     } catch (error) {
       console.error(error);
     }

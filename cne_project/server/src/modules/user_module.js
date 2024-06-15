@@ -11,7 +11,7 @@ export const generateToken =  (id) => {
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
   if (!token) {
-    return res.status(405).json({mensaje: "Token invalido"})
+    return res.status(405).json({mensaje: "Token invalido"});
   };
   try {
     const data = jwt.verify(token, JWT_SECRET);

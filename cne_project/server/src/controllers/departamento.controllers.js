@@ -38,10 +38,7 @@ export const crearDepart = async (req, res) => {
             [departamento]
         );
         obtenerDepart()
-        res.json({
-            id_departamento: result.insertId,
-            departamento
-        });
+        res.status(200).json({mensaje: "Departamento registrado"});
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }
@@ -57,7 +54,7 @@ export const updateDepart = async (req, res) => {
                 req.params.id
             ]);
         obtenerDepart()
-        res.json(result)
+        res.status(200).json({mensaje: "Departamento registrado"});
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }

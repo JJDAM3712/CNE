@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import "./output.css";
-import logo from "./assets/img/CNE_logo.svg";
-import "./css/login.css";
+import "../css/output.css";
+import logo from "../assets/img/CNE_logo.svg";
+import "../css/login.css";
 import { HiLockClosed, HiUser } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { alert } from "./utils/generic"
-import { ServidorURL } from "./config/config";
-import { useAuth } from "./auth/AuthProvided";
+import { alert } from "../utils/generic"
+import { ServidorURL } from "../config/config";
+import { useAuth } from "../auth/AuthProvided";
 
 
 function Login() {
@@ -23,7 +23,8 @@ function Login() {
   // En tu componente de inicio de sesión
   useEffect(() => {
     if (authState.isAuthenticated) {
-      navigate("/app/*"); // Redirige cuando el estado de autenticación cambie a true
+      // Redirige cuando el estado de autenticación cambie a true
+      navigate("/app/*");
     }
   }, [authState.isAuthenticated, navigate]);
 
@@ -38,7 +39,7 @@ function Login() {
 
     try {
       if (datos.usuario.trim() === "" && datos.password.trim() === "") {
-        alert("Campo vacio","Debes ingresar todos los datos","warning","2000");
+        alert("Campo vacio","Debes ingresar todos los datos","warning");
       } else {
         const res = await axios.post(`${ServidorURL}/login`, datos, {
           headers: {
@@ -54,9 +55,9 @@ function Login() {
     } catch (error) {
       console.error('Error al iniciar sesión:', error.response);
       if (error.response && error.response.status === 401) {
-        alert("Oops...",`Usuario o contraseña incorerctos!`,"error","2000");
+        alert("Oops...",`Usuario o contraseña incorerctos!`,"error");
       } else {
-        alert("Oops...",`Ha ocurrido un error! ${error}`,"error","2000");
+        alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
       }
       return console.log(error);
     }

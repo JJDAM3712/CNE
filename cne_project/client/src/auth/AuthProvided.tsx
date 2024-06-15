@@ -6,11 +6,12 @@ interface AuthProvProps {
 interface AuthState {
   isAuthenticated: boolean;
   token: string | null;
+  userId: string | null;
 }
 
 const AuthContext = createContext<{
   authState: AuthState;
-  login: (token: string) => void;
+  login: (token: string, userId: string) => void;
   logout: () => void;
 } | null>(null);
 
@@ -18,23 +19,26 @@ export const AuthProv = ({ children }: AuthProvProps) => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     token: null,
+    userId: null,
   });
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
-    if (token) {
-      setAuthState({ isAuthenticated: true, token });
+    const userId = sessionStorage.getItem('userId');
+    if (token && userId) {
+      setAuthState({ isAuthenticated: true, token, userId });
     };
   }, []);
 
-  const login = (token: string) => {
-    console.log('Logging in with token:', token);
-    setAuthState({ isAuthenticated: true, token});
+  const login = (token: string, userId: string) => {
+    setAuthState({ isAuthenticated: true, token, userId});
     sessionStorage.setItem('token', token);
+    sessionStorage.setItem('userId', userId);
   };
   const logout = () => {
-    setAuthState( {isAuthenticated: false, token: null});
+    setAuthState( {isAuthenticated: false, token: null, userId: null});
     sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userId');
   };
 
   return (

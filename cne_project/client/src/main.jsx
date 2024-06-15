@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./Login";
+import Login from "./pages/Login.jsx";
 import App from "./App";
-import "./index.css";
+import "./css/index.css";
 import { Protect, ProtectForgot } from "./routers/Routes.Protect.tsx";
 import { AuthProv } from "./auth/AuthProvided.tsx";
-import Forgot from "./forgot.jsx";
+import Forgot from "./pages/forgot.jsx";
 import { ResUser } from "./pages/ForgotPages/ResUser.jsx";
 
 const router = createBrowserRouter([

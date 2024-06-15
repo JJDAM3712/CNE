@@ -1,30 +1,36 @@
 import styled from "styled-components";
-import "./output.css";
-import logo from "./assets/img/CNE_logo.svg";
-import "./css/login.css";
+import "../css/output.css";
+import logo from "../assets/img/CNE_logo.svg";
+import "../css/login.css";
 import { HiUser } from "react-icons/hi";
-import { useState } from "react";
-import swal from "sweetalert";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./auth/AuthProvided";
+import { useAuth } from "../auth/AuthProvided";
+import { ServidorURL } from "../config/config";
+import { alert } from "../utils/generic"
 
 export function Forgot() {
   const [datos, setDatos] = useState({
-    usuario: "",
-    password: "",
+    usuario: ""
   });
-  const navigate = useNavigate();
-  //   ACTIVAR EL USO DE ESTA FUNCION (NO SUPE COMO XD)
+
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
     setDatos({ ...datos, [names]: value });
   };
-  const { setIsAuthenticated } = useAuth();
-  //   VALIDACION DE AUTENTICACION EVITA EL ACCESO NO AUTORIZADO AL SIGUIENTE FORMULARIO
-  //   setIsAuthenticated(false);
+  const navigate = useNavigate();
+  // accede a la funcion login de useAuth
+  const { authState, login } = useAuth();
 
+  // En tu componente de inicio de sesión
+  useEffect(() => {
+    if (authState.isAuthenticated) {
+      // Redirige cuando el estado de autenticación cambie a true
+      navigate("/forgot/*");
+    }
+  }, [authState.isAuthenticated, navigate]);
   //   ACTIVAR EL USO DE ESTA FUNCION (NO SUPE COMO XD)
   const handleSend = async (e) => {
     e.preventDefault();
@@ -32,45 +38,31 @@ export function Forgot() {
     try {
       // EDITAR Y ADAPTAR LAS VALIDACIONES
       if (datos.usuario.trim() === "" && datos.password.trim() === "") {
-        swal({
-          title: "Campo vacio",
-          text: "Debes ingresar todos los datos",
-          icon: "warning",
-          timer: "1500",
-        });
+        alert("Campo vacio","Debes ingresar todos los datos","warning")
       } else {
-        const res = await axios.post("http://localhost:4000/login", datos, {
+        const res = await axios.post(`${ServidorURL}/loginRecor`, datos, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        // CAMBIA LA AUTENTICACION DE RUTA A VERDADERO Y PERMITE EL ACCESO AL SIGUIENTE FORMULARIO
         if (res.status === 200) {
-          setIsAuthenticated(true);
+          const {token, userId} = res.data;
+          login(token, userId);
           navigate("/forgot/*");
         }
       }
     } catch (error) {
       if (error.response && error.response.status === 300) {
-        swal({
-          title: "Oops...",
-          text: `Usuario o contraseña incorerctos!`,
-          icon: "error",
-          timer: "2000",
-        });
+        alert("Oops...",`Usuario incorercto!`, "error")
       } else {
-        swal({
-          title: "Oops...",
-          text: `Ha ocurrido un error! ${error}`,
-          icon: "error",
-        });
+        alert("Oops...",`Ha ocurrido un error! ${error}`, "error")
       }
       return console.log(error);
     }
   };
   return (
     <Container>
-      <form action="" className="form_main">
+      <form className="form_main" onSubmit={handleSend}>
         <div className="flex ">
           <img src={logo} alt="Logo CNE" className="w-24" />
         </div>
@@ -83,6 +75,8 @@ export function Forgot() {
             id="usuario"
             name="usuario"
             placeholder="Usuario"
+            value={datos.usuario}
+            onChange={handleChange}
           />
         </div>
 

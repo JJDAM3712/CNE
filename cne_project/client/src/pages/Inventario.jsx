@@ -7,12 +7,13 @@ import axios from "axios";
 import { useRef, useState, useEffect } from "react";
 import { useDownloadExcel } from 'react-export-table-to-excel';
 import socketIOClient from 'socket.io-client';
+import { ServidorURL } from "../config/config";
 
 export function Inventario() {
   const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    const socket = socketIOClient('http://localhost:4000');
+    const socket = socketIOClient(ServidorURL);
 
     socket.on('ActualizatTable', (nuevasAsistencias) => {
       setDatos(nuevasAsistencias);
@@ -28,7 +29,7 @@ export function Inventario() {
   }, []);
 
   const ShowDepart = async () => {
-    const res = await axios.get("http://localhost:4000/inventary");
+    const res = await axios.get(`${ServidorURL}/inventary`);
     setDatos(res.data);
   };
   const TablaInvent = useRef(null);

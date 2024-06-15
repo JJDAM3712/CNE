@@ -19,6 +19,7 @@ import {
 } from "./Modal"; //Importamos las Modales para su uso en los Botones de Opciones
 import socketIOClient from 'socket.io-client';
 import Pagination from "./Pagination";
+import { ServidorURL } from "../config/config";
 
 //-------------------------------------------------
 // tabla personal
@@ -206,7 +207,7 @@ export function TablaDepartamento() {
 
   useEffect(() => {
     ShowDepart();
-    const socket = socketIOClient('http://localhost:4000');
+    const socket = socketIOClient(`${ServidorURL}`);
 
     socket.on('ActualizatTable', (nuevasAsistencias) => {
       setDatos(nuevasAsistencias);
@@ -217,7 +218,7 @@ export function TablaDepartamento() {
     };
   }, []);
   const ShowDepart = async () => {
-    const res = await axios.get("http://localhost:4000/task");
+    const res = await axios.get(`${ServidorURL}/task`);
     setDatos(res.data);
   };
    // Calcula los elementos que se mostrarán en la página actual
@@ -251,11 +252,11 @@ export function TablaDepartamento() {
                 </Table.Cell>
                 <Table.Cell>
                   <Button.Group>
-                    <EliminarDep
+                    <EditarDep
                       className="left-4"
                       id={departamentos.id_departamento}
                     />
-                    <EditarDep
+                    <EliminarDep
                       className="left-4"
                       id={departamentos.id_departamento}
                     />
@@ -284,7 +285,7 @@ export function TablaCargos() {
 
   useEffect(() => {
     ShowDepart();
-    const socket = socketIOClient('http://localhost:4000');
+    const socket = socketIOClient(ServidorURL);
     socket.on('ActualizatTable', (nuevasAsistencias) => {
       setDatos(nuevasAsistencias);
     });
@@ -293,7 +294,7 @@ export function TablaCargos() {
     };
   }, []);
   const ShowDepart = async () => {
-    const res = await axios.get("http://localhost:4000/cargos");
+    const res = await axios.get(`${ServidorURL}/cargos`);
     setDatos(res.data);
   };
 
@@ -417,7 +418,7 @@ export function TablaUsuario() {
 
   useEffect(() => {
     ShowDepart();
-    const socket = socketIOClient('http://localhost:4000');
+    const socket = socketIOClient(ServidorURL);
 
     socket.on('ActualizatTable', (nuevasAsistencias) => {
       setDatos(nuevasAsistencias);
@@ -429,7 +430,7 @@ export function TablaUsuario() {
   }, []);
 
   const ShowDepart = async () => {
-    const res = await axios.get("http://localhost:4000/signup");
+    const res = await axios.get(`${ServidorURL}/signup`);
     setDatos(res.data);
   };
   // Calcula los elementos que se mostrarán en la página actual
@@ -486,7 +487,7 @@ export function TablaCategoria() {
 
   useEffect(() => {
     ShowCategoria();
-    const socket = socketIOClient('http://localhost:4000');
+    const socket = socketIOClient(ServidorURL);
 
     socket.on('ActualizatTable', (nuevasAsistencias) => {
       setData(nuevasAsistencias);
@@ -498,7 +499,7 @@ export function TablaCategoria() {
   }, []);
   
   const ShowCategoria = async () => {
-    const res = await axios.get("http://localhost:4000/categoria");
+    const res = await axios.get(`${ServidorURL}/categoria`);
     setData(res.data);
   };
   // Calcula los elementos que se mostrarán en la página actual

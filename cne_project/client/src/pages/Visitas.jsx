@@ -4,18 +4,16 @@ import { Datepicker, Button } from "flowbite-react";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { TablaVisitas } from "../components/Tablas";
 import axios from "axios";
-import { useRef, useState, useEffect, lazy, Suspense } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useDownloadExcel } from 'react-export-table-to-excel';
 import socketIOClient from 'socket.io-client';
-
-
-//const Tabla = lazy(() => import("../components/Tablas/TablaVisitas"));
+import { ServidorURL } from "../config/config";
 
 export function Visitas() {
     const [datos, setDatos] = useState([]);
 
     useEffect(() => {
-      const socket = socketIOClient('http://localhost:4000');
+      const socket = socketIOClient(ServidorURL);
   
       socket.on('ActualizatTable', (nuevasAsistencias) => {
         setDatos(nuevasAsistencias);
@@ -31,7 +29,7 @@ export function Visitas() {
     }, []);
   
     const ShowDepart = async () => {
-      const res = await axios.get("http://localhost:4000/visita");
+      const res = await axios.get(`${ServidorURL}/visita`);
       setDatos(res.data);
     };
     const TablaVisita = useRef(null);
@@ -59,11 +57,7 @@ export function Visitas() {
                     </div>
                 </form>
             </div>
-
-            <Suspense fallback={<p>cargando esta monda</p>}>
-              <TablaVisitas datos={datos} innerRef={TablaVisita} />
-            </Suspense>
-            
+            <TablaVisitas datos={datos} innerRef={TablaVisita} />
         </Container>
     )    
 }

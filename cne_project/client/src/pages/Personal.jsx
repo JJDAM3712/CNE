@@ -8,7 +8,7 @@ import { HiOutlineArrowRight } from "react-icons/hi";
 import { useDownloadExcel } from 'react-export-table-to-excel';
 import axios from "axios";
 import socketIOClient from 'socket.io-client';
-
+import { ServidorURL } from "../config/config";
 
 
 export function Personal() {
@@ -21,7 +21,7 @@ export function Personal() {
   const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    const socket = socketIOClient('http://localhost:4000');
+    const socket = socketIOClient(ServidorURL);
 
     socket.on('ActualizatTable', (nuevasAsistencias) => {
       setDatos(nuevasAsistencias);
@@ -37,7 +37,7 @@ export function Personal() {
   }, []);
 
   const ShowDepart = async () => {
-    const res = await axios.get(`http://localhost:4000/personal`);
+    const res = await axios.get(`${ServidorURL}/personal`);
     setDatos(res.data);
   };
   const TablaPers = useRef(null);

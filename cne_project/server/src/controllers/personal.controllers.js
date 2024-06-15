@@ -84,7 +84,7 @@ export const updatePersonal = async (req, res) => {
         ]);
         obtenerPersonal();
         // devuelve exito
-        return res.status(200).json({ mensaje: "Usuario modificado exitosamente" });
+        return res.status(200).json({ mensaje: "Personal modificado exitosamente" });
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }

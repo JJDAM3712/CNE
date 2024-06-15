@@ -38,11 +38,7 @@ export const insertCargos = async (req, res) => {
             [cargo, cantidad]
         );
         obtenerCargos()
-        res.json({
-            id_cargo: result.insertId,
-            cargo,
-            cantidad
-        });
+        res.status(200).json({mensaje: "Cargo registrado"});
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }
@@ -58,7 +54,7 @@ export const updateCago = async (req, res) => {
                 req.params.id
             ]);
         obtenerCargos()
-        res.json(result)
+        res.status(200).json({mensaje: "Inventario registrado"});
     } catch(error){
         return res.status(500).json({mensaje: error.message});
     }
