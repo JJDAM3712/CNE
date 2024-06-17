@@ -1491,11 +1491,17 @@ export function RegisInv({ id }) {
   return (
     <>
       <Button onClick={() => setOpenModal(true)}>Registrar Producto</Button>
-      <Modal show={openModal} size="md" popup onClose={handleCloseModal}>
+      <Modal
+        show={openModal}
+        size="md"
+        position="top-center"
+        popup
+        onClose={handleCloseModal}
+      >
         <Modal.Header />
-        <Modal.Body>
+        <Modal.Body className="mt-2">
           <form
-            className="flex flex-col gap-4 max-w-full uppercase top-2 relative"
+            className="flex flex-col gap-4 max-w-full uppercase"
             onSubmit={handleSend}
           >
             <h3 className="text-xl font-medium text-gray-900 text-center ">
