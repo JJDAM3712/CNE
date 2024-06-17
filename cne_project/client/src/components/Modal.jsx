@@ -1596,7 +1596,7 @@ export function RegisInv({ id }) {
                 <option value="DETERIORADO">DETERIORADO</option>
               </Select>
             </div>
-            {/* ------ departamento --------- */}
+            {/* ------ departamento -------- */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="Departamento" value="Departamento:" />
@@ -2516,9 +2516,8 @@ export function EliminarCatg({ id }) {
   const deleteInven = async () => {
     try {
       await axios.delete(`${ServidorURL}/categoria/${id}`);
-      
+
       alert("Categoria", "Eliminado exitosamente!", "success");
-      
     } catch (error) {
       return alert("Categoria", "Error en la eliminacion", "error");
     }
