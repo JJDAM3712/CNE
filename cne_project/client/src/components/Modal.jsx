@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import logo from "../assets/img/CNE_logo.svg";
 import { Button, Modal, Radio, Label, TextInput, Select } from "flowbite-react";
@@ -13,7 +15,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { alert, PeticionAxios } from "../utils/generic";
 import { ServidorURL } from "../config/config";
-
 
 // ----------------------------------------
 // registrar personal
@@ -54,20 +55,30 @@ export function ModalRegis() {
   //---------------------------------
   // regsitrar datos
   const [datos, setDatos] = useState({
-    nombre: "",apellido: "",cedula: "",telefono: "",id_cargo: "Selecciona:",id_departamento: "Selecciona:",
+    nombre: "",
+    apellido: "",
+    cedula: "",
+    telefono: "",
+    id_cargo: "Selecciona:",
+    id_departamento: "Selecciona:",
   });
   const handleChange = (e) => {
     let names = e.target.name;
     let values = e.target.value.toUpperCase();
-    if (names === 'cedula' || names === 'telefono') {
-      values = values.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    if (names === "cedula" || names === "telefono") {
+      values = values.replace(/[^0-9]/g, ""); // Esto eliminará cualquier caracter que no sea un dígito
     }
     setDatos({ ...datos, [names]: values });
   };
   // limpiar campos del formulario
   const limpiarCampos = () => {
-    setDatos({ 
-      nombre: "", apellido: "",cedula: "",telefono: "",id_cargo: "Selecciona:",id_departamento: "Selecciona:",
+    setDatos({
+      nombre: "",
+      apellido: "",
+      cedula: "",
+      telefono: "",
+      id_cargo: "Selecciona:",
+      id_departamento: "Selecciona:",
     });
   };
   const handleCloseModal = () => {
@@ -79,7 +90,7 @@ export function ModalRegis() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (Object.values(datos).some((field) => field.trim() === "")) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning");
+      alert("Campo vacio", "Debes ingresar todos los datos", "warning");
     } else {
       try {
         await axios.post(`${ServidorURL}/personal`, datos, {
@@ -88,12 +99,16 @@ export function ModalRegis() {
           },
         });
         handleCloseModal();
-        alert("Personal","Registrado exitosamente!","success","1500",);
+        alert("Personal", "Registrado exitosamente!", "success", "1500");
       } catch (error) {
         if (error.response && error.response.status === 300) {
-          alert("Cedula invalida...",`Ya existe un usuario registrado con este número de cedula!`,"error");
+          alert(
+            "Cedula invalida...",
+            `Ya existe un usuario registrado con este número de cedula!`,
+            "error"
+          );
         } else {
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
+          alert("Oops...", `Ha ocurrido un error! ${error}`, "error");
         }
         return console.log(error);
       }
@@ -292,8 +307,8 @@ export function EditarPersona({ id }) {
   const handleChange = (e) => {
     let names = e.target.name;
     let values = e.target.value.toUpperCase();
-    if (names === 'cedula' || names === 'telefono') {
-      values = values.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    if (names === "cedula" || names === "telefono") {
+      values = values.replace(/[^0-9]/g, ""); // Esto eliminará cualquier caracter que no sea un dígito
     }
     setDatos({ ...datos, [names]: values });
   };
@@ -315,7 +330,7 @@ export function EditarPersona({ id }) {
         (field) => typeof field === "string" && field.trim() === ""
       )
     ) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning");
+      alert("Campo vacio", "Debes ingresar todos los datos", "warning");
     } else {
       try {
         const datosParaEnviar = {
@@ -326,18 +341,20 @@ export function EditarPersona({ id }) {
           id_cargo: datos.id_cargo,
           id_departamento: datos.id_departamento,
         };
-        await axios.put(`${ServidorURL}/personal/${id}`, datosParaEnviar,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        await axios.put(`${ServidorURL}/personal/${id}`, datosParaEnviar, {
+          headers: { "Content-Type": "application/json" },
+        });
         setOpenModal(false);
-        alert("Personal","Actualizado exitosamente!","success");
+        alert("Personal", "Actualizado exitosamente!", "success");
       } catch (error) {
         if (error.response && error.response.status === 300) {
-          alert("Cedula invalida...",`Ya existe un usuario registrado con este número de cedula!`,"error");
+          alert(
+            "Cedula invalida...",
+            `Ya existe un usuario registrado con este número de cedula!`,
+            "error"
+          );
         } else {
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
+          alert("Oops...", `Ha ocurrido un error! ${error}`, "error");
         }
         return console.log(error);
       }
@@ -491,11 +508,11 @@ export function EliminarPersona({ id }) {
   const deleteDepa = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/personal/${id}`);
-      alert("Personal","Eliminado exitosamente!","success");
+      alert("Personal", "Eliminado exitosamente!", "success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Personal","Error en la eliminación!","error");
+      alert("Personal", "Error en la eliminación!", "error");
       setOpenModal(false);
     }
   };
@@ -533,16 +550,16 @@ export function EliminarPersona({ id }) {
 }
 
 // -----------------------------------------
-export function EliminaAsist({id}) {
+export function EliminaAsist({ id }) {
   const [openModal, setOpenModal] = useState(false);
   const deleteAsistence = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/asistencia/${id}`);
-      alert("Registro","Eliminado exitosamente!","success");
+      alert("Registro", "Eliminado exitosamente!", "success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Registro","Error en la eliminación!","error");
+      alert("Registro", "Error en la eliminación!", "error");
       setOpenModal(false);
     }
   };
@@ -581,20 +598,22 @@ export function EliminaAsist({id}) {
 export function RegisAsist() {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
-    cedula: "", asistencia: "entrada"
-  })
+    cedula: "",
+    asistencia: "entrada",
+  });
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
-    if (names === 'cedula') {
-      value = value.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    if (names === "cedula") {
+      value = value.replace(/[^0-9]/g, ""); // Esto eliminará cualquier caracter que no sea un dígito
     }
     setData({ ...data, [names]: value });
   };
   // limpiar campos del formulario
   const limpiarCampos = () => {
-    setData({ 
-      cedula: "", asistencia: "entrada"
+    setData({
+      cedula: "",
+      asistencia: "entrada",
     });
   };
   const handleCloseModal = () => {
@@ -607,44 +626,51 @@ export function RegisAsist() {
       const url_0 = `${ServidorURL}/asistencia/entrada`;
       const url_1 = `${ServidorURL}/asistencia/salida`;
       // Define la URL dependiendo del valor de asistencia
-      const url = data.asistencia === 'entrada' ? url_0 : url_1;
+      const url = data.asistencia === "entrada" ? url_0 : url_1;
       const response = await axios.post(url, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       handleCloseModal();
-      alert("Asistencia","Registro exitoso!","success");
+      alert("Asistencia", "Registro exitoso!", "success");
     } catch (error) {
-      switch(error.response && error.response.status) {
+      switch (error.response && error.response.status) {
         case 402:
-          alert("Entrada no registrada!",`Debes registrar tu entrada primero`,"error");
+          alert(
+            "Entrada no registrada!",
+            `Debes registrar tu entrada primero`,
+            "error"
+          );
           break;
         case 403:
-          alert("Salida registrada",`Ya se ha registrado una salida hoy`,"error");
+          alert(
+            "Salida registrada",
+            `Ya se ha registrado una salida hoy`,
+            "error"
+          );
           break;
         case 405:
-          alert("Cedula errorea!",`La cedula no existe`,"error");
+          alert("Cedula errorea!", `La cedula no existe`, "error");
           break;
         case 406:
-          alert("Entrada registrada",`Ya se ha registrado una entrada hoy`,"error");
+          alert(
+            "Entrada registrada",
+            `Ya se ha registrado una entrada hoy`,
+            "error"
+          );
           break;
         default:
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
+          alert("Oops...", `Ha ocurrido un error! ${error}`, "error");
           console.error(error);
       }
     }
   };
-  
+
   return (
     <>
       <Button onClick={() => setOpenModal(true)}>Registrar Asistencia</Button>
-      <Modal
-        show={openModal}
-        size="md"
-        popup
-        onClose={handleCloseModal}
-      >
+      <Modal show={openModal} size="md" popup onClose={handleCloseModal}>
         <Modal.Header />
         <Modal.Body>
           <div className="flex justify-center align-middle">
@@ -652,7 +678,10 @@ export function RegisAsist() {
               <img src={logo} alt="Logo CNE" className="w-20" />
             </div>
           </div>
-          <form className="space-y-6 flex max-w-md flex-col gap-4" onSubmit={handleSubmit}>
+          <form
+            className="space-y-6 flex max-w-md flex-col gap-4"
+            onSubmit={handleSubmit}
+          >
             <h3 className="text-xl font-medium text-gray-900 text-center ">
               REGISTRAR ASISTENCIA
             </h3>
@@ -673,13 +702,23 @@ export function RegisAsist() {
             <fieldset className="flex max-w-md gap-4">
               <legend className="mb-4">Selecciona el tipo de Registro</legend>
               <div className="flex items-center gap-2">
-                <Radio id="entrada" name="asistencia" value="entrada"
-                  checked={data.asistencia === 'entrada'} onChange={handleChange}/>
+                <Radio
+                  id="entrada"
+                  name="asistencia"
+                  value="entrada"
+                  checked={data.asistencia === "entrada"}
+                  onChange={handleChange}
+                />
                 <Label htmlFor="entrada">ENTRADA</Label>
               </div>
               <div className="flex items-center gap-2">
-                <Radio id="salida" name="asistencia" value="salida"
-                  checked={data.asistencia === 'salida'} onChange={handleChange}/>
+                <Radio
+                  id="salida"
+                  name="asistencia"
+                  value="salida"
+                  checked={data.asistencia === "salida"}
+                  onChange={handleChange}
+                />
                 <Label htmlFor="salida">SALIDA</Label>
               </div>
             </fieldset>
@@ -701,20 +740,26 @@ export function RegisAsist() {
 export function RegisVisita() {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
-    nombre:"", cedula: "", motivo: "", id_departamento: "Selecciona:"
+    nombre: "",
+    cedula: "",
+    motivo: "",
+    id_departamento: "Selecciona:",
   });
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value.toUpperCase();
-    if (names === 'cedula') {
-      value = value.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    if (names === "cedula") {
+      value = value.replace(/[^0-9]/g, ""); // Esto eliminará cualquier caracter que no sea un dígito
     }
     setData({ ...data, [names]: value });
   };
   // limpiar campos del formulario
   const limpiarCampos = () => {
-    setData({ 
-      nombre:"", cedula: "", motivo: "", id_departamento: "Selecciona:"
+    setData({
+      nombre: "",
+      cedula: "",
+      motivo: "",
+      id_departamento: "Selecciona:",
     });
   };
   const handleCloseModal = () => {
@@ -742,7 +787,7 @@ export function RegisVisita() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (Object.values(data).some((field) => field.trim() === "")) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning");
+      alert("Campo vacio", "Debes ingresar todos los datos", "warning");
     } else {
       try {
         await axios.post(`${ServidorURL}/visita/entrada`, data, {
@@ -750,15 +795,19 @@ export function RegisVisita() {
             "Content-Type": "application/json",
           },
         });
-        handleCloseModal()
-        alert("Visita","Registrada exitosamente!","success");
+        handleCloseModal();
+        alert("Visita", "Registrada exitosamente!", "success");
       } catch (error) {
-        switch(error.response && error.response.status) {
+        switch (error.response && error.response.status) {
           case 406:
-            alert("Entrada registrada",`Ya se ha registrado esta visita hoy`,"error");
+            alert(
+              "Entrada registrada",
+              `Ya se ha registrado esta visita hoy`,
+              "error"
+            );
             break;
           default:
-            alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
+            alert("Oops...", `Ha ocurrido un error! ${error}`, "error");
             console.error(error);
         }
       }
@@ -767,12 +816,7 @@ export function RegisVisita() {
   return (
     <>
       <Button onClick={() => setOpenModal(true)}>Registrar Visita</Button>
-      <Modal
-        show={openModal}
-        size="md"
-        popup
-        onClose={handleCloseModal}
-      >
+      <Modal show={openModal} size="md" popup onClose={handleCloseModal}>
         <Modal.Header />
         <Modal.Body>
           <div className="flex justify-center align-middle">
@@ -780,7 +824,10 @@ export function RegisVisita() {
               <img src={logo} alt="Logo CNE" className="w-20" />
             </div>
           </div>
-          <form className="space-y-6 flex max-w-md flex-col gap-4" onSubmit={handleSend}>
+          <form
+            className="space-y-6 flex max-w-md flex-col gap-4"
+            onSubmit={handleSend}
+          >
             <h3 className="text-xl font-medium text-gray-900 text-center ">
               REGISTRAR VISITA
             </h3>
@@ -789,12 +836,13 @@ export function RegisVisita() {
               <div className="mb-2 block">
                 <Label htmlFor="nombre" value="Nombre:" />
               </div>
-              <TextInput 
+              <TextInput
                 id="nombre"
                 name="nombre"
                 value={data.nombre}
                 onChange={handleChange}
-                placeholder="Nombre:" />
+                placeholder="Nombre:"
+              />
             </div>
             {/* CEDULA */}
             <div>
@@ -806,7 +854,8 @@ export function RegisVisita() {
                 name="cedula"
                 value={data.cedula}
                 onChange={handleChange}
-                placeholder="Ingrese su Cedula de identidad" />
+                placeholder="Ingrese su Cedula de identidad"
+              />
             </div>
             {/* MOTIVO */}
             <div>
@@ -818,7 +867,8 @@ export function RegisVisita() {
                 name="motivo"
                 value={data.motivo}
                 onChange={handleChange}
-                placeholder="Ingrese su Motivo de Visita" />
+                placeholder="Ingrese su Motivo de Visita"
+              />
             </div>
             {/* DEPARTAMENtO */}
             <div>
@@ -860,20 +910,20 @@ export function RegisVisita() {
 export function RegisSalidaVisita() {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
-    cedula: ""
+    cedula: "",
   });
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value;
-    if (names === 'cedula') {
-      value = value.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    if (names === "cedula") {
+      value = value.replace(/[^0-9]/g, ""); // Esto eliminará cualquier caracter que no sea un dígito
     }
     setData({ ...data, [names]: value });
   };
   // limpiar campos del formulario
   const limpiarCampos = () => {
-    setData({ 
-      cedula: ""
+    setData({
+      cedula: "",
     });
   };
   const handleCloseModal = () => {
@@ -890,31 +940,36 @@ export function RegisSalidaVisita() {
         },
       });
       handleCloseModal();
-      alert("Salida","Registro exitoso!","success");
+      alert("Salida", "Registro exitoso!", "success");
     } catch (error) {
-      switch(error.response && error.response.status) {
+      switch (error.response && error.response.status) {
         case 403:
-          alert("Salida registrada","Ya se ha registrado una salida hoy","error");
+          alert(
+            "Salida registrada",
+            "Ya se ha registrado una salida hoy",
+            "error"
+          );
           break;
         case 405:
-          alert("Cedula errorea!",`La cedula no se ha registrado hoy`,"error");
+          alert(
+            "Cedula errorea!",
+            `La cedula no se ha registrado hoy`,
+            "error"
+          );
           break;
         default:
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
+          alert("Oops...", `Ha ocurrido un error! ${error}`, "error");
           console.error(error);
       }
     }
   };
-  
+
   return (
     <>
-      <Button onClick={() => setOpenModal(true)} color="failure">Registrar Salida</Button>
-      <Modal
-        show={openModal}
-        size="md"
-        popup
-        onClose={handleCloseModal}
-      >
+      <Button onClick={() => setOpenModal(true)} color="failure">
+        Registrar Salida
+      </Button>
+      <Modal show={openModal} size="md" popup onClose={handleCloseModal}>
         <Modal.Header />
         <Modal.Body>
           <div className="flex justify-center align-middle">
@@ -922,7 +977,10 @@ export function RegisSalidaVisita() {
               <img src={logo} alt="Logo CNE" className="w-20" />
             </div>
           </div>
-          <form className="space-y-6 flex max-w-md flex-col gap-4" onSubmit={handleSubmit}>
+          <form
+            className="space-y-6 flex max-w-md flex-col gap-4"
+            onSubmit={handleSubmit}
+          >
             <h3 className="text-xl font-medium text-gray-900 text-center ">
               REGISTRAR SALIDA
             </h3>
@@ -951,16 +1009,16 @@ export function RegisSalidaVisita() {
     </>
   );
 }
-export function EliminaVisita({id}) {
+export function EliminaVisita({ id }) {
   const [openModal, setOpenModal] = useState(false);
   const deleteVisita = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/visita/${id}`);
-      alert("Registro","Eliminado exitosamente!","success");
+      alert("Registro", "Eliminado exitosamente!", "success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Registro","Error en la eliminación!","error");
+      alert("Registro", "Error en la eliminación!", "error");
       setOpenModal(false);
     }
   };
@@ -1012,8 +1070,8 @@ export function ModalDep() {
   };
   // limpiar campos del formulario
   const limpiarCampos = () => {
-    setData({ 
-      departamento: ""
+    setData({
+      departamento: "",
     });
   };
   const handleCloseModal = () => {
@@ -1025,7 +1083,7 @@ export function ModalDep() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (data.departamento.trim() === "") {
-      alert("Campo vacio","Debes agregar un departamento","warning")
+      alert("Campo vacio", "Debes agregar un departamento", "warning");
     } else {
       try {
         await axios.post(`${ServidorURL}/task`, data, {
@@ -1033,10 +1091,10 @@ export function ModalDep() {
             "Content-Type": "application/json",
           },
         });
-        handleCloseModal()
-        alert("Departamento","Registro exitoso!","success")
+        handleCloseModal();
+        alert("Departamento", "Registro exitoso!", "success");
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error al registrar!","error")
+        alert("Oops...", "Ha ocurrido un error al registrar!", "error");
         return console.log(error);
       }
     }
@@ -1090,11 +1148,11 @@ export function EliminarDep({ id }) {
   const deleteDepa = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/task/${id}`);
-      alert("Departamento","Eliminado exitosamente!","success");
+      alert("Departamento", "Eliminado exitosamente!", "success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Departamento","Error en la eliminación!","error");
+      alert("Departamento", "Error en la eliminación!", "error");
       setOpenModal(false);
     }
   };
@@ -1139,7 +1197,7 @@ export function EditarDep({ id }) {
     e.preventDefault();
     await axios.put(`${ServidorURL}/task/${id}`, { departamento });
     setOpenModal(false);
-    alert( "Departamento","Actualización exitososa!","success");
+    alert("Departamento", "Actualización exitososa!", "success");
   };
 
   const handleOpenModal = async () => {
@@ -1201,16 +1259,16 @@ export function ModalCargo() {
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value.toUpperCase();
-    if (names === 'cantidad') {
-      value = value.replace(/[^0-9]/g, ''); // Esto eliminará cualquier caracter que no sea un dígito
+    if (names === "cantidad") {
+      value = value.replace(/[^0-9]/g, ""); // Esto eliminará cualquier caracter que no sea un dígito
     }
     setData({ ...data, [names]: value });
   };
   // limpiar campos del formulario
   const limpiarCampos = () => {
-    setData({ 
+    setData({
       cargo: "",
-      cantidad: ""
+      cantidad: "",
     });
   };
   const handleCloseModal = () => {
@@ -1222,7 +1280,7 @@ export function ModalCargo() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (data.cargo.trim() === "" || data.cantidad.trim() === "") {
-      alert("Campo vacio","Debes llenar todos los campos","warning");
+      alert("Campo vacio", "Debes llenar todos los campos", "warning");
     } else {
       try {
         await axios.post(`${ServidorURL}/cargos`, data, {
@@ -1231,9 +1289,9 @@ export function ModalCargo() {
           },
         });
         handleCloseModal();
-        alert("Cargo","Registro exitoso!","success")
+        alert("Cargo", "Registro exitoso!", "success");
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error al registrar!","error")
+        alert("Oops...", "Ha ocurrido un error al registrar!", "error");
         return console.log(error);
       }
     }
@@ -1298,10 +1356,10 @@ export function EliminarCargo({ id }) {
   const deleteDepa = async () => {
     try {
       const res = await axios.delete(`${ServidorURL}/cargos/${id}`);
-      alert("Cargo","Eliminado exitosamente!","success")
+      alert("Cargo", "Eliminado exitosamente!", "success");
       setOpenModal(false);
     } catch (error) {
-      alert("Cargo","Error en la eliminación!","error")
+      alert("Cargo", "Error en la eliminación!", "error");
       setOpenModal(false);
     }
   };
@@ -1396,7 +1454,7 @@ export function RegisInv({ id }) {
   };
   // limpiar campos del formulario
   const limpiarCampos = () => {
-    setDatos({ 
+    setDatos({
       nombre: "",
       marca: "",
       codigo: "",
@@ -1404,7 +1462,8 @@ export function RegisInv({ id }) {
       estatus: "Selecciona:",
       cantidad: "",
       id_departamento: "Selecciona:",
-      id_categoria: "Selecciona:", });
+      id_categoria: "Selecciona:",
+    });
   };
   const handleCloseModal = () => {
     limpiarCampos();
@@ -1415,15 +1474,15 @@ export function RegisInv({ id }) {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (Object.values(datos).some((field) => field.trim() === "")) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning")
+      alert("Campo vacio", "Debes ingresar todos los datos", "warning");
     } else {
       try {
-        await PeticionAxios('inventary', 'post', datos)
+        await PeticionAxios("inventary", "post", datos);
         limpiarCampos();
         setOpenModal(false);
-        alert("Articulo","Registrado exitosamente!","success")
+        alert("Articulo", "Registrado exitosamente!", "success");
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error en el registro!","error")
+        alert("Oops...", "Ha ocurrido un error en el registro!", "error");
         return console.log(error);
       }
     }
@@ -1432,16 +1491,11 @@ export function RegisInv({ id }) {
   return (
     <>
       <Button onClick={() => setOpenModal(true)}>Registrar Producto</Button>
-      <Modal
-        show={openModal}
-        size="md"
-        popup
-        onClose={handleCloseModal}
-      >
+      <Modal show={openModal} size="md" popup onClose={handleCloseModal}>
         <Modal.Header />
         <Modal.Body>
           <form
-            className="flex flex-col gap-4 max-w-full uppercase"
+            className="flex flex-col gap-4 max-w-full uppercase top-2 relative"
             onSubmit={handleSend}
           >
             <h3 className="text-xl font-medium text-gray-900 text-center ">
@@ -1657,7 +1711,7 @@ export function EditInv({ id }) {
   };
   // limpiar campos del formulario
   const limpiarCampos = () => {
-    setDatos({ 
+    setDatos({
       nombre: "",
       marca: "",
       codigo: "",
@@ -1665,7 +1719,8 @@ export function EditInv({ id }) {
       estatus: "Selecciona:",
       cantidad: "",
       id_departamento: "Selecciona:",
-      id_categoria: "Selecciona:", });
+      id_categoria: "Selecciona:",
+    });
   };
   const handleCloseModal = () => {
     limpiarCampos();
@@ -1691,7 +1746,7 @@ export function EditInv({ id }) {
         (field) => typeof field === "string" && field.trim() === ""
       )
     ) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning")
+      alert("Campo vacio", "Debes ingresar todos los datos", "warning");
     } else {
       // si los campos no estan vacios realiza la funcion
       const datosParaEnviar = {
@@ -1705,14 +1760,11 @@ export function EditInv({ id }) {
         id_departamento: datos.id_departamento,
       };
       //await PeticionAxios(`inventary${id}`, 'put', datosParaEnviar)
-      await axios.put(
-        `${ServidorURL}/inventary/${id}`, datosParaEnviar,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      handleCloseModal()
-      alert("Articulo","Actualizado exitosamente!","success");
+      await axios.put(`${ServidorURL}/inventary/${id}`, datosParaEnviar, {
+        headers: { "Content-Type": "application/json" },
+      });
+      handleCloseModal();
+      alert("Articulo", "Actualizado exitosamente!", "success");
     }
   };
 
@@ -1721,12 +1773,7 @@ export function EditInv({ id }) {
       <Button onClick={handleOpenModal} color="purple" size="sm">
         <FaEdit />
       </Button>
-      <Modal
-        show={openModal}
-        size="md"
-        popup
-        onClose={handleCloseModal}
-      >
+      <Modal show={openModal} size="md" popup onClose={handleCloseModal}>
         <Modal.Header />
         <Modal.Body>
           <form
@@ -1896,11 +1943,11 @@ export function EliminarInv({ id }) {
   const deleteInven = async () => {
     try {
       await axios.delete(`${ServidorURL}/inventary/${id}`);
-      alert("Articulo","Eliminado exitosamente!","success")
+      alert("Articulo", "Eliminado exitosamente!", "success");
       setOpenModal(false);
     } catch (error) {
       console.error("error", error);
-      alert("Articulo","Error en la eliminación!","error")
+      alert("Articulo", "Error en la eliminación!", "error");
       setOpenModal(false);
     }
   };
@@ -1963,25 +2010,33 @@ export function ModalUsr() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (Object.values(data).some((field) => field.trim() === "")) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning")
+      alert("Campo vacio", "Debes ingresar todos los datos", "warning");
     } else if (data.pass !== secondPass) {
-      return alert("Contraseñas no coinciden","Las contraseñas ingresadas no son iguales","error")
+      return alert(
+        "Contraseñas no coinciden",
+        "Las contraseñas ingresadas no son iguales",
+        "error"
+      );
     } else {
       try {
         // peticion de registro
-        await PeticionAxios('signup', 'post', data);
+        await PeticionAxios("signup", "post", data);
         // vaciar los campos al enviar el formulario
         setData({ usuario: "", pass: "", quest: "Selecciona:", resp: "" });
         setSecondPass("");
         setOpenModal(false);
         // alerta de exito
-        alert("Usuario","Registro exitoso!","success")
+        alert("Usuario", "Registro exitoso!", "success");
       } catch (error) {
         // alerta de errores
         if (error.response && error.response.status === 300) {
-          alert("Usuario invalido...",`Ya existe un usuario registrado con ese nombre!`,"error")
+          alert(
+            "Usuario invalido...",
+            `Ya existe un usuario registrado con ese nombre!`,
+            "error"
+          );
         } else {
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error")
+          alert("Oops...", `Ha ocurrido un error! ${error}`, "error");
         }
         return console.log(error);
       }
@@ -2109,19 +2164,19 @@ export function EliminarUsr({ id }) {
   const deleteInven = async () => {
     try {
       // peticion al servidor
-      await axios.delete(`${ServidorURL}/signup/${id}`,
-        {withCredentials: true,}        
-      );
+      await axios.delete(`${ServidorURL}/signup/${id}`, {
+        withCredentials: true,
+      });
       // alerta de exito
-      alert("Usuario","Eliminado exitosamente!","success")
+      alert("Usuario", "Eliminado exitosamente!", "success");
       setOpenModal(false);
     } catch (error) {
-      switch(error.response && error.response.status) {
+      switch (error.response && error.response.status) {
         case 400:
-          alert('Imposible',"No puedes eliminar tu usuario!","warning");
+          alert("Imposible", "No puedes eliminar tu usuario!", "warning");
           break;
         default:
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error");
+          alert("Oops...", `Ha ocurrido un error! ${error}`, "error");
           console.error(error);
       }
       console.error("error", error);
@@ -2217,10 +2272,14 @@ export function EditarUsr({ id }) {
         (field) => typeof field === "string" && field.trim() === ""
       )
     ) {
-      alert("Campo vacio","Debes ingresar todos los datos","warning")
+      alert("Campo vacio", "Debes ingresar todos los datos", "warning");
       // valida que ambas contraseñas sean iguales
     } else if (datos.pass !== secondPass) {
-      return alert("Contraseñas no coinciden","Las contraseñas ingresadas no son iguales","error")
+      return alert(
+        "Contraseñas no coinciden",
+        "Las contraseñas ingresadas no son iguales",
+        "error"
+      );
     } else {
       // si los campos no estan vacios realiza la funcion
       const datosParaEnviar = {
@@ -2234,13 +2293,17 @@ export function EditarUsr({ id }) {
           headers: { "Content-Type": "application/json" },
         });
         setOpenModal(false);
-        limpiarCampos()
-        alert("Articulo","Actualizado exitosamente!","success")
+        limpiarCampos();
+        alert("Articulo", "Actualizado exitosamente!", "success");
       } catch (error) {
         if (error.response && error.response.status === 400) {
-          alert("Usuario invalido...",`Ya existe un usuario registrado con ese nombre!`,"error")
+          alert(
+            "Usuario invalido...",
+            `Ya existe un usuario registrado con ese nombre!`,
+            "error"
+          );
         } else {
-          alert("Oops...",`Ha ocurrido un error! ${error}`,"error")
+          alert("Oops...", `Ha ocurrido un error! ${error}`, "error");
         }
         return console.log(error);
       }
@@ -2378,7 +2441,7 @@ export function ModalCatg() {
     limpiarCampos();
     setOpenModal(false);
   };
-  
+
   const handleChange = (e) => {
     let names = e.target.name;
     let value = e.target.value.toUpperCase();
@@ -2389,15 +2452,15 @@ export function ModalCatg() {
     e.preventDefault();
     // validar que los campos no esten vacios
     if (data.categoria.trim() === "") {
-      alert("Campo vacio","Debes llenar todos los campos","warning")
+      alert("Campo vacio", "Debes llenar todos los campos", "warning");
     } else {
       try {
-        PeticionAxios("categoria", "post", data)
+        PeticionAxios("categoria", "post", data);
         setData({ categoria: "" });
         setOpenModal(false);
-        alert("Categoria","Registro exitoso!","success")
+        alert("Categoria", "Registro exitoso!", "success");
       } catch (error) {
-        alert("Oops...","Ha ocurrido un error al registrar!","error")
+        alert("Oops...", "Ha ocurrido un error al registrar!", "error");
         return console.log(error);
       }
     }
@@ -2449,7 +2512,7 @@ export function ModalCatg() {
 }
 export function EliminarCatg({ id }) {
   const [openModal, setOpenModal] = useState(false);
-  
+
   const deleteInven = async () => {
     try {
       await axios.delete(`${ServidorURL}/categoria/${id}`);
@@ -2497,21 +2560,21 @@ export function EditarCatg({ id }) {
   const [openModal, setOpenModal] = useState(false);
   const [categoria, setCategoria] = useState("");
 
-    // limpiar campos del formulario
-    const limpiarCampos = () => {
-      setCategoria("");
-    };
-    const handleCloseModal = () => {
-      limpiarCampos();
-      setOpenModal(false);
-    };
+  // limpiar campos del formulario
+  const limpiarCampos = () => {
+    setCategoria("");
+  };
+  const handleCloseModal = () => {
+    limpiarCampos();
+    setOpenModal(false);
+  };
   // actualizar
   const actualizar = async (e) => {
     try {
       e.preventDefault();
-      await axios.put(`${ServidorURL}/categoria/${id}`, { categoria })
+      await axios.put(`${ServidorURL}/categoria/${id}`, { categoria });
       setOpenModal(false);
-      alert("Categoria","Actualizado exitosamente!","success");
+      alert("Categoria", "Actualizado exitosamente!", "success");
     } catch (error) {
       console.error(error);
     }
@@ -2524,14 +2587,13 @@ export function EditarCatg({ id }) {
         setCategoria(res[0].categoria);
         setOpenModal(true);
       } else {
-        console.log('Respuesta inesperada:', res);
+        console.log("Respuesta inesperada:", res);
       }
       setCategoria(res.data[0].categoria);
       setOpenModal(true);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-    
   };
   return (
     <Container>
@@ -2579,7 +2641,6 @@ export function EditarCatg({ id }) {
     </Container>
   );
 }
-
 
 const Container = styled.div`
 .Logocontent {
