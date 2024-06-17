@@ -2452,10 +2452,10 @@ export function EliminarCatg({ id }) {
   
   const deleteInven = async () => {
     try {
-      const res = await axios.delete(`${ServidorURL}/categoria/${id}`);
-      if (res.response && res.response.status === 204) {
-        alert("Categoria", "Eliminado exitosamente!", "success");
-      }
+      await axios.delete(`${ServidorURL}/categoria/${id}`);
+      
+      alert("Categoria", "Eliminado exitosamente!", "success");
+      
     } catch (error) {
       return alert("Categoria", "Error en la eliminacion", "error");
     }
