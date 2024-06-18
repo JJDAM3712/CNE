@@ -37,7 +37,7 @@ export function Forgot() {
 
     try {
       // EDITAR Y ADAPTAR LAS VALIDACIONES
-      if (datos.usuario.trim() === "" && datos.password.trim() === "") {
+      if (datos.usuario.trim() === "") {
         alert("Campo vacio","Debes ingresar todos los datos","warning")
       } else {
         const res = await axios.post(`${ServidorURL}/loginRecor`, datos, {
@@ -52,7 +52,7 @@ export function Forgot() {
         }
       }
     } catch (error) {
-      if (error.response && error.response.status === 300) {
+      if (error.response && error.response.status === 400) {
         alert("Oops...",`Usuario incorercto!`, "error")
       } else {
         alert("Oops...",`Ha ocurrido un error! ${error}`, "error")

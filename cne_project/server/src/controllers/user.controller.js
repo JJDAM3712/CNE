@@ -166,10 +166,6 @@ export const UserValidator = async (req, res) => {
         // recibir datos del cliente
         const {usuario} = req.body;
         const result = await BuscarUser(usuario);
-        if(result.length === 0){
-            return res.status(400).json({mensaje: "Usuario incorrecto"})
-        }
-
         // Obtén el ID del usuario desde result
         const userId = result[0].id; 
         const token = generateToken(userId);
@@ -179,6 +175,9 @@ export const UserValidator = async (req, res) => {
         });
         return res.status(200).json({token, userId});
     } catch (error) {
+        if(error.message === "usuario incorrecto") {
+            return res.status(400).json({ mensaje: "Usuario incorrecto" });
+        }
         return res.status(500).json({mensaje: error.message});
     }
 }
