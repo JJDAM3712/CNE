@@ -724,7 +724,7 @@ export function RegisAsist() {
             </fieldset>
             {/*---- checkbox -----*/}
             <div className="w-full flex justify-between">
-              <Button type="submit">REGISTRAR</Button>
+              <Button type="submit">Registrar</Button>
               <Button color="failure" onClick={handleCloseModal}>
                 Cancelar
               </Button>
@@ -896,7 +896,7 @@ export function RegisVisita() {
             </div>
 
             <div className="w-full flex justify-between">
-              <Button type="submit">REGISTRAR</Button>
+              <Button type="submit">Registrar</Button>
               <Button color="failure" onClick={handleCloseModal}>
                 Cancelar
               </Button>
@@ -998,7 +998,7 @@ export function RegisSalidaVisita() {
               />
             </div>
             <div className="w-full flex justify-between">
-              <Button type="submit">REGISTRAR</Button>
+              <Button type="submit">Registrar</Button>
               <Button color="failure" onClick={handleCloseModal}>
                 Cancelar
               </Button>

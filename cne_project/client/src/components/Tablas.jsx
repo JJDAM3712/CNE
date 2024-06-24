@@ -372,7 +372,7 @@ export function TablaInv({ innerRef, datos }) {
             <Table.HeadCell>Departamento</Table.HeadCell>
             <Table.HeadCell>Estado</Table.HeadCell>
             <Table.HeadCell>Cantidad</Table.HeadCell>
-            <Table.HeadCell>Cantegoria</Table.HeadCell>
+            <Table.HeadCell>Categoria</Table.HeadCell>
             <Table.HeadCell></Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">

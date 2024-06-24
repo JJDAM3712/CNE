@@ -150,7 +150,7 @@ const linksArray = [
     to: "/app/inventario",
   },
   {
-    label: "departamentos",
+    label: "Departamentos",
     icon: <PiBankBold />,
     to: "/app/departamentos",
   },
