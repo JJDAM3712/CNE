@@ -20,7 +20,6 @@ export const showCarg = async (req, res) => {
             "SELECT * FROM cargos WHERE id_cargo = ?",
             [req.params.id]
         );
-        console.log(result);
         if (result === 0){
             return res.status(404).json({mensaje: `El cargo no existe`})
         }

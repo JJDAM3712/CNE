@@ -29,7 +29,7 @@ const httpServer = createServer(app);
 // middlewares
 export const io = new Server(httpServer, {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: 'http://localhost:3000',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true
     }
@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
     })
 });
 app.use(cors({
-    origin: 'http://localhost:5173', //permitir solicitudes desde tel cliente
+    origin: 'http://localhost:3000', //permitir solicitudes desde tel cliente
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true //enviar cookies o headers de autenticación
 }));

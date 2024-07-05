@@ -1,2 +1,2 @@
 @echo off
-npm run dev
+node src/index.js

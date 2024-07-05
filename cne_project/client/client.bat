@@ -1,2 +1,2 @@
 @echo off
-npm run dev
+serve -s dist
